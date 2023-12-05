@@ -11,11 +11,13 @@ public class Engineer extends Person implements IEngineer{
     public void enableZeroGravityDevice(ZeroGravityDevice zeroGravityDevice) {
         this.status = Status.WEIGHTLESS;
         zeroGravityDevice.turnOn(this);
+        System.out.println(zeroGravityDevice.getState().getDescription() + " by " + this.name );
     }
 
     @Override
     public void disableZeroGravityDevice(ZeroGravityDevice zeroGravityDevice) {
         this.status = Status.WEIGHTED;
         zeroGravityDevice.turnOff(this);
+        System.out.println(zeroGravityDevice.getState().getDescription() + " by " + this.name);
     }
 }

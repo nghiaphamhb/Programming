@@ -68,31 +68,31 @@ public class Person implements IPersonRun, IPerson, IPersonFly {
 
     @Override
     public void jump() {
-        System.out.printf("%s is jumping out of the rocket", name);
+        System.out.printf("%s is jumping out of the rocket\n", name);
     }
 
     @Override
     public void notice() {
-        System.out.printf("%s is seeing the fantastic jump", name);
+        System.out.printf("%s is seeing the fantastic jump\n", name);
     }
 
     @Override
     public void stretchOut() {
-        System.out.printf("%s stretch out", name);
+        System.out.printf("%s is stretching out on the surface\n", name);
     }
 
     @Override
     public void soarUp() {
-        System.out.printf("%s soar up", name);
+        System.out.printf("%s is soaring up\n", name);
     }
 
     @Override
     public void flyDown() {
-        System.out.printf("%s fly down", name);
+        System.out.printf("%s is flying down\n", name);
     }
     @Override
-    public void run(Coordinate coord) {
-        System.out.printf("%s is still running.\n",name);
+    public void run(Coordinate coord, int steps) {
+        System.out.printf("%s runned %d steps.\n",name, steps);
         this.coord = coord;
 
     }
@@ -100,6 +100,11 @@ public class Person implements IPersonRun, IPerson, IPersonFly {
     @Override
     public void stop() {
         System.out.printf("%s stop.\n",name);
+    }
+
+    @Override
+    public void chase(Person person) {
+        System.out.printf("%s is chasing after %s\n", this.name, person.getName());
     }
 
     @Override
