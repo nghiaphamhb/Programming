@@ -1,45 +1,46 @@
+import core.*;
+import utility.STATUS_OF_DEVICE;
+import utility.PROFESSION;
+
 public class Universe {
-    public static double distance (Coordinate coord1, Coordinate coord2){
-        double distance = Math.sqrt(Math.pow((coord1.getAbs()-coord2.getAbs()),2)+
-                Math.pow((coord1.getOrd()-coord2.getOrd()),2));
-        return distance;
-    }
-    public static void main(String[] args) {
-        Planet moon = new Planet("Moon", 3679.2, SttOfFalling.SAFE_WITH_SLIGHT_FRIGHT);
-        Planet earth = new Planet("Earth", 1.67, SttOfFalling.CRIPPLED);
-        Coordinate coordRocket = new Coordinate(0, 0);
-        Coordinate coordZnayka = new Coordinate(10, 0);
-        Rocket itmo = new Rocket("ITMO",coordRocket);
-        Engineer Klepka = new Engineer("Klepka", Profession.ENGINEER, moon, itmo);
-        Engineer Zvezdochkin = new Engineer("Zvezdochkin", Profession.ENGINEER, moon, itmo);
-        Engineer Znayka = new Engineer("Znayka", Profession.ENGINEER, coordZnayka, moon, itmo);
-        ZeroGravityDevice itmoDevice = new ZeroGravityDevice();
-        Znayka.jump();
-        Klepka.jump();
-        Zvezdochkin.jump();
+    public static void main (String []args) {
+        Planet Moon = new Planet("Moon",  10);
+        Planet Earth = new Planet("Earth", 30);
+        Planet Mars = new Planet("Mars", 50);
+
+        Rocket ItmoRocket = new Rocket("ITMO-Rocket", new Coordinate(0, 0));
+
+        Engineer Klepka = new Engineer("Klepka", Moon, 80, ItmoRocket);
+        Engineer Zvezdochkin = new Engineer("Zvezdochkin", Moon, 60, ItmoRocket);
+        Engineer Znayka = new Engineer("Znayka", Moon, 120, ItmoRocket);
+        ZeroGravityDevice device = new ZeroGravityDevice("ITMO device", STATUS_OF_DEVICE.OFF);
+
+        System.out.println("Story started !");
+
+        Klepka.jump(ItmoRocket);
+        Zvezdochkin.jump(ItmoRocket);
         Klepka.chase(Znayka);
         Zvezdochkin.chase(Znayka);
-        int i = 1;
-        while (distance(Znayka.coord, itmo.coord)<=100){
-            Znayka.coord.setAbs(Znayka.getAbscissa() + 10);
-            Znayka.coord.setOrd(0);
-            Znayka.run(Znayka.coord, 10*i);
-            i += 1;
-        }
+
+        Znayka.run(ItmoRocket.getCoord(), 100);
         Znayka.stop();
-        Znayka.enableZeroGravityDevice(itmoDevice);
-        System.out.println(Status.WEIGHTLESS.getDescription());
+        Znayka.enableZeroGravityDevice(device);
+
         Klepka.soarUp();
         Zvezdochkin.soarUp();
-        Znayka.notice();
-        Znayka.disableZeroGravityDevice(itmoDevice);
-        System.out.println(Status.WEIGHTED.getDescription());
+
+        Znayka.see("the fantastic jump.");
+        Znayka.disableZeroGravityDevice(device);
+
         Klepka.flyDown();
         Zvezdochkin.flyDown();
-        Klepka.stretchOut();
-        Zvezdochkin.stretchOut();
-        System.out.println(Klepka.getPlanet().getSttOfFalling().getDescription());
-        Klepka.setPlanet(earth);
-        System.out.println(Klepka.getPlanet().getSttOfFalling().getDescription());
+        Klepka.stretchOut(Moon);
+        Zvezdochkin.stretchOut(Moon);
+
+        Moon.maxHeight(Klepka);
+        Earth.maxHeight(Zvezdochkin);
+        Mars.maxHeight(Klepka);
+
+        System.out.println("Story closed !");
     }
 }
