@@ -92,7 +92,7 @@ public abstract class Person implements IPerson, IPersonFly, IPersonRun {
     @CustomLogging("This method represents the stretching out action.")
     @Override
     public void stretchOut() {
-        System.out.printf(getName()+ " stretched out on the surface.");
+        System.out.printf(getName()+ " stretched out on the surface.\n");
     }
     @CustomLogging("This method represents the thinking action.")
     @Override
@@ -120,7 +120,7 @@ public abstract class Person implements IPerson, IPersonFly, IPersonRun {
         int i = 1;
         while (Coordinate.distance(getCoordinate(), rocket.getCoord()) < fixedDistance) {
             setCoordinate( new Coordinate(getCoordinate().getAbs() + lengthOfStep, 0));
-            IPersonRun runner = (coord, steps) -> {
+            IPersonRun runner = (coord, steps) -> {             //lambda expression
                 System.out.printf("%s runned %d steps.\n", getName(), steps);
                 setCoordinate(coord);
             };

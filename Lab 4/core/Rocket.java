@@ -5,6 +5,8 @@ import utility.Place;
 import java.util.Objects;
 
 public class Rocket extends Place {
+    private static String startProgram = "The missile launch program has begun.";
+    private static String endProgram = "The missile launch program was over.";
     private RocketParameters rocketParameters;
 
     public Rocket(String name, Coordinate coord, int fuelCapacity, int payloadCapacity) {
@@ -61,7 +63,7 @@ public class Rocket extends Place {
     }
 
 
-    class RocketParameters {
+    class RocketParameters {   //inner class
         private int fuelCapacity;
         private int payloadCapacity;
 
@@ -92,6 +94,15 @@ public class Rocket extends Place {
         }
         else setCoord(coord);
 
+    }
+
+    public static class RocketProgram {
+        public void start (){
+            System.out.println(startProgram);
+        }
+        public void end (){
+            System.out.println(endProgram);
+        }
     }
 
     @Override

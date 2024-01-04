@@ -30,7 +30,6 @@ public class Engineer extends Person implements IEngineer {
     @Override
     public void enableZeroGravityDevice(ZeroGravityDevice zeroGravityDevice, Rocket rocket) {
         System.out.println(getName() + " tried to turn on the " + zeroGravityDevice.getName());
-
         try {
             zeroGravityDevice.turnOn(this, rocket);
             this.statusOfWeight = Status.WEIGHTLESS;

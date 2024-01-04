@@ -7,6 +7,7 @@ import java.util.Objects;
 public abstract class Place {
     protected String name;
     protected Coordinate coord;
+    public Place(){}
 
     public Place(String name, Coordinate coord) {
         this.name = name;
@@ -28,6 +29,7 @@ public abstract class Place {
     public void setCoord(Coordinate coord) {
         this.coord = coord;
     }
+    public void printActionCreatePlace (){}
 
     @Override
     public boolean equals(Object object) {
