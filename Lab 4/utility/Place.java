@@ -13,40 +13,40 @@ public abstract class Place {
         this.coord = coord;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCoord(Coordinate coord) {
-        this.coord = coord;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Coordinate getCoord() {
         return coord;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()){
-            return false;
-        }
-        Place thingsPlace = (Place) obj;
-        return name.equals(thingsPlace.name);
+    public void setCoord(Coordinate coord) {
+        this.coord = coord;
     }
-    @Override
-    public int hashCode(){
-        return Objects.hash(name);
-    };
-    @Override
-    public String toString (){
 
-        return name + " (" + coord.getAbs() +
-                ", " + coord.getOrd() +
-                "). ";
-    };
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Place place = (Place) object;
+        return Objects.equals(name, place.name) && Objects.equals(coord, place.coord);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, coord);
+    }
+
+    @Override
+    public String toString() {
+        return "Place{" +
+                "name='" + name + '\'' +
+                ", coord=" + coord +
+                '}';
+    }
 }

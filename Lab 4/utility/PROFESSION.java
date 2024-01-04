@@ -1,6 +1,6 @@
 package utility;
 
-public enum PROFESSION {
+public enum Profession {
     ENGINEER,
     PROGRAMMER,
     AUSTRONAUT

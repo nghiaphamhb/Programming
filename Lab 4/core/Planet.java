@@ -1,13 +1,13 @@
 package core;
 
-import utility.STATUS_OF_FALLING;
+import utility.SttOfFalling;
 
 import java.util.Objects;
 
 public class Planet {
     private String name;
     private double gravity;
-    private STATUS_OF_FALLING statusOfFalling;
+    private SttOfFalling statusOfFalling;
 
     public Planet (String name, double gravity){
         this. name = name;
@@ -20,7 +20,7 @@ public class Planet {
     public void setGravity (double gravity){
         this.gravity = gravity;
     }
-    public void setStatusOfFalling (STATUS_OF_FALLING statusOfFalling){
+    public void setStatusOfFalling (SttOfFalling statusOfFalling){
         this.statusOfFalling = statusOfFalling;
     }
 
@@ -30,17 +30,16 @@ public class Planet {
     public double getGravity(){
         return this.gravity;
     }
-    public STATUS_OF_FALLING getStatusFalling(){
+    public SttOfFalling getStatusFalling(){
         return this.statusOfFalling;
     }
 
     public void  maxHeight (Engineer engineer){
         double height = engineer.weight/(2*this.gravity);
         System.out.printf("The maximum height %s achieved on %s is %s m.\n", engineer.getName(), this.getName(), height);
-        if (height >= 3){
-            System.out.println(STATUS_OF_FALLING.SAFE_WITH_SLIGHT_FRIGHT.getDescription());
-        }else System.out.println(STATUS_OF_FALLING.CRIPPLED.getDescription());
-
+        if (height >= 3.0){
+            System.out.println(SttOfFalling.SAFE_WITH_SLIGHT_FRIGHT.getDescription());
+        }else System.out.println(SttOfFalling.CRIPPLED.getDescription());
     }
 
     @Override

@@ -1,15 +1,21 @@
 package utility;
 
-import core.Planet;
-import core.Rocket;
-import core.ZeroGravityDevice;
+import core.*;
 
-public interface IPerson {   // có thể tách ra thành nhiều interface sau
-    public void atPlace (Place place);
-    public void goOut(Rocket rocket);
-    public void notice(String what);
-    public void stretchOut (Planet planet);
-    public void think(String what);
-    public void shout();
-    public void grab (ZeroGravityDevice device);
+public interface IPerson {
+    void atPlace (Place place);
+    void getOut(Rocket rocket);
+    void notice(String what);
+    void stretchOut ();
+    void think(String what);
+    void shout();
+    void chase (Person person);
+    void grab (ZeroGravityDevice device);
+    void move ();
+    void runAndStop(Rocket rocket);
+    void stop();
+    void waited();
+    void listen(Engineer engineer);
+    void hugg(Engineer engineer);
+    void jumpUpTo(Engineer engineer);
 }

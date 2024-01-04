@@ -2,10 +2,10 @@ import core.*;
 import utility.*;
 
 public class Universe {
-    public static void main (String []args) throws RocketMoveException {
+    public static void main (String []args)  {
         Landforms cave = new Landforms("Cave", new Coordinate(0, 0));
-        Rocket rocket = new Rocket("Rocket", new Coordinate(200, 0));
-        Landforms pyramidMountain = new Landforms("Pyramid Mountain", new Coordinate(300, 0));
+        Rocket rocket = new Rocket("ITMO-Rocket", new Coordinate(200, 0), 100000, 100);
+        Landforms pyramidMountain = new Landforms("Pyramid Mountain", new Coordinate(400, 0));
 
         Planet Moon = new Planet("Moon",  10);
         Planet Earth = new Planet("Earth", 50);
@@ -15,66 +15,48 @@ public class Universe {
         Engineer Znayka = new Engineer("Znayka", Moon, 120);
         Astronaut littleGuys = new Astronaut("Little guys", Moon, 40);
 
-        ZeroGravityDevice device = new ZeroGravityDevice("Zero-gravity-device", STATUS_OF_DEVICE.OFF);
+        ZeroGravityDevice device = new ZeroGravityDevice("Zero-gravity-device", 100);
 
-        System.out.println("Story started !");
+        System.out.println("Our story started !");
 
         Znayka.atPlace(cave);
         littleGuys.atPlace(rocket);
         Znayka.notice("his task was fulfilled.");
-
         rocket.descend();
-        try{
-            rocket.pushOff(500);
-        } catch (RocketPushOffException e){
-            System.out.println(e.getMessage());
-        }
-
-        try{
-            rocket.move(null);
-        } catch (RocketMoveException e){
-            System.out.println(e.getMessage());
-        }
-
+        rocket.launch();
+        Znayka.control(rocket);
         Znayka.think(littleGuys.getName() + " were planning to make fun of him.");
         Znayka.shout();
-        Znayka.move(rocket);
-        Znayka.enableZeroGravityDevice(device);
-
+        Znayka.move();
+        Znayka.atPlace(rocket);
+        Znayka.checkZeroGravityDevice(device, rocket);
         Znayka.grab(device);
-        Znayka.goOut(rocket);
-        Klepka.goOut(rocket);
+        Znayka.getOut(rocket);
+        Klepka.getOut(rocket);
+        Zvezdochkin.getOut(rocket);
         Klepka.chase(Znayka);
-        Zvezdochkin.goOut(rocket);
         Zvezdochkin.chase(Znayka);
-
-        Znayka.run(rocket.getCoord(), -100);
-        Znayka.stop();
-        Znayka.enableZeroGravityDevice(device);
+        Znayka.runAndStop(rocket);
+        Znayka.enableZeroGravityDevice(device, rocket);
         Klepka.soarUp();
         Zvezdochkin.soarUp();
-
         Znayka.notice("the fantastic jump.");
-        Znayka.disableZeroGravityDevice(device);
-
+        Znayka.disableZeroGravityDevice(device, rocket);
         Klepka.flyDown();
-        Klepka.stretchOut(Moon);
+        Klepka.stretchOut();
         Zvezdochkin.flyDown();
-        Zvezdochkin.stretchOut(Moon);
-
+        Zvezdochkin.stretchOut();
         Earth.maxHeight(Klepka);
         Moon.maxHeight(Klepka);
-
-        littleGuys.goOut(rocket);
+        littleGuys.getOut(rocket);
         littleGuys.waited();
-
-        Znayka.move(pyramidMountain);
-        Znayka.enableZeroGravityDevice(device);
-
-        Zvezdochkin.listen(Znayka);
+        Znayka.move();
+        Znayka.atPlace(pyramidMountain);
+        Znayka.enableZeroGravityDevice(device, rocket);
         Zvezdochkin.jumpUpTo(Znayka);
         Zvezdochkin.hugg(Znayka);
+        Zvezdochkin.listen(Znayka);
 
-        System.out.println("Story closed !");
+        System.out.println("Our story closed !");
     }
 }

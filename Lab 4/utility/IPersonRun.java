@@ -3,10 +3,8 @@ package utility;
 import core.Coordinate;
 import core.Person;
 import core.Planet;
+import core.Rocket;
 
 public interface IPersonRun {
-    public void run (Coordinate coordinate, int steps);
-    public void stop();
-    public void chase (Person person);
-    public void move (Place place);
+    void run (Coordinate coordinate, int steps);
 }
