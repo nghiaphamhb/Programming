@@ -106,6 +106,11 @@ public class Rocket extends Place {
     }
 
     @Override
+    public void printLocationMarker() {
+        System.out.println("Location marker: " + name + getCoord().toString() );
+    }
+
+    @Override
     public boolean equals(Object object) {
         if (this == object) return true;
         if (!(object instanceof Rocket rocket)) return false;

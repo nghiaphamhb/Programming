@@ -73,11 +73,20 @@ public abstract class Person implements IPerson, IPersonFly, IPersonRun {
     public void setStatusOfWeight(Status statusOfWeight) {
         this.statusOfWeight = statusOfWeight;
     }
+    @CustomLogging("This method represents the moving to a place action.")
 
     @Override
-    public void atPlace (Place place){
-        setCoordinate(place.getCoord());
-        System.out.println(Person.this.name + " was at the " + place.getName());
+    public void moveToPlace (String namePlace, Coordinate coordinate){
+        Place place = new Place(namePlace, coordinate) {     //anonymous class
+            @Override
+            public void printLocationMarker (){
+                System.out.println("Location marker: " + namePlace + coordinate.toString() );
+            }
+        };
+        place.printLocationMarker();
+        move();
+        setCoordinate(coordinate);
+        System.out.println(Person.this.name + " moved to the " + namePlace);
     }
     @CustomLogging("This method represents the getting out action.")
     @Override

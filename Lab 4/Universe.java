@@ -3,7 +3,6 @@ import utility.*;
 
 public class Universe {
     public static void main (String []args)  {
-        Landforms landforms = new Landforms();
         Rocket rocket = new Rocket("ITMO-Rocket", new Coordinate(200, 0), 10000, 100);
 
         Planet Moon = new Planet("Moon",  10);
@@ -18,8 +17,7 @@ public class Universe {
 
         System.out.println("Our story started !");
 
-        Znayka.atPlace(landforms.createPlace("Cave", 0 ,0));
-        littleGuys.atPlace(rocket);
+        Znayka.moveToPlace("Cave", new Coordinate(0 , 0));
         Znayka.notice("his task was fulfilled.");
 
         Rocket.RocketProgram program = new Rocket.RocketProgram();
@@ -31,8 +29,7 @@ public class Universe {
 
         Znayka.think(littleGuys.getName() + " were planning to make fun of him.");
         Znayka.shout();
-        Znayka.move();
-        Znayka.atPlace(rocket);
+        Znayka.moveToPlace(rocket.getName(), rocket.getCoord());
         Znayka.checkZeroGravityDevice(device, rocket);
         Znayka.grab(device);
         Znayka.getOut(rocket);
@@ -47,15 +44,14 @@ public class Universe {
         Znayka.notice("the fantastic jump.");
         Znayka.disableZeroGravityDevice(device, rocket);
         Klepka.flyDown();
-        Klepka.stretchOut();
         Zvezdochkin.flyDown();
+        Klepka.stretchOut();
         Zvezdochkin.stretchOut();
         Earth.maxHeight(Klepka);
         Moon.maxHeight(Klepka);
         littleGuys.getOut(rocket);
         littleGuys.waited();
-        Znayka.move();
-        Znayka.atPlace(landforms.createPlace("Pyramid- Mountain", 400, 0));
+        Znayka.moveToPlace("Pyramid-Mountain", new Coordinate(400, 0));
         Znayka.enableZeroGravityDevice(device, rocket);
         Zvezdochkin.jumpUpTo(Znayka);
         Zvezdochkin.hugg(Znayka);

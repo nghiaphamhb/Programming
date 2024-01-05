@@ -42,6 +42,6 @@ public class Coordinate {
                 + 11 * Double.hashCode(ord);
     }
     public String toString (){
-        return "(" + abs + ", " + ord + ").";
+        return " (" + abs + ", " + ord + ")";
     }
 }

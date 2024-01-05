@@ -29,7 +29,7 @@ public abstract class Place {
     public void setCoord(Coordinate coord) {
         this.coord = coord;
     }
-    public void printActionCreatePlace (){}
+    abstract public void printLocationMarker ();
 
     @Override
     public boolean equals(Object object) {

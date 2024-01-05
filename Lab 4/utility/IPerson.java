@@ -3,7 +3,7 @@ package utility;
 import core.*;
 
 public interface IPerson {
-    void atPlace (Place place);
+    void moveToPlace (String namePlace, Coordinate coordinate);
     void getOut(Rocket rocket);
     void notice(String what);
     void stretchOut ();
