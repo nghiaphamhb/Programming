@@ -1,0 +1,30 @@
+package Commands;
+
+import Manager.CommandManager;
+import utility.Console;
+import Exception.*;
+
+import java.util.ArrayDeque;
+import java.util.List;
+
+public class HistoryCommand extends Commands {
+    private final CommandManager commandManager;
+    public HistoryCommand(CommandManager commandManager) {
+        super("history", "вывести последние 13 команд (без их аргументов)");
+        this.commandManager = commandManager;
+    }
+// còn vấn đề là in 13 câu từ dưới lên
+    @Override
+    public boolean execute(String[] argument) {
+        try {
+            if (!argument[1].isEmpty()) throw new WrongAmountOfElementsException();
+            ArrayDeque<String> history = commandManager.getCommandHistory();
+            history.forEach(Console::println);
+            return true;
+        } catch (WrongAmountOfElementsException exception) {
+            Console.println("Использование: '" + getName() + "'");
+        }
+        return false;
+
+    }
+}
