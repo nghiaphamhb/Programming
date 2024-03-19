@@ -1,10 +1,7 @@
 package utility;
 
 import Manager.*;
-import utility.Asker.Asker;
 import Commands.*;
-import Exception.*;
-import utility.Asker.DragonInfo;
 
 import java.io.*;
 import java.util.*;
@@ -30,7 +27,7 @@ public class Runner {
         do {
             try {
                 Console.ps1();
-                command = Asker.getScanner().nextLine().trim().split(" ", 2);
+                command = Input.getScanner().nextLine().trim().split(" ", 2);
                 if (command.length > 1) command[1] = command[1].trim();
                 // có thể có nhiều hơn 1 dấu cách ở giữa
 //                Hàm trim() trong Java là một phương thức của lớp String được sử dụng để loại bỏ
@@ -74,8 +71,8 @@ public class Runner {
         List<String> scriptList = new ArrayList<>(); //Список используемых скриптов
         List<String> commandList = new ArrayList<>();
 
-        Asker.setFileMode();
-//        try{
+        Input.setFileMode();
+        try {
             scriptList.add(filePath);
             if (!new File(filePath).exists()) {
                 filePath = "src/main/resources/" + filePath;
@@ -87,7 +84,7 @@ public class Runner {
             int bytesRead;
 
             while ((bytesRead = inputStream.read(buffer)) != -1) {
-            content.append(new String(buffer, 0, bytesRead));
+                content.append(new String(buffer, 0, bytesRead));
             }
             // Phân tách chuỗi thành các phần tử riêng biệt
             commandLines = content.toString().split("\\r?\\n");
@@ -99,47 +96,40 @@ public class Runner {
                 }
             }
 
-//            for (String commandLine : commandList){
-//                command = (commandLine.trim() + " ").split(" ", 2);
-//
-//                Console.ps1();
-//                Console.println(commandLine);
-//
-//                if (!command[1].isEmpty()){
-//                    command[1] = command[1].trim();
-//                }
-//
-//                commandStatus = runCommand(command);
-//            }
 
-        for (int i=0; i < commandList.size(); i++){
-            command = (commandList.get(i).trim() + " ").split(" ", 2);
 
-            Console.ps1();
-            Console.println(commandList.get(i));
+            for (int i = 0; i < commandList.size(); i++) {
+                command = (commandList.get(i).trim() + " ").split(" ", 2);
 
-            if (!command[1].isEmpty()){
-                command[1] = command[1].trim();
+                Console.ps1();
+                Console.println(commandList.get(i));
+
+                if (!command[1].isEmpty()) {
+                    command[1] = command[1].trim();
+                }
+
+                if ((command[0].equals("add") || (command[0].equals("add_if_max") || (command[0].equals("add_if_min")) && command[1].isEmpty()))) {
+                    String[] fileScanner = new String[]{
+                            commandList.get(i + 1),
+                            commandList.get(i + 2),
+                            commandList.get(i + 3),
+                            commandList.get(i + 4),
+                            commandList.get(i + 5),
+                            commandList.get(i + 6),
+                            commandList.get(i + 7),
+                            commandList.get(i + 8)
+                    };
+                    i += 8;
+                    Asker.getInfoFromFile(fileScanner);
+                }
+
+                commandStatus = runCommand(command);
             }
 
-            if ((command[0].equals("add") || (command[0].equals("add_if_max") || (command[0].equals("add_if_min") ) && command[1].isEmpty()))){
-                String[] fileScanner = new String[]{
-                        commandList.get(i+1),
-                        commandList.get(i+2),
-                        commandList.get(i+3),
-                        commandList.get(i+4),
-                        commandList.get(i+5),
-                        commandList.get(i+6),
-                        commandList.get(i+7),
-                        commandList.get(i+8)
-                };
-                i += 8;
-                DragonInfo.getFileScanner(fileScanner);
-            }
 
-            commandStatus = runCommand(command);
-        }
-
+        }catch (FileNotFoundException e){
+            Console.printError("Этот файл не существует.");        }
+        Input.setUserMode();
         return ExitCode.RUN;
 }
 
@@ -154,11 +144,11 @@ public class Runner {
         this.commandManager.register( new HelpCommand(commandManager) );
         this.commandManager.register( new HistoryCommand(commandManager) );
         this.commandManager.register( new InfoCommand(dragonManager) );
-        this.commandManager.register( new PrintDescendingCommand() );
-        this.commandManager.register( new PrintFieldDescendingSpeakingCommand() );
+        this.commandManager.register( new PrintDescendingCommand(dragonManager) );
+        this.commandManager.register( new PrintFieldDescendingSpeakingCommand(dragonManager) );
         this.commandManager.register( new RemoveByIdCommand(dragonManager) );
         this.commandManager.register( new SaveCommand() );
         this.commandManager.register( new ShowCommand(dragonManager) );
-        this.commandManager.register( new UpdateIdCommand() );
+        this.commandManager.register( new UpdateIdCommand(dragonManager) );
     }
 }

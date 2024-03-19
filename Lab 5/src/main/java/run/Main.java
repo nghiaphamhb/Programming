@@ -16,4 +16,4 @@ public class Main {
         program.start();
     }
 }
-//execute_script s.txt
+//execute_script script.txt

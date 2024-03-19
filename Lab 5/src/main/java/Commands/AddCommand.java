@@ -4,7 +4,7 @@ package Commands;
 import Manager.DragonManager;
 import utility.*;
 import Exception.*;
-import utility.Asker.DragonInfo;
+import utility.Asker;
 
 /**
  *
@@ -23,7 +23,7 @@ public class AddCommand extends Commands {
         try {
             if (!argument[1].isEmpty()) throw new WrongAmountOfElementsException();
             Console.println("* Создание нового дракона:");
-            dragonManager.addToCollection(DragonInfo.buildDragon());
+            dragonManager.addToCollection(Asker.buildDragon());
             Console.println("Дракон успешно добавлен!");
             return true;
 

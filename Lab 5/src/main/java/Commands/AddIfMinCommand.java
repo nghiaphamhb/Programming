@@ -2,7 +2,6 @@ package Commands;
 
 import Data.Dragon;
 import Manager.*;
-import utility.Asker.*;
 import Exception.*;
 import utility.*;
 
@@ -20,7 +19,7 @@ public class AddIfMinCommand extends Commands {
         try {
             if (!argument[1].isEmpty()) throw new WrongAmountOfElementsException();
             Console.println("* Создание нового продукта (только успешно если это минимально):");
-            Dragon newDragon = DragonInfo.buildDragon();
+            Dragon newDragon = Asker.buildDragon();
 
             if (newDragon.getAge() < getMinAge()) {
                 dragonManager.addToCollection(newDragon);

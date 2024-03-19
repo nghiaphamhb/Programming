@@ -22,8 +22,8 @@ public class RemoveByIdCommand extends Commands {
             if (argument[1].isEmpty()) throw new WrongAmountOfElementsException();
             Dragon dragonHasId = filterById(argument[1]);
             if (dragonHasId == null) throw new NullPointerException();
-            dragonManager.getCollection().remove(dragonHasId);
-            Console.println("Дракон имеющий id " + dragonHasId.getId() + "успешно обезврежен!");
+            dragonManager.removeFromCollection( dragonHasId );
+            Console.println("Дракон имеющий id " + dragonHasId.getId() + " успешно обезврежен!");
             return true;
         } catch (WrongAmountOfElementsException e){
             Console.printError("Неправильное количество аргументов!");

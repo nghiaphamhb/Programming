@@ -1,9 +1,11 @@
 package Manager;
 import Commands.*;
-
 import java.util.*;
 
-// this is a class for managing the commands
+/**
+ * This is a class for managing the commands: There are collection's command and history of used commands
+ */
+
 public class CommandManager {
     private final Set<Commands> commands;
     private final ArrayDeque<String> commandHistory;
@@ -13,44 +15,53 @@ public class CommandManager {
         commandHistory = new ArrayDeque<>(13);
     }
 
-    //ham them command
-    public void register(Commands command) {
-        commands.add(command);
+    /**
+     * Register new command to collection
+     * @param command new command
+     */
+    public void register( Commands command ) {
+        commands.add( command );
     }
 
-    public boolean activateCommand(String[] command) {
-
-        String nameCommand = command[0];
-        for (Commands c : commands) {
-            if (c.getName().equals(nameCommand)) {
-                if (command.length == 1) {
-                    String[] tmpCommand = Arrays.copyOf(command, command.length + 1);
-                    tmpCommand[command.length] = "";
-                    c.execute(tmpCommand);
-                } else {
-                    c.execute(command);
-                }
-                addToHistory(nameCommand);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Set<Commands> getCommands() {
-        return commands;
-    }
-
+    /**
+     * Get history of used commands
+     * @return history of used commands
+     */
     public ArrayDeque<String> getCommandHistory() {
         return commandHistory;
     }
 
-    private void addToHistory(String command) {
-        if (commandHistory.size() == 13) {
+    /**
+     * Write a used command to history (note: maximum number of commands in history is 13)
+     * @param command used command
+     */
+    public void addToHistory( String command ) {
+        if ( commandHistory.size() == 13 ) {
             commandHistory.poll();
         }
         commandHistory.add(command);
     }
 
-
+    /**
+     * Activate command + write it down in history
+     * @param command command which user want to activate
+     * @return successfully activate or not
+     */
+    public boolean activateCommand( String[] command ) {
+        String nameCommand = command[0];
+        for ( Commands c : commands ) {
+            if ( c.getName().equals( nameCommand ) ) {
+                if ( command.length == 1 ) {
+                    String[] tmpCommand = Arrays.copyOf( command, command.length + 1 );
+                    tmpCommand[ command.length ] = "";
+                    c.execute( tmpCommand );
+                } else {
+                    c.execute( command );
+                }
+                addToHistory( nameCommand );
+                return true;
+            }
+        }
+        return false;
+    }
 }

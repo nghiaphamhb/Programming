@@ -4,7 +4,7 @@ import Manager.*;
 import utility.*;
 import Exception.*;
 import Data.*;
-import utility.Asker.DragonInfo;
+import utility.Asker;
 
 public class AddIfMaxCommand extends Commands {
     private final DragonManager dragonManager; //khi nào thì ko dùng final; ví dụ 1 object có biến tọa độ thay doi
@@ -20,7 +20,7 @@ public class AddIfMaxCommand extends Commands {
         try {
             if (!argument[1].isEmpty()) throw new WrongAmountOfElementsException();
             Console.println("* Создание нового продукта (только успешно если это максимально):");
-            Dragon newDragon = DragonInfo.buildDragon();
+            Dragon newDragon = Asker.buildDragon();
 
             if (newDragon.getAge() > getMaxAge()) {
                 dragonManager.addToCollection(newDragon);

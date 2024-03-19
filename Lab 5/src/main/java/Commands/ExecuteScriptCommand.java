@@ -3,6 +3,8 @@ package Commands;
 import utility.Console;
 import Exception.*;
 
+import java.io.FileNotFoundException;
+
 public class ExecuteScriptCommand extends Commands {
     public ExecuteScriptCommand() {
         super("execute_script", "считать и исполнить скрипт из указанного файла. ");
@@ -17,6 +19,6 @@ public class ExecuteScriptCommand extends Commands {
         } catch (WrongAmountOfElementsException exception) {
             Console.println("Использование: '" + getName() + " [file_name]");
         }
-        return false;
+        return true;
     }
 }

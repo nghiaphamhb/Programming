@@ -34,31 +34,7 @@ false
 green
 12
 
-filter_contains_name WaterDragon
-show
-
-info
-
-history
-clear
-show
 
 
-help
-help
-help
-help
-help
 
-help
-help
-help
-help
-help
-
-help
-help
-help
-help
-help
 

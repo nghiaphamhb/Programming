@@ -1,34 +1,28 @@
 package Manager;
 
 import Data.Dragon;
+import utility.Asker;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-//this is a class for managing the collection
+/**
+ * This is a class for managing the collection of dragons: There are collection of dragons, time they were created and saved
+ */
+//t
 public class DragonManager {
-    private Set<Dragon> collection = new HashSet<>();
-    private LocalDateTime createTime;
+    private Set<Dragon> collection;
+    private final LocalDateTime createTime;
     private LocalDateTime lastSaveTime;
 
     public DragonManager() {
-        createTime = null;
+        collection  = new HashSet<>();
+        createTime = LocalDateTime.now();
         lastSaveTime = null;
-        loadCollection();
     }
 
-//    kiểm tra tính hợp lệ của tất cả các tổ chức trong hệ thống; những điều này chưa chắc đã
-//    và hiển thị thông báo lỗi thông qua đối tượng console nếu có tổ chức nào không hợp lệ
-//    public void validateAll(Console console) {
-//        Dragon.allDragons().values().forEach(dragon -> {
-//            if (!dragon.validate()) {
-//                console.printError("Дракон с id=" + dragon.getId() + " имеет невалидные поля.");
-//            }
-//        });
-//        console.println("! Загруженные драконы валидны.");
-//    }
     public Set<Dragon> getCollection (){
         return collection;
     }
@@ -57,13 +51,13 @@ public class DragonManager {
         while( iterator.hasNext() ) lastDragon = iterator.next();
         return lastDragon;
     }
-    public Dragon getById (int id){
+    public Dragon getById (long id){
         for ( Dragon d : collection){
-            if ( d.getId() == id ) return d;
+            if ( checkExistById(id) ) return d;
         }
         return null;
     }
-    public boolean checkExistById (int id){
+    public boolean checkExistById (long id){
         for ( Dragon d : collection){
             if ( d.getId() == id ) return true;
         }
@@ -88,9 +82,7 @@ public class DragonManager {
     public void saveCollection(){
         lastSaveTime = LocalDateTime.now();
     }
-    private void loadCollection() {
-        createTime = LocalDateTime.now();
-    }
+
 
     @Override
     public String toString() {
