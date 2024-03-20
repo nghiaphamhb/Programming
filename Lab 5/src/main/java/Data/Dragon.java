@@ -38,20 +38,8 @@ public class Dragon {
         return name;
     }
 
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
-
-    public LocalDateTime getCreationDate() {
-        return LocalDateTime.now();
-    }
-
     public int getAge() {
         return age;
-    }
-
-    public Long getWeight() {
-        return weight;
     }
 
     public boolean getSpeaking() {
@@ -65,9 +53,7 @@ public class Dragon {
     public DragonHead getHead() {
         return head;
     }
-    public static void toNextId (){
-        nextId ++;
-    }
+
 
     @Override
     public String toString() {

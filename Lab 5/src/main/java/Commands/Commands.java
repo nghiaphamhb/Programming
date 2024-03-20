@@ -6,7 +6,7 @@ public abstract class Commands implements Command_Interface {
     private final String name;
     private final String description;
 
-    public Commands(String name, String description) {
+    public Commands( String name, String description ) {
         this.name = name;
         this.description = description;
     }

@@ -1,5 +1,6 @@
 package utility;
 import Data.*;
+import Manager.DragonManager;
 
 import java.lang.IllegalArgumentException;
 import java.util.*;
@@ -9,7 +10,6 @@ import java.util.InputMismatchException;
  * This is class for asking user (or for inputting file) about the properties of dragon
  */
 public class Asker {
-    public static Set<Long> idSet = new HashSet<>();
     private static String[] infoFromFile;
 
 
@@ -32,7 +32,7 @@ public class Asker {
             long maxValue = 1000;
             long minValue = 0;
             id = minValue + (long) ( random.nextDouble() * ( maxValue - minValue ) );
-        } while ( id <= 0 || checkId(id) );
+        } while ( id <= 0 || DragonManager.checkExistById(id) );
         return id;
     }
 

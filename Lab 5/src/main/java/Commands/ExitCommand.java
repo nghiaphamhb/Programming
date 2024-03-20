@@ -3,6 +3,9 @@ package Commands;
 import utility.Console;
 import Exception.*;
 
+/**
+ * Thís command close the program
+ */
 public class ExitCommand extends Commands {
     public ExitCommand() {
         super("exit", "завершить программу (без сохранения в файл)");
@@ -11,10 +14,11 @@ public class ExitCommand extends Commands {
     @Override
     public boolean execute(String[] argument) {
         try {
-            if (!argument[1].isEmpty()) throw new WrongAmountOfElementsException();
+            if (!argument[1].isEmpty()) throw new IllegalArgumentException();
             Console.println("Программ закончен.");
             return true;
-        } catch (WrongAmountOfElementsException exception) {
+        } catch (IllegalArgumentException exception) {
+            Console.printError("Неправильное количество аргументов!");
             Console.println("Использование: '" + getName() + "'");
         }
         return false;

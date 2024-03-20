@@ -5,6 +5,9 @@ import Manager.*;
 import utility.*;
 import Exception.*;
 
+/**
+ * This command updates information of dragon by its ID
+ */
 
 public class UpdateIdCommand extends Commands {
     private DragonManager dragonManager;
@@ -18,25 +21,23 @@ public class UpdateIdCommand extends Commands {
         try{
             if ( argument[1].isEmpty() ) throw new IllegalArgumentException();
 
-            long idToUpdate = Long.valueOf( argument[1] );
-            boolean isFind = false;
+            long id = Long.valueOf( argument[1] );
 
-                if ( dragonManager.checkExistById(idToUpdate) ) {
-                    isFind = true;
-                    Dragon newDragon = Asker.buildDragon();
-                    newDragon.setId( idToUpdate );
-                    dragonManager.getCollection().remove( dragonManager.getById(idToUpdate) );
-                    dragonManager.getCollection().add( newDragon );
-                }
+            if ( !DragonManager.checkExistById(id) ) throw new IDIsNotFoundException();
+            dragonManager.getCollection().remove( dragonManager.getById(id) );
 
+            Dragon newDragon = Asker.buildDragon();
+            newDragon.setId(id);
+            dragonManager.getCollection().add( newDragon );
 
-            if ( !isFind ) throw new IDIsNotFoundException();
             Console.println( "Дракон успешно обновлен!" );
+            return true;
         } catch ( IllegalArgumentException e ) {
+            Console.printError("Неправильное количество аргументов!");
             Console.println( "Использование: " + getName() + "{id}" );
         } catch ( IDIsNotFoundException e ) {
             Console.printError( "Этот ID не существует!" );
         }
-        return true;
+        return false;
     }
 }

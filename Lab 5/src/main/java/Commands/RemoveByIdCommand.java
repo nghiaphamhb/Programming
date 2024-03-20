@@ -5,9 +5,9 @@ import Manager.DragonManager;
 import Exception.*;
 import utility.Console;
 
-
-
-
+/**
+ * This command removes a dragon by its ID
+ */
 public class RemoveByIdCommand extends Commands {
     private DragonManager dragonManager;
     public RemoveByIdCommand(DragonManager dragonManager) {
@@ -19,13 +19,17 @@ public class RemoveByIdCommand extends Commands {
     @Override
     public boolean execute(String[] argument) {
         try{
-            if (argument[1].isEmpty()) throw new WrongAmountOfElementsException();
-            Dragon dragonHasId = filterById(argument[1]);
-            if (dragonHasId == null) throw new NullPointerException();
-            dragonManager.removeFromCollection( dragonHasId );
-            Console.println("Дракон имеющий id " + dragonHasId.getId() + " успешно обезврежен!");
+            if (argument[1].isEmpty()) throw new IllegalArgumentException();
+
+            long id = Long.valueOf(argument[1]);
+            Dragon dragon = dragonManager.getById(id);
+
+            if (dragon == null) throw new NullPointerException();
+
+            dragonManager.removeFromCollection( dragon );
+            Console.println("Дракон имеющий id " + id + " успешно обезврежен!");
             return true;
-        } catch (WrongAmountOfElementsException e){
+        } catch (IllegalArgumentException e){
             Console.printError("Неправильное количество аргументов!");
             Console.println("Использование: '" + getName() + " [id]");
         } catch (NullPointerException e){
@@ -33,13 +37,5 @@ public class RemoveByIdCommand extends Commands {
         }
         return false;
     }
-    private Dragon filterById (String strIdToFind){
-        Dragon dragonToRemove = null;
-        long idToFind = Long.valueOf(strIdToFind);
-        for (Dragon d : dragonManager.getCollection()){
-            if (d.getId().equals(idToFind)) dragonToRemove = d;
-        }
-        return dragonToRemove;
 
-    }
 }

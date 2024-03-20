@@ -9,88 +9,153 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * This is a class for managing the collection of dragons: There are collection of dragons, time they were created and saved
+ * This is a class for managing the collection of dragons: There are collection of dragons, time they were created and saved, list of id's dragon
  */
 //t
 public class DragonManager {
     private Set<Dragon> collection;
-    private final LocalDateTime createTime;
-    private LocalDateTime lastSaveTime;
+    private LocalDateTime createTime;
+    private LocalDateTime saveTime; //may be changed
+    private static final Set<Long> idList = new HashSet<>();   //to control the uniqueness of thís attribute
 
     public DragonManager() {
         collection  = new HashSet<>();
         createTime = LocalDateTime.now();
-        lastSaveTime = null;
+        saveTime = null;
     }
 
+    /**
+     * Check if this id is existed
+     * @param id id, which is checked
+     * @return it exist (yes/no)
+     */
+    public static boolean checkExistById (long id){
+        for ( Long i : idList ){
+            if ( i == id ) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Get dragon by its id
+     * @param id id's dragon
+     * @return dragon
+     */
+    public Dragon getById( long id ){
+        for ( Dragon dragon : collection){
+            if ( checkExistById(id) ) return dragon;
+        }
+        return null;
+    }
+    /**
+     * Get the collection of dragons
+     * @return collection of dragons
+     */
     public Set<Dragon> getCollection (){
         return collection;
     }
+
+    /**
+     * Get the time when collection was created
+     * @return time
+     */
     public LocalDateTime getCreateTime() {
         return createTime;
     }
-    public LocalDateTime getLastSaveTime() {
-        return lastSaveTime;
+
+    /**
+     * Get the time when collection was saved
+     * @return time
+     */
+    public LocalDateTime getSaveTime() {
+        return saveTime;
     }
 
+    /**
+     * Get type of data in the collection
+     * @return type of data
+     */
     public String getCollectionType (){
         return collection.getClass().getName();
     }
+
+    /**
+     * Get size of the collection
+     * @return size of collection
+     */
     public int getCollectionSize () {
         return collection.size();
     }
+
+    /**
+     * Get the first dragon
+     * @return first dragon
+     */
     public Dragon getFirstDragon () {
         Iterator<Dragon> iterator = collection.iterator();
         Dragon firstDragon = null;
         if ( iterator.hasNext() ) firstDragon = iterator.next();
         return firstDragon;
     }
+
+    /**
+     * Get the last dragon
+     * @return last dragon
+     */
     public Dragon getLastDragon () {
         Iterator<Dragon> iterator = collection.iterator();
         Dragon lastDragon = null;
         while( iterator.hasNext() ) lastDragon = iterator.next();
         return lastDragon;
     }
-    public Dragon getById (long id){
-        for ( Dragon d : collection){
-            if ( checkExistById(id) ) return d;
-        }
-        return null;
+
+    /**
+     * Add dragon into collection
+     * @param dragon added dragon
+     */
+    public void addToCollection( Dragon dragon ) {
+        collection.add( dragon );
+        idList.add( dragon.getId() );
+        saveCollection();
     }
-    public boolean checkExistById (long id){
-        for ( Dragon d : collection){
-            if ( d.getId() == id ) return true;
-        }
-        return false;
+
+    /**
+     * Remove dragon from collection
+     * @param dragon removed dragon
+     */
+    public void removeFromCollection(Dragon dragon){
+        collection.remove( dragon );
+        idList.remove( dragon.getId() );
+        saveCollection();
     }
-    public Dragon getByValue (Dragon dragonToFind){
-        for ( Dragon d : collection ){
-            if ( d.equals(dragonToFind) ) return  d;
-        }
-        return null;
-    }
-    public void addToCollection(Dragon element){
-        collection.add(element);
-        Dragon.toNextId();
-    }
-    public void removeFromCollection (Dragon element){
-        collection.remove(element);
-    }
+
+    /**
+     * Clear collection
+     */
     public void clearCollection(){
         collection.clear();
+        idList.clear();
+        saveCollection();
     }
+
+    /**
+     * Save collection (renew saved time)
+     */
     public void saveCollection(){
-        lastSaveTime = LocalDateTime.now();
+        saveTime = LocalDateTime.now();
     }
 
-
+    /**
+     * Print in turn objects in the collection
+     * @return string for printing
+     */
     @Override
     public String toString() {
         if ( collection.isEmpty() ) return "Коллекция пуста!";
         StringBuilder info = new StringBuilder();
-        for (Dragon d : collection){
-            info.append(d);   //Java tự động gọi toString() của Dragon để chuyển đổi
-            if ( !d.equals(getLastDragon())) info.append("\n");
+        for ( Dragon d : collection ) {
+            info.append( d );
+            if ( !d.equals( getLastDragon() ) ) info.append("\n");
         }
         return info.toString();
     }

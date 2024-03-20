@@ -24,6 +24,14 @@ public class CommandManager {
     }
 
     /**
+     * Get set of commands
+     * @return set of commands
+     */
+    public Set<Commands> getCommands() {
+        return commands;
+    }
+
+    /**
      * Get history of used commands
      * @return history of used commands
      */
