@@ -2,10 +2,13 @@ package utility;
 
 import Manager.*;
 import Commands.*;
-
+import Exception.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * This class manages the program activities
+ */
 public class Runner {
     public enum ExitCode {
         RUN,
@@ -14,125 +17,19 @@ public class Runner {
     }
     private final CommandManager commandManager;
     private DragonManager dragonManager;
+    private List<String> scriptList; //List of scripts used
+
 
     public Runner(CommandManager commandManager, DragonManager dragonManager) {
         this.commandManager = commandManager;
         this.dragonManager = dragonManager;
+        this.scriptList  = new ArrayList<>();
         CommandRegister();
     }
 
-    public void start(){
-        ExitCode commandStatus = null;
-        String[] command;
-        do {
-            try {
-                Console.ps1();
-                command = Input.getScanner().nextLine().trim().split(" ", 2);
-                if (command.length > 1) command[1] = command[1].trim();
-                // có thể có nhiều hơn 1 dấu cách ở giữa
-//                Hàm trim() trong Java là một phương thức của lớp String được sử dụng để loại bỏ
-//                các ký tự trắng (bao gồm cả dấu cách, tab và xuống dòng) từ cả hai đầu của một chuỗi.
-//                Hàm này không chỉ loại bỏ các ký tự trắng ở đầu và cuối chuỗi mà còn giữ lại các ký
-//                tự trắng ở giữa chuỗi.
-                commandStatus = runCommand(command);
-            } catch (NoSuchElementException exception) {
-                Console.printError("Эта команда неправильна!");
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } while (commandStatus != ExitCode.EXIT);
-
-// neu khong nhap doi so thi ctrinh ko chay
-
-    }
-    private ExitCode runCommand (String[] command) throws IOException {  //to update status of command
-        if (commandManager.activateCommand(command)){
-            switch (command[0]){
-                case "execute_script":
-                    if (command.length ==1) return ExitCode.ERROR;
-                    else return scriptMode(command[1]);
-                case "exit":
-                    if (command.length == 1) return ExitCode.EXIT;
-                    else return ExitCode.ERROR;
-            }
-        }
-        else{
-            Console.printError("Команда " + command[0] + " не существует. Наберите 'help' для справки");
-            return ExitCode.ERROR;
-        }
-        return ExitCode.RUN;
-    }
-    private ExitCode scriptMode (String filePath) throws IOException {
-        String[] command;
-        String[] commandLines;
-        ExitCode commandStatus;
-        List<String> scriptList = new ArrayList<>(); //Список используемых скриптов
-        List<String> commandList = new ArrayList<>();
-
-        Input.setFileMode();
-        try {
-            scriptList.add(filePath);
-            if (!new File(filePath).exists()) {
-                filePath = "src/main/resources/" + filePath;
-            }
-
-            BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(filePath));
-            StringBuilder content = new StringBuilder();
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                content.append(new String(buffer, 0, bytesRead));
-            }
-            // Phân tách chuỗi thành các phần tử riêng biệt
-            commandLines = content.toString().split("\\r?\\n");
-
-            // Xóa các dòng trống và thêm các dòng không trống vào ArrayList
-            for (String commandLine : commandLines) {
-                if (!commandLine.trim().isEmpty()) { // Kiểm tra xem dòng có rỗng không
-                    commandList.add(commandLine);
-                }
-            }
-
-
-
-            for (int i = 0; i < commandList.size(); i++) {
-                command = (commandList.get(i).trim() + " ").split(" ", 2);
-
-                Console.ps1();
-                Console.println(commandList.get(i));
-
-                if (!command[1].isEmpty()) {
-                    command[1] = command[1].trim();
-                }
-
-                if ((command[0].equals("add") || (command[0].equals("add_if_max") || (command[0].equals("add_if_min")) && command[1].isEmpty()))) {
-                    String[] fileScanner = new String[]{
-                            commandList.get(i + 1),
-                            commandList.get(i + 2),
-                            commandList.get(i + 3),
-                            commandList.get(i + 4),
-                            commandList.get(i + 5),
-                            commandList.get(i + 6),
-                            commandList.get(i + 7),
-                            commandList.get(i + 8)
-                    };
-                    i += 8;
-                    Asker.getInfoFromFile(fileScanner);
-                }
-
-                commandStatus = runCommand(command);
-            }
-
-
-        }catch (FileNotFoundException e){
-            Console.printError("Этот файл не существует.");        }
-        Input.setUserMode();
-        return ExitCode.RUN;
-}
-
+    /**
+     * Register all commands
+     */
     private void CommandRegister (){
         this.commandManager.register( new AddCommand(dragonManager) );
         this.commandManager.register( new AddIfMaxCommand(dragonManager) );
@@ -151,4 +48,136 @@ public class Runner {
         this.commandManager.register( new ShowCommand(dragonManager) );
         this.commandManager.register( new UpdateIdCommand(dragonManager) );
     }
+
+    /**
+     * Connect to file -> Get information from file -> Process information -> Run commands
+     * @param filePath path to file script
+     * @return status of activity (mode script run complete-fully or not)
+     */
+    private ExitCode scriptMode (String filePath)  {
+        String[] commandLines;
+        List<String> commandList = new ArrayList<>();
+        String[] command;
+        ExitCode commandStatus = null;
+
+        Input.setFileMode();
+        try {
+            //try to connect to file
+            scriptList.add(filePath);
+            if (!new File(filePath).exists()) {
+                filePath = "src/main/resources/" + filePath;
+            }
+
+            //try to get string from file
+            BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(filePath));
+            StringBuilder content = new StringBuilder();
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                content.append(new String(buffer, 0, bytesRead));
+            }
+
+            // Separate the string into command lines
+            commandLines = content.toString().split("\\r?\\n");
+//            commandLines = content.toString().split("\n");
+
+
+            // Make list of command lines without empty lines
+            for (String commandLine : commandLines) {
+                if (!commandLine.trim().isEmpty()) {
+                    commandList.add(commandLine);
+                }
+            }
+
+            //Separate every command lines to 2 parts: keyword + argument
+            for (int i = 0; i < commandList.size(); i++) {
+                command = (commandList.get(i).trim() + " ").split(" ", 2);
+
+                Console.ps1();
+                Console.println( commandList.get(i) );  // "> keyword"
+
+                if (!command[1].isEmpty()) {
+                    command[1] = command[1].trim();   // argument
+                }
+
+                // Get information from file to make new dragon
+                if ((command[0].equals("add") || (command[0].equals("add_if_max") || (command[0].equals("add_if_min")) && command[1].isEmpty()))) {
+                    String[] fileScanner = new String[]{
+                            commandList.get(i + 1),
+                            commandList.get(i + 2),
+                            commandList.get(i + 3),
+                            commandList.get(i + 4),
+                            commandList.get(i + 5),
+                            commandList.get(i + 6),
+                            commandList.get(i + 7),
+                            commandList.get(i + 8)
+                    };
+                    i += 8;
+                    Asker.getInfoFromFile(fileScanner);
+                }
+
+                if ( command[0].equals("execute_script") ) {
+                    for ( String script : scriptList ) {
+                        if ( command[1].equals(script) ) throw new ScriptRecursionException();
+                    }
+                }
+                commandStatus = runCommand(command);
+            }
+        } catch (IOException e) {
+            Console.printError("Этот файл не существует.");
+        } catch (ScriptRecursionException e) {
+            Console.printError("Скрипты не могут вызываться рекурсивно!");
+        }
+
+        Input.setUserMode();
+        return commandStatus;
+    }
+
+    /**
+     * Activate command and update status of program
+     * @param command command want to be run
+     * @return status of program (RUN/ERROR/EXIT)
+     * @throws CommandIsNotFoundException didn't found the command
+     */
+    private ExitCode runCommand (String[] command)  {
+        try {
+            if ( !commandManager.activateCommand(command) ) throw new CommandIsNotFoundException();
+            switch (command[0]){
+                case "exit":
+                    if (command.length == 1) return ExitCode.EXIT;
+                    else return ExitCode.ERROR;
+                case "execute_script":
+                    if (command.length == 1) return ExitCode.ERROR;
+                    else return scriptMode(command[1]);
+            }
+            return ExitCode.RUN;
+        } catch (CommandIsNotFoundException e) {
+            Console.printError("Команда " + command[0] + " не существует. Наберите 'help' для справки");
+        }
+        return ExitCode.ERROR;
+    }
+
+    /**
+     * Automatically start and run the program
+     */
+    public void start(){
+        ExitCode commandStatus = null;
+        String[] command;
+        do {
+            try {
+                Console.ps1();
+                command = Input.getScanner().nextLine().trim().split(" ", 2);
+                if ( command[0].isEmpty() ) throw new NoSuchElementException();
+                if (command.length > 1) command[1] = command[1].trim();
+
+                commandStatus = runCommand(command);
+            } catch (NoSuchElementException exception) {
+                Console.print("");
+            } catch (CommandIsNotFoundException e) {
+                Console.printError("Эта команда не существует. Наберите 'help' для справки");
+            }
+        } while (commandStatus != ExitCode.EXIT);
+    }
+
 }
