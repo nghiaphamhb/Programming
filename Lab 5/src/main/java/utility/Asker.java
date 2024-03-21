@@ -65,7 +65,7 @@ public class Asker {
      */
     public static Integer askAbs(){
         Integer abs = null;
-        Console.println("+Абсцисса дракона:");
+        Console.println("+ Абсцисса дракона:");
         do {
             try {
                 Console.ps2();
@@ -89,7 +89,7 @@ public class Asker {
      */
     public static Long askOrd(){
         Long ord = null;
-        Console.println("+Ордината дракона:");
+        Console.println("+ Ордината дракона:");
 
         do {
             try {

@@ -44,7 +44,7 @@ public class Runner {
         this.commandManager.register( new PrintDescendingCommand(dragonManager) );
         this.commandManager.register( new PrintFieldDescendingSpeakingCommand(dragonManager) );
         this.commandManager.register( new RemoveByIdCommand(dragonManager) );
-        this.commandManager.register( new SaveCommand() );
+        this.commandManager.register( new SaveCommand(dragonManager) );
         this.commandManager.register( new ShowCommand(dragonManager) );
         this.commandManager.register( new UpdateIdCommand(dragonManager) );
     }

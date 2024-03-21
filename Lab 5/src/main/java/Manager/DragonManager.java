@@ -14,14 +14,16 @@ import java.util.Set;
 //t
 public class DragonManager {
     private Set<Dragon> collection;
+    private DataManager dataManager;
     private LocalDateTime createTime;
     private LocalDateTime saveTime; //may be changed
     private static final Set<Long> idList = new HashSet<>();   //to control the uniqueness of thís attribute
 
-    public DragonManager() {
+    public DragonManager(DataManager dataManager) {
         collection  = new HashSet<>();
         createTime = LocalDateTime.now();
         saveTime = null;
+        this.dataManager = dataManager;
     }
 
     /**
@@ -139,9 +141,10 @@ public class DragonManager {
     }
 
     /**
-     * Save collection (renew saved time)
+     * Save collection into file JSON (renew saved time)
      */
     public void saveCollection(){
+        dataManager.writeCollection(collection);
         saveTime = LocalDateTime.now();
     }
 
