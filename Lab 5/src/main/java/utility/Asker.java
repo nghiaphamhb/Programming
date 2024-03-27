@@ -10,8 +10,16 @@ import java.util.InputMismatchException;
  * This is class for asking user (or for inputting file) about the properties of dragon
  */
 public class Asker {
+    private static Scanner scanner;
     private static String[] infoFromFile;
 
+    /**
+     * Turn on the scanner
+     * @return scanner to import data
+     */
+    public static Scanner getScanner() {
+        return new Scanner( System.in );
+    }
 
     /**
      * Get new information's dragon from file
@@ -46,11 +54,11 @@ public class Asker {
         do {
             try {
                 Console.ps2();
-                if ( Input.isFileMode() ) {
+                if ( InputMode.isFileMode() ) {
                     name = infoFromFile[0];
                     Console.println( name );
                 } else {
-                    name = Input.getScanner().nextLine();
+                    name = getScanner().nextLine();
                 }
             } catch ( InputMismatchException e ){
                 Console.printError("Введен неверный тип данных.");
@@ -70,11 +78,11 @@ public class Asker {
             try {
                 Console.ps2();
 
-                if ( Input.isFileMode() ){
+                if ( InputMode.isFileMode() ){
                     abs = Integer.valueOf( infoFromFile[1] );
                     Console.println( abs );
                 } else {
-                    abs = Input.getScanner().nextInt();
+                    abs = getScanner().nextInt();
                 }
             } catch ( InputMismatchException e ){
                 Console.printError("Введен неверный тип данных.");
@@ -95,11 +103,11 @@ public class Asker {
             try {
                 Console.ps2();
 
-                if ( Input.isFileMode() ) {
+                if ( InputMode.isFileMode() ) {
                     ord = Long.valueOf( infoFromFile[2] );
                     Console.println( ord );
                 } else {
-                    ord = Input.getScanner().nextLong();
+                    ord = getScanner().nextLong();
 
                     }
                 } catch ( InputMismatchException e ) {
@@ -130,11 +138,11 @@ public class Asker {
             try {
                 Console.ps2();
 
-                if ( Input.isFileMode() ){
+                if ( InputMode.isFileMode() ){
                     age = Integer.valueOf( infoFromFile[3] );
                     Console.println( age );
                 } else {
-                    age = Input.getScanner().nextInt();
+                    age = getScanner().nextInt();
                     if (age <= 0) throw new IllegalArgumentException();
                 }
             } catch ( InputMismatchException e ) {
@@ -158,11 +166,11 @@ public class Asker {
             try {
                 Console.ps2();
 
-                if ( Input.isFileMode() ) {
+                if ( InputMode.isFileMode() ) {
                     weight = Long.valueOf( infoFromFile[4] );
                     Console.println( weight );
                 } else {
-                    weight = Input.getScanner().nextLong();
+                    weight = getScanner().nextLong();
                     if ( weight <= 0 ) throw new IllegalArgumentException();
                 }
             } catch ( InputMismatchException e ) {
@@ -186,11 +194,11 @@ public class Asker {
             try {
                 Console.ps2();
 
-                if ( Input.isFileMode() ) {
+                if ( InputMode.isFileMode() ) {
                     canSpeak = infoFromFile[5];
                     Console.println( canSpeak );
                 } else {
-                    canSpeak = Input.getScanner().nextLine().toLowerCase();
+                    canSpeak = getScanner().nextLine().toLowerCase();
                 }
                 if ( !canSpeak.equals("true") && !canSpeak.equals("false") ) throw new IllegalArgumentException();
             } catch ( IllegalArgumentException e ) {
@@ -214,11 +222,11 @@ public class Asker {
             try{
                 Console.ps2();
 
-                if ( Input.isFileMode() ){
+                if ( InputMode.isFileMode() ){
                     strColor = infoFromFile[6];
                     Console.println( strColor );
                 } else {
-                    strColor = Input.getScanner().nextLine();
+                    strColor = getScanner().nextLine();
                 }
                 color = Color.valueOf( strColor.toUpperCase() );
             } catch ( IllegalArgumentException e ){
@@ -239,11 +247,11 @@ public class Asker {
             try {
                 Console.ps2();
 
-                if (Input.isFileMode()) {
+                if (InputMode.isFileMode()) {
                     eyes = Long.valueOf(infoFromFile[7]);
                     Console.println(eyes);
                 } else {
-                    eyes = Input.getScanner().nextLong();
+                    eyes = getScanner().nextLong();
                     if (eyes <= 0) throw new IllegalArgumentException();
                 }
             } catch ( InputMismatchException e ) {

@@ -1,7 +1,7 @@
 package utility;
 
 /**
- * This is the class to display on the terminal to the user
+ * Display to the terminal's screen
  */
 public class Console {
     private static final String PS1 = "$ ";

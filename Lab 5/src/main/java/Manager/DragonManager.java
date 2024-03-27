@@ -1,7 +1,8 @@
 package Manager;
 
 import Data.Dragon;
-import utility.Asker;
+import Manager.FileManager.FileManager;
+import Manager.FileManager.FileReader;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -14,16 +15,16 @@ import java.util.Set;
 //t
 public class DragonManager {
     private Set<Dragon> collection;
-    private DataManager dataManager;
+    private FileManager fileManager;
     private LocalDateTime createTime;
     private LocalDateTime saveTime; //may be changed
     private static final Set<Long> idList = new HashSet<>();   //to control the uniqueness of thís attribute
 
-    public DragonManager(DataManager dataManager) {
+    public DragonManager(FileManager fileManager) {
         collection  = new HashSet<>();
         createTime = LocalDateTime.now();
         saveTime = null;
-        this.dataManager = dataManager;
+        this.fileManager = fileManager;
     }
 
     /**
@@ -144,7 +145,7 @@ public class DragonManager {
      * Save collection into file JSON (renew saved time)
      */
     public void saveCollection(){
-        dataManager.writeCollection(collection);
+        fileManager.write(collection);
         saveTime = LocalDateTime.now();
     }
 

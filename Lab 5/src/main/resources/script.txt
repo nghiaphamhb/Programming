@@ -11,7 +11,7 @@ true
 yellow
 2
 
-add
+add_if_max
 WaterDragon
 100
 50
