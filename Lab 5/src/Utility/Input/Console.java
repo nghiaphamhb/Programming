@@ -130,7 +130,10 @@ public class Console implements Input {
     @Override
     public void inputColor(){
         Color color = null;
-        Display.println("Какого цвета дракон? (green/yellow/white)");
+        Display.println("Какого цвета дракон?");
+        Display.printTable("green", Color.GREEN);
+        Display.printTable("yellow", Color.YELLOW);
+        Display.printTable("white", Color.WHITE);
         do {
             try{
                 Display.ps2();
