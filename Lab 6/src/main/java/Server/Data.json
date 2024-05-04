@@ -1,0 +1,110 @@
+[
+  {
+    "id": 857,
+    "name": "WaterDragon",
+    "coordinates": {
+      "x": 100,
+      "y": 50
+    },
+    "creationDate": "2024-04-02T17:28:15.0290695",
+    "age": 150,
+    "weight": 150,
+    "speaking": false,
+    "color": "GREEN",
+    "head": {
+      "eyesCount": 4
+    }
+  },
+  {
+    "id": 601,
+    "name": "hadfl",
+    "coordinates": {
+      "x": 23,
+      "y": 223
+    },
+    "creationDate": "2024-04-10T22:58:14.8240902",
+    "age": 223,
+    "weight": 32,
+    "speaking": true,
+    "color": "GREEN",
+    "head": null
+  },
+  {
+    "id": 956,
+    "name": "StoneDragon",
+    "coordinates": {
+      "x": 140,
+      "y": 60
+    },
+    "creationDate": "2024-04-02T17:28:15.0314884",
+    "age": 350,
+    "weight": null,
+    "speaking": false,
+    "color": "GREEN",
+    "head": {
+      "eyesCount": 12
+    }
+  },
+  {
+    "id": 937,
+    "name": "hello",
+    "coordinates": {
+      "x": 32,
+      "y": 32
+    },
+    "creationDate": "2024-05-04T14:36:46.4251899",
+    "age": 32,
+    "weight": 32,
+    "speaking": true,
+    "color": "GREEN",
+    "head": {
+      "eyesCount": 32
+    }
+  },
+  {
+    "id": 241,
+    "name": "dfa",
+    "coordinates": {
+      "x": 12,
+      "y": 23
+    },
+    "creationDate": "2024-04-25T23:23:13.898737",
+    "age": 32,
+    "weight": 32,
+    "speaking": false,
+    "color": "GREEN",
+    "head": null
+  },
+  {
+    "id": 983,
+    "name": "test",
+    "coordinates": {
+      "x": 42,
+      "y": 32
+    },
+    "creationDate": "2024-04-02T17:29:46.640766",
+    "age": 33,
+    "weight": null,
+    "speaking": true,
+    "color": "WHITE",
+    "head": {
+      "eyesCount": 32
+    }
+  },
+  {
+    "id": 335,
+    "name": "FireDragon",
+    "coordinates": {
+      "x": 10,
+      "y": 40
+    },
+    "creationDate": "2024-04-02T17:28:15.0153068",
+    "age": 100,
+    "weight": 120,
+    "speaking": true,
+    "color": null,
+    "head": {
+      "eyesCount": 2
+    }
+  }
+]
