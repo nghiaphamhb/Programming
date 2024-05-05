@@ -6,7 +6,7 @@ import Client.Utility.Display;
 import Server.Manager.DragonCollection;
 
 /**
- * Команда для уборки данной коллекции
+ * The team for cleaning this collection
  */
 public class ClearCommand extends Commands {
     private final DragonCollection dragonCollection;
@@ -19,8 +19,7 @@ public class ClearCommand extends Commands {
     public Response execute(Request request) {
         try {
             dragonCollection.clearCollection();
-            Display.println("Collection cleared!");
-            return new Response(null);
+            return new Response("Collection cleared!");
         } catch (Exception exception) {
             return new Response(exception.toString());
         }

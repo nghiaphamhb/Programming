@@ -42,6 +42,10 @@ public class Request implements Serializable {
         return argument;
     }
 
+    public Object getBonus() {
+        return bonus;
+    }
+
     @Override
     public String toString() {
         return "Request \"" + nameCommand + "[" + (argument!=null? argument.toString(): " ") + "][" + (bonus!=null? argument.toString():" ") + "]\"";

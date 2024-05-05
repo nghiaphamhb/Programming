@@ -5,7 +5,7 @@ import Common.Network.Response;
 import Server.Manager.DragonCollection;
 
 /**
- * Сохранить данную коллекцию в файл
+ * Save collection into json file
  */
 public class SaveCommand extends Commands {
     private final DragonCollection dragonCollection;

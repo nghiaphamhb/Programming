@@ -20,6 +20,7 @@ public class SvHandler {
     public Response handle(Request request) {
         Commands command = commandManager.getByName(request.getNameCommand());
         if (command == null) return new Response("That command is not existed.");
+        commandManager.addToHistory(command.getName());
         return command.execute(request);
     }
 

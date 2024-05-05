@@ -5,12 +5,19 @@ import Client.Utility.Display;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Инструмент для чтения скрипта
  */
 public class ScriptReader {
+    private static Logger logger;
     private static BufferedInputStream inputStream;
+
+    public static void setLogger(Logger logger) {
+        ScriptReader.logger = logger;
+    }
 
     /**
      * Подключить к скрипту
@@ -19,13 +26,13 @@ public class ScriptReader {
     public static void setInputStream(String filePath) {
         try{
             if (!new File(filePath).exists()) {
-                filePath = "src/main/resources/" + filePath;
+                filePath = "src/main/java/Client/" + filePath;
             }
 
             FileInputStream fileInputStream = new FileInputStream(filePath);
             inputStream = new BufferedInputStream( fileInputStream );
         } catch (FileNotFoundException e) {
-            Display.printError("Этот файл не существует.");
+            logger.log(Level.WARNING,"File " + filePath + " does not exist." );
         }
     }
 
@@ -43,7 +50,7 @@ public class ScriptReader {
                 content.append(new String(buffer, 0, bytesRead));
             }
         } catch ( IOException e ) {
-            Display.printError("Содержание файла пусто!");
+            logger.log(Level.WARNING,"The contents of the file are empty!" );
         }
         return content;
     }
@@ -70,7 +77,7 @@ public class ScriptReader {
             }
             inputStream.close();
         } catch (IOException e) {
-            Display.printError("Ошибка закрытия резьбы");
+            logger.log(Level.WARNING,"Thread closing error" );
         }
 
         return scriptLines;

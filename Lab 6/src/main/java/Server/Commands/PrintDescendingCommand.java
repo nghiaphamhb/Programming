@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Команда для показания списки драконов со своей информацией в порядке убывания возраста
+ *The team for the reading lists the dragons with their information in descending order of age
  */
 public class PrintDescendingCommand extends Commands {
     private DragonCollection dragonCollection;
 
     public PrintDescendingCommand(DragonCollection dragonCollection) {
-        super("print_descending", "display collection elements in descending order");
+        super("print_descending", "display collection elements in descending order of age");
         this.dragonCollection = dragonCollection;
     }
 
@@ -41,7 +41,7 @@ public class PrintDescendingCommand extends Commands {
     @Override
     public Response execute(Request request) {
         try{
-            StringBuilder message = new StringBuilder();
+            StringBuilder message = new StringBuilder("List of dragons descending by age: \n");
             List<Dragon> listByAge = sortDragonsByAge(dragonCollection);
             for (Dragon dragon : listByAge){
                 message.append(dragon).append("\n");

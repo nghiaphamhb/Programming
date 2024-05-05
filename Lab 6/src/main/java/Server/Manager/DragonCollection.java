@@ -1,14 +1,10 @@
 package Server.Manager;
 
 import Common.Data.Dragon;
-import Server.Utility.JsonUtility.JSONReader;
-import Server.Utility.JsonUtility.JSONWriter;
+
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * * Dragon Collection Management: Dragon collections + Collection initialization/save time
@@ -158,8 +154,16 @@ public class DragonCollection {
     @Override
     public String toString() {
         if ( collection.isEmpty() ) return "The collection is empty";
+
+        // Chuyển đổi HashSet thành ArrayList
+        List<Dragon> dragonList = new ArrayList<>(collection);
+
+        // Sắp xếp danh sách các con rồng theo tên
+        dragonList.sort(Comparator.comparing(Dragon::getName));
+
+
         StringBuilder info = new StringBuilder();
-        for ( Dragon d : collection ) {
+        for ( Dragon d : dragonList ) {
             info.append( d );
             if ( !d.equals( getLastDragon() ) ) info.append("\n");
         }

@@ -16,20 +16,6 @@
     }
   },
   {
-    "id": 601,
-    "name": "hadfl",
-    "coordinates": {
-      "x": 23,
-      "y": 223
-    },
-    "creationDate": "2024-04-10T22:58:14.8240902",
-    "age": 223,
-    "weight": 32,
-    "speaking": true,
-    "color": "GREEN",
-    "head": null
-  },
-  {
     "id": 956,
     "name": "StoneDragon",
     "coordinates": {
@@ -44,36 +30,6 @@
     "head": {
       "eyesCount": 12
     }
-  },
-  {
-    "id": 937,
-    "name": "hello",
-    "coordinates": {
-      "x": 32,
-      "y": 32
-    },
-    "creationDate": "2024-05-04T14:36:46.4251899",
-    "age": 32,
-    "weight": 32,
-    "speaking": true,
-    "color": "GREEN",
-    "head": {
-      "eyesCount": 32
-    }
-  },
-  {
-    "id": 241,
-    "name": "dfa",
-    "coordinates": {
-      "x": 12,
-      "y": 23
-    },
-    "creationDate": "2024-04-25T23:23:13.898737",
-    "age": 32,
-    "weight": 32,
-    "speaking": false,
-    "color": "GREEN",
-    "head": null
   },
   {
     "id": 983,
@@ -105,6 +61,68 @@
     "color": null,
     "head": {
       "eyesCount": 2
+    }
+  },
+  {
+    "id": 495,
+    "name": "FireDragon",
+    "coordinates": {
+      "x": 10,
+      "y": 40
+    },
+    "creationDate": "2024-05-05T16:12:02.4759674",
+    "age": 100,
+    "weight": 120,
+    "speaking": true,
+    "color": null,
+    "head": {
+      "eyesCount": 2
+    }
+  },
+  {
+    "id": 241,
+    "name": "dfa",
+    "coordinates": {
+      "x": 12,
+      "y": 23
+    },
+    "creationDate": "2024-04-25T23:23:13.898737",
+    "age": 32,
+    "weight": 32,
+    "speaking": false,
+    "color": "GREEN",
+    "head": null
+  },
+  {
+    "id": 937,
+    "name": "hello",
+    "coordinates": {
+      "x": 32,
+      "y": 32
+    },
+    "creationDate": "2024-05-04T14:36:46.4251899",
+    "age": 32,
+    "weight": 32,
+    "speaking": true,
+    "color": "GREEN",
+    "head": {
+      "eyesCount": 32
+    }
+  },
+  {
+    "id": 601,
+    "name": "tao da lam xong",
+    "coordinates": {
+      "x": 33,
+      "y": 3
+    },
+    "creationDate": "2024-05-05T16:22:51.0466039",
+    "age": 3,
+    "weight": 53,
+    "speaking": true,
+    "color": "WHITE",
+    "head": {
+      "eyesCount": 4343
     }
   }
 ]

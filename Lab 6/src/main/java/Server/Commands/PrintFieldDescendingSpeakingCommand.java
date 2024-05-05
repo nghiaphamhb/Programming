@@ -32,7 +32,7 @@ public class PrintFieldDescendingSpeakingCommand extends Commands {
     @Override
     public Response execute(Request request) {
         try{
-            StringBuilder messagge = new StringBuilder();
+            StringBuilder messagge = new StringBuilder("List of dragons descending by speaking field values:");
             List<Dragon> dragonCanSpeak = new ArrayList<>();
             List<Dragon> dragonCannotSpeak = new ArrayList<>();
 
@@ -43,7 +43,7 @@ public class PrintFieldDescendingSpeakingCommand extends Commands {
             dragonCanSpeak.addAll(dragonCannotSpeak);
 
             for ( Dragon dragon : dragonCanSpeak ) {
-                messagge.append("%s --> %s \n".formatted(dragon.getName(), dragon.getSpeaking()));
+                messagge.append("\n%s --> %s".formatted(dragon.getName(), dragon.getSpeaking()));
             }
 
             return new Response(messagge.toString());

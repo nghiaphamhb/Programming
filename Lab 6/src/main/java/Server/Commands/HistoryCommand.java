@@ -7,7 +7,7 @@ import Server.Manager.CommandManager;
 import java.util.ArrayDeque;
 
 /**
- * Команда для показания истории использованных команд (максимально только показать 13 последние команды)
+ * Command to display the history of used commands (maximum only show the last 13 commands)
  */
 public class HistoryCommand extends Commands {
     private final CommandManager commandManager;

@@ -55,9 +55,28 @@ public class CliHandler {
                 request = new Request(command[0], command[1]);
                 break;
             case "remove_by_id":
+                long idToRemove = 0;
+                if (!command[1].isEmpty()){
+                    try {
+                        idToRemove = Long.parseLong(command[1]);
+                    } catch (NumberFormatException e) {
+                        idToRemove = -1;
+                    }
+                };
+                request = new Request(command[0], idToRemove);
+                break;
             case "update_id":
-                Dragon updatedDragon = input.buildDragon();
-                request = new Request(command[0], Long.parseLong(command[1]), updatedDragon);
+                Dragon updatedDragon = null;
+                long idToUpdate = 0;
+                if (!command[1].isEmpty()){
+                    try {
+                        idToUpdate = Long.parseLong(command[1]);
+                        updatedDragon = input.buildDragon();
+                    } catch (NumberFormatException e) {
+                        idToUpdate = -1;
+                    }
+                };
+                request = new Request(command[0], idToUpdate, updatedDragon);
                 break;
             default:
                 request = new Request("NoSuchCommand");
@@ -66,5 +85,8 @@ public class CliHandler {
         return client.sendAndReceiveCommand(request);
     }
 
+    public void changeInput(Input newInput) {
+        this.input = newInput;
+    }
 
 }

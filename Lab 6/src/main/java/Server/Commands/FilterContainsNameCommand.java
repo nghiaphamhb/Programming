@@ -4,12 +4,13 @@ import Common.Data.Dragon;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.DragonCollection;
+import org.apache.commons.lang.NullArgumentException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Команда для показания информации у дракона, имя которого указано
+ * The command to read information from the dragon whose name is indicated
  */
 public class FilterContainsNameCommand extends Commands {
     private final DragonCollection dragonCollection;
@@ -38,17 +39,19 @@ public class FilterContainsNameCommand extends Commands {
             String nameValidatedDragon = (String) request.getArgumentCommand();
             List<Dragon> dragonHasName = filterByName(nameValidatedDragon);
 
-            if ( dragonHasName.isEmpty() ) {
+            if (nameValidatedDragon.isEmpty()) throw new Exception();
+
+            if (dragonHasName.isEmpty()) {
                 return new Response("The dragon with his name \'" + nameValidatedDragon + "\' is not existed");
             } else {
-                String message = "The collection has " + dragonHasName.size() + " dragons with name \'" + nameValidatedDragon + "\n";
+                StringBuilder message = new StringBuilder("The collection has " + dragonHasName.size() + " dragons with name \'" + nameValidatedDragon + "\n");
                 for ( Dragon d : dragonHasName ){
-                    message += (d.toString() + "\n");
+                    message.append(d.toString()).append("\n");
                 }
-                return new Response(message);
+                return new Response(message.toString());
             }
         } catch (Exception exception) {
-            return new Response(exception.toString());
+            return new Response("Syntax command is not correct. Usage \"" + getName() + " [name]\"");
         }
     }
 

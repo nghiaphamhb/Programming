@@ -12,6 +12,7 @@ import Common.Network.Response;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -21,9 +22,9 @@ public class CliRunner implements Runnable{
     private final Client client;
     private final Logger logger;
     private final CliHandler cliHandler;
-//    private HashSet<Commands> commands;
     private Input input;
     private List<String> scriptList; //List of scripts used
+    private boolean isScriptFound = true;
 
 
     public CliRunner(Client client, Logger logger) {
@@ -38,12 +39,17 @@ public class CliRunner implements Runnable{
     public void run(){
         ProgramStatus commandStatus = null;
         do {
+            isScriptFound = true;
             try {
                 Display.ps1();
                 Scanner scanner = new Scanner(System.in);
                 String[] command = argumentToCommand(scanner.nextLine());
 
                 commandStatus = updateProgramStatus(command);
+
+                if (!isScriptFound) {
+                    command[1] = "-1";
+                }
 
                 if (commandStatus != ProgramStatus.ERROR) {
                     Response response = cliHandler.handle(command);
@@ -56,22 +62,15 @@ public class CliRunner implements Runnable{
         } while (commandStatus != ProgramStatus.EXIT);
     }
 
-    /**
-     * Обновить статус программы после выполнения команды
-     * @param command commands
-     * @return статус программы
-     * @throws CommandIsNotFoundException не удалось найти команду
-     */
+
     private ProgramStatus updateProgramStatus (String[] command)  {
         try {
-//            if (getByName(command[0]) == null) throw new CommandIsNotFoundException();
             switch (command[0]){
                 case "exit":
                     if (command[1].isEmpty()) return ProgramStatus.EXIT;
                     else return ProgramStatus.ERROR;
                 case "execute_script":
-                    if (command[1].isEmpty()) return ProgramStatus.ERROR;
-                    else return runScript(command[1]);
+                    return runScript(command[1]);
             }
             return ProgramStatus.RUN;
         } catch (CommandIsNotFoundException e) {
@@ -85,12 +84,7 @@ public class CliRunner implements Runnable{
     }
 
 
-    /**
-     * Обработать входную символьную строку
-     * @param argument входная символьная строка
-     * @return команда
-     */
-    private String[] argumentToCommand(String argument){
+    private String[] argumentToCommand(String argument){   //đổi tên thành string to array
         String[] command = {};
         try{
             command = (argument.trim() + " ").split(" ", 2);
@@ -102,36 +96,38 @@ public class CliRunner implements Runnable{
         return command;
     }
 
-    /**
-     * Запустить скрипт (команда execute_script)
-     * @param filePath путь к скрипту
-     * @return статус программы
-     */
+
     private ProgramStatus runScript (String filePath)  {
         List<String> scriptLines;
         String[] command;
         ProgramStatus commandStatus = null;
 
+        if (filePath.isEmpty()) return ProgramStatus.RUN;
         try {
             //register file's path to history
             scriptList.add(filePath);
 
             //Connect to file and get lines from script file
+            ScriptReader.setLogger(logger);
             ScriptReader.setInputStream(filePath);
             scriptLines = ScriptReader.getScriptLines();
+
+
+            Response firstResponse = cliHandler.handle(new String[]{"execute_script", filePath});
+            Display.println(firstResponse);
 
             //Separate every command lines to 2 parts: keyword + argument
             for (int i = 0; i < scriptLines.size(); i++) {
                 command = argumentToCommand(scriptLines.get(i));
 
                 Display.ps1();
-                Display.println( scriptLines.get(i) );  // "> keyword"
+                Display.println(scriptLines.get(i));  // "> keyword"
 
                 // Get dragon's information from file
-                if ( Arrays.asList( "add", "add_if_max", "add_if_min" ).contains( command[0] ) && command[1].isEmpty() ) {
+                if (Arrays.asList( "add", "add_if_max", "add_if_min" ).contains( command[0] ) && command[1].isEmpty() ) {
                     String[] info = scriptLines.subList(i+1,  i+9).toArray( new String[8] );
-                    updateInput( new FileInput(info));
-                    i += 8;
+                    updateInput(new FileInput(info));
+                    i += 8; // lam ro vi sao la 8? dat 1 bien dai dien cho so 8
                 }
 
                 if ( command[0].equals("execute_script") ) {
@@ -140,22 +136,31 @@ public class CliRunner implements Runnable{
                     }
                 }
 
+
+
+                Response response = cliHandler.handle(command);
+                Display.println(response);
+
+
+
                 commandStatus = updateProgramStatus(command);
             }
         } catch (ScriptRecursionException e) {
-            Display.printError("Скрипты не могут вызываться рекурсивно!");
+            Display.printError("Scripts cannot be called recursively!");
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "Execution of the command failed.");
+            isScriptFound = false;
+            return ProgramStatus.RUN;
         }
-        updateInput( new Console() );
-        return commandStatus;
+        updateInput(new Console());
+        return ProgramStatus.ERROR;
     }
 
 
-    /**
-     * Обновить ввод
-     * @param input ввод
-     */
     private void updateInput(Input input) {
         this.input = input;
+        this.cliHandler.changeInput(input);
+
 //        this.commands.clear();
 //        this.commands = registerCommand();
     }

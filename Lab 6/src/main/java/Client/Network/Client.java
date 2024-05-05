@@ -41,7 +41,7 @@ public class Client {
 
         logger.log(Level.INFO, "Response from server: ");
         try {
-            Thread.sleep(1000); // Ngủ 1 giây (1000 miligiây)
+            Thread.sleep(500); // Ngủ 1 giây (1000 miligiây)
         } catch (InterruptedException e) {
             // Xử lý ngoại lệ nếu có
             Thread.currentThread().interrupt(); // Đánh dấu lại interrupt status

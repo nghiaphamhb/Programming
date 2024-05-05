@@ -1,10 +1,9 @@
 package Server.Manager;
-import Common.Network.Request;
 import Server.Commands.*;
 import java.util.*;
 
 /**
- * Управление командной коллекции: коллекция команд + история (список использованных команд)
+ * Command Collection management: command collection + history (list of commands used)
  */
 
 public class CommandManager {
