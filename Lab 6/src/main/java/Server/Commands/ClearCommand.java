@@ -1,12 +1,12 @@
 package Server.Commands;
 
+import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
-import Client.Utility.Display;
 import Server.Manager.DragonCollection;
 
 /**
- * The team for cleaning this collection
+ * The command for cleaning this collection
  */
 public class ClearCommand extends Commands {
     private final DragonCollection dragonCollection;
@@ -18,10 +18,11 @@ public class ClearCommand extends Commands {
     @Override
     public Response execute(Request request) {
         try {
+            if (request.getArgumentCommand() != null) throw new CommandSyntaxIsWrongException();
             dragonCollection.clearCollection();
             return new Response("Collection cleared!");
-        } catch (Exception exception) {
-            return new Response(exception.toString());
+        } catch (CommandSyntaxIsWrongException exception) {
+            return new Response("Syntax command is not correct. Usage: \"" + getName() + "\"");
         }
     }
 }

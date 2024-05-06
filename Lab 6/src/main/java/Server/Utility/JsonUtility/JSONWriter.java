@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Записать коллекцию в файл
+ * Write updated collection into json file
  */
 public class JSONWriter {
     protected final Gson gson = new GsonBuilder()
@@ -31,8 +31,8 @@ public class JSONWriter {
         }
     }
     /**
-     * Записать коллекцию в файл
-     * @param collection записанная в файл коллекция
+     * Write collection into file
+     * @param collection updated collection
      */
     public void writeIntoFile( Collection<Dragon> collection ) {
         try ( PrintWriter collectionPrintWriter = new PrintWriter( new File(fileName) )) {

@@ -3,51 +3,51 @@ package Client.Utility.DragonGenerator;
 import Common.Data.Dragon;
 
 /**
- * Получить информацию дракона
+ * Get Dragon information
  */
 public interface Input {
     /**
-     * Новый дракон получает свой идентификатор
+     * The new dragon gets its ID
      */
     void inputId();
 
     /**
-     * Новый дракон получает свое имя
+     * A new dragon gets its name
      */
     void inputName();
 
     /**
-     * Новый дракон получает свои координаты
+     * The new dragon gets its coordinates
      */
     void inputCoordinate();
 
     /**
-     * Новый дракон получает свой возраст
+     * The new dragon gets its age
      */
     void inputAge();
 
     /**
-     * Новый дракон получает свой вес
+     * The new dragon gets its weight
      */
     void inputWeight();
 
     /**
-     * Новый дракон получает свою способности говорить
+     * The new dragon gets his ability to speak
      */
     void inputSpeaking();
 
     /**
-     * Новый дракон получает свой цвет
+     * The new dragon gets its color
      */
     void inputColor();
 
     /**
-     * Новый дракон получает свою голову
+     * A new dragon gets its head
      */
     void inputDragonHead();
 
     /**
-     * Через проверку всех условий каждого атрибута у нового дракона, создать его
+     * After checking all the conditions of each attribute of the new dragon, create it
      */
     Dragon buildDragon();
 

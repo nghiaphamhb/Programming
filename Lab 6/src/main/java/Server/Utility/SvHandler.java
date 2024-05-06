@@ -6,7 +6,9 @@ import Server.Manager.CommandManager;
 import Server.Commands.*;
 import java.util.logging.Logger;
 
-//class dùng để xử lí Request và tạo Response
+/**
+ * The class is used to process requests and create responses
+ */
 public class SvHandler {
     private final CommandManager commandManager;
     private final Logger logger;
@@ -17,6 +19,12 @@ public class SvHandler {
         this.logger = logger;
     }
 
+
+    /**
+     * Process request (execute command and save it into history), after that make a response to client
+     * @param request request from client
+     * @return response to client
+     */
     public Response handle(Request request) {
         Commands command = commandManager.getByName(request.getNameCommand());
         if (command == null) return new Response("That command is not existed.");

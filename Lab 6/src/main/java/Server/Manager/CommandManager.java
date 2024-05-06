@@ -12,36 +12,36 @@ public class CommandManager {
 
     public CommandManager() {
         commands = new HashSet<>();
-        commandHistory = new ArrayDeque<>(13);
+        commandHistory = new ArrayDeque<>(13);  // only 13 used command in the history
     }
 
     /**
-     * Инициализировать новую команду
-     * @param command новая команда
+     * Initialize a new command into set of commands
+     * @param command new command
      */
     public void register( Commands command ) {
         commands.add(command);
     }
 
     /**
-     * Вернуть коллекцию команд
-     * @return коллекция команд
+     * Get collection of commands
+     * @return collection of commands
      */
     public Set<Commands> getCommands() {
         return commands;
     }
 
     /**
-     * Вернуть список использованных команд
-     * @return список использованных команд
+     * Get history of used command
+     * @return history of used command
      */
     public ArrayDeque<String> getCommandHistory() {
         return commandHistory;
     }
 
     /**
-     * Записать использованную команду в истории
-     * @param command использованная команда
+     * Record the command used in the history
+     * @param command used command
      */
     public void addToHistory( String command ) {
         if ( commandHistory.size() == 13 ) {
@@ -50,12 +50,11 @@ public class CommandManager {
         commandHistory.add(command);
     }
 
-
-
-    public void clear() {
-        commands.clear();
-    }
-
+    /**
+     * Get a command by his name
+     * @param name name of command
+     * @return command
+     */
     public Commands getByName(String name){
         for (Commands c : commands) {
             if ( c.getName().equals(name)) return c;

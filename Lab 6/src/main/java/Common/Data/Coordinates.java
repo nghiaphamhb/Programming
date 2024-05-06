@@ -3,27 +3,19 @@ package Common.Data;
 import java.io.Serializable;
 
 /**
- * Координаты у дракона
+ * Dragon coordinates
  */
 public class Coordinates implements Serializable {
-    private Integer x; //Максимальное значение поля: 830, Поле не может быть null
-    private Long y; //Поле не может быть null
+    private Integer x; //The maximum value of the field is 830, the field cannot be null
+    private Long y; //the field cannot be null
 
     public Coordinates(Integer x, Long y) {
         this.x = x;
         this.y = y;
     }
 
-    public Integer getX() {
-        return x;
-    }
-
     public void setX(Integer x) {
         this.x = x;
-    }
-
-    public Long getY() {
-        return y;
     }
 
     public void setY(Long y) {

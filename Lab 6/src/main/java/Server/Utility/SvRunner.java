@@ -20,14 +20,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Run app
+ * Class of operation of the program
  */
 public class SvRunner implements Runnable{
     private final CommandManager commandManager;
     private final DragonCollection dragonCollection;
     private final SvHandler svHandler;
-    private Input input;
-    private List<String> scriptList; //List of scripts used
     private Server server;
     private Logger logger;
     private boolean serverIsRunning = true;
@@ -40,11 +38,12 @@ public class SvRunner implements Runnable{
         this.logger = log;
         this.svHandler = new SvHandler(commandManager, logger);
         this.server = sv;
-        this.input = new Console();
-        this.scriptList  = new ArrayList<>();
         registerCommands();
     }
 
+    /**
+     * Run the program
+     */
     public void run() {
 
         while (serverIsRunning) {
@@ -62,7 +61,7 @@ public class SvRunner implements Runnable{
                 logger.log(Level.INFO, "Processing " + requestFromClient.toString() + " from " + clientAddr);
             } catch (SerializationException e) {
                 logger.log(Level.SEVERE, "Could not deserialize request's object");
-                server.disconnectFromClient();
+                stop();
             }
 
             //processing command and making response
@@ -82,25 +81,29 @@ public class SvRunner implements Runnable{
             server.sendData(dataToClient);
             logger.log(Level.INFO, "The response has been sent to client: " + clientAddr);
 
+            //if this is exit command, so disconnect to client and program will be ended
+            if (requestFromClient.getNameCommand().equals("exit")) stop();
         }
-        server.disconnectFromClient();
-        logger.log(Level.INFO, "Server disconnected from client");
-        server.clearSocket();
-
     }
 
+    /**
+     * Stop the program
+     */
     public void stop() {
+        server.disconnectFromClient();
+        logger.log(Level.INFO, "Server disconnected from client\nThe program was ended.");
         serverIsRunning = false;
+        server.clearSocket();
     }
 
 
     /**
-     * Инициализировать все команды
+     * Initialize all commands
      */
     private void registerCommands (){
-        this.commandManager.register( new AddCommand(dragonCollection, input) );
-        this.commandManager.register( new AddIfMaxCommand(dragonCollection, input) );
-        this.commandManager.register( new AddIfMinCommand(dragonCollection, input) );
+        this.commandManager.register( new AddCommand(dragonCollection) );
+        this.commandManager.register( new AddIfMaxCommand(dragonCollection) );
+        this.commandManager.register( new AddIfMinCommand(dragonCollection) );
         this.commandManager.register( new ClearCommand(dragonCollection) );
         this.commandManager.register( new ExecuteScriptCommand() );
         this.commandManager.register( new ExitCommand() );
@@ -113,7 +116,7 @@ public class SvRunner implements Runnable{
         this.commandManager.register( new RemoveByIdCommand(dragonCollection) );
         this.commandManager.register( new SaveCommand(dragonCollection) );
         this.commandManager.register( new ShowCommand(dragonCollection) );
-        this.commandManager.register( new UpdateIdCommand(dragonCollection, input) );
+        this.commandManager.register( new UpdateIdCommand(dragonCollection) );
         this.commandManager.register(new NoSuchCommand());
     }
 

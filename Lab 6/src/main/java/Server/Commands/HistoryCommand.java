@@ -1,5 +1,6 @@
 package Server.Commands;
 
+import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.CommandManager;
@@ -19,14 +20,15 @@ public class HistoryCommand extends Commands {
     @Override
     public Response execute(Request request) {
         try {
-            StringBuilder message = new StringBuilder();
+            if (request.getArgumentCommand() != null) throw new CommandSyntaxIsWrongException();
+            StringBuilder message = new StringBuilder("<List of used commands>\n");
             ArrayDeque<String> history = commandManager.getCommandHistory();
             for (String usedCommand : history){
                 message.append(usedCommand).append("\n");
             }
             return new Response(message.toString());
-        } catch (Exception exception) {
-            return new Response(exception.toString());
+        } catch (CommandSyntaxIsWrongException exception) {
+            return new Response("Syntax command is not correct. Usage: \"" + getName() + "\"");
         }
     }
 }

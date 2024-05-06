@@ -1,6 +1,7 @@
 package Server.Commands;
 
 import Common.Data.Dragon;
+import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.DragonCollection;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *The team for the reading lists the dragons with their information in descending order of age
+ *The command for the reading lists the dragons with their information in descending order of age
  */
 public class PrintDescendingCommand extends Commands {
     private DragonCollection dragonCollection;
@@ -20,9 +21,9 @@ public class PrintDescendingCommand extends Commands {
     }
 
     /**
-     * Создать список драконов в порядке убывания возраста
-     * @param dragonCollection данная коллекция
-     * @return список драконов
+     * Make a list of dragons in the order of decreasing age
+     * @param dragonCollection dragon collection
+     * @return list of dragons
      */
     private List<Dragon> sortDragonsByAge(DragonCollection dragonCollection) {
         List<Dragon> dragonList = new ArrayList<>(dragonCollection.getCollection());
@@ -41,14 +42,15 @@ public class PrintDescendingCommand extends Commands {
     @Override
     public Response execute(Request request) {
         try{
-            StringBuilder message = new StringBuilder("List of dragons descending by age: \n");
+            if (request.getArgumentCommand() != null) throw new CommandSyntaxIsWrongException();
+            StringBuilder message = new StringBuilder("<List of dragons descending by age> \n");
             List<Dragon> listByAge = sortDragonsByAge(dragonCollection);
             for (Dragon dragon : listByAge){
                 message.append(dragon).append("\n");
             }
             return new Response(message.toString());
-        } catch (Exception e){
-            return new Response(e.toString());
+        } catch (CommandSyntaxIsWrongException e){
+            return new Response("Syntax command is not correct. Usage: \"" + getName() + "\"");
         }
     }
 }

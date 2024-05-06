@@ -10,6 +10,9 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Server's receiver
+ */
 public class SvReceiver {
     private final int PACKET_SIZE;
     private final DatagramChannel dc;
@@ -22,6 +25,10 @@ public class SvReceiver {
         this.logger = logger;
     }
 
+    /**
+     * Receive data
+     * @return received data
+     */
     public byte[] receiveData()  {
         var received = false;
         var result = new byte[0];
@@ -51,6 +58,10 @@ public class SvReceiver {
         return result;
     }
 
+    /**
+     * Get client address
+     * @return client's address
+     */
     public SocketAddress getClientAddr() {
         return clientAddr;
     }

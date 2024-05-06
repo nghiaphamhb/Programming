@@ -3,35 +3,62 @@ package Common.Network;
 import Common.Data.Dragon;
 import java.io.Serializable;
 
+/**
+ * Request, which sent from client to server
+ */
+
 public class Request implements Serializable {
     private final String nameCommand;
-    private final Object argument;
-    private Object bonus = null;
+    private Object parameter = null;
+    private Dragon updatedDragon = null;  //only update_id command use him
 
+    /**
+     * Make request for command without parameters (command without dragon creation)
+     * @param nameCommand name command
+     */
     public Request(String nameCommand) {
         this.nameCommand = nameCommand;
-        this.argument = null;
     }
 
-    public Request(String nameCommand, Dragon dragon) {
+    /**
+     * Make request for command without parameters (command with dragon creation)
+     * @param nameCommand name command
+     * @param createdDragon created dragon by user or script
+     */
+    public Request(String nameCommand, Dragon createdDragon) {
         this.nameCommand = nameCommand;
-        this.argument = dragon;
+        this.parameter = createdDragon;
     }
 
+    /**
+     * Make request for command with parameter is dragon name
+     * @param nameCommand command name
+     * @param nameDragon dragon name
+     */
     public Request(String nameCommand, String nameDragon) {
         this.nameCommand = nameCommand;
-        this.argument = nameDragon;
+        this.parameter = nameDragon;
     }
 
+    /**
+     * Make request for command with parameter is dragon id
+     * @param nameCommand command name
+     * @param idDragon dragon id
+     */
     public Request(String nameCommand, long idDragon) {
         this.nameCommand = nameCommand;
-        this.argument = idDragon;
+        this.parameter = idDragon;
     }
 
+    /**
+     * Make request for update_id command
+     * @param nameCommand command name
+     * @param idDragon dragon id
+     */
     public Request(String nameCommand, long idDragon, Dragon updatedDragon) {
         this.nameCommand = nameCommand;
-        this.argument = idDragon;
-        this.bonus = updatedDragon;
+        this.parameter = idDragon;
+        this.updatedDragon = updatedDragon;
     }
 
     public String getNameCommand() {
@@ -39,15 +66,20 @@ public class Request implements Serializable {
     }
 
     public Object getArgumentCommand() {
-        return argument;
+        return parameter;
     }
 
-    public Object getBonus() {
-        return bonus;
+    public Dragon getUpdatedDragon() {
+        return updatedDragon;
     }
 
+    /**
+     *
+     * @return information of the request
+     */
     @Override
     public String toString() {
-        return "Request \"" + nameCommand + "[" + (argument!=null? argument.toString(): " ") + "][" + (bonus!=null? argument.toString():" ") + "]\"";
+        return "Request \"" + nameCommand + "[" + (parameter!=null? parameter.toString(): " ") + "]["
+                + (updatedDragon!=null? parameter.toString():" ") + "]\"";
     }
 }

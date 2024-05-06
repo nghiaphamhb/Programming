@@ -1,5 +1,6 @@
 package Server.Commands;
 
+import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.DragonCollection;
@@ -19,6 +20,7 @@ public class InfoCommand extends Commands {
     @Override
     public Response execute(Request request){
         try {
+            if (request.getArgumentCommand() != null) throw new CommandSyntaxIsWrongException();
             LocalDateTime createTime = dragonCollection.getCreateTime();
             String creatTimeString = (createTime == null) ? "initialization has not yet occurred in this session" :
                     createTime.toLocalDate().toString() + " " + createTime.toLocalTime().toString();
@@ -33,8 +35,8 @@ public class InfoCommand extends Commands {
                     " Date of last save: " + saveTimeString + "\n" +
                     " Date of last initialization: " + creatTimeString;
             return new Response(message);
-        } catch (Exception exception) {
-            return new Response(exception.toString());
+        } catch (CommandSyntaxIsWrongException exception) {
+            return new Response("Syntax command is not correct. Usage: \"" + getName() + "\"");
         }
     }
 }

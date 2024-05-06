@@ -1,6 +1,6 @@
 package Server.Commands;
 
-import Common.Exception.CommandSyntaxIsIncorrectException;
+import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
 
@@ -18,10 +18,10 @@ public class ExecuteScriptCommand extends Commands {
     public Response execute(Request request) {
         try {
             String nameScript = (String) request.getArgumentCommand();
-            if (nameScript.isEmpty()) throw new CommandSyntaxIsIncorrectException();
+            if (nameScript.isEmpty()) throw new CommandSyntaxIsWrongException();
             if (nameScript.equals("-1")) throw new FileNotFoundException();
             return new Response("Processing script " + nameScript + "...");
-        } catch (CommandSyntaxIsIncorrectException exception) {
+        } catch (CommandSyntaxIsWrongException exception) {
             return new Response("Command syntax is not correct. Usage: \"" + getName() + " [fileName]\"");
         } catch (FileNotFoundException e) {
             return new Response("That script is not exist.");

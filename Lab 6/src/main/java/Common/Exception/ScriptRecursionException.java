@@ -1,7 +1,7 @@
 package Common.Exception;
 
 /**
- * Исключение при тем, что скрипт работает рекурсивно
+ * Throw exception when the script works recursively
  */
 public class ScriptRecursionException extends Exception{
 }

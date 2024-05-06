@@ -3,19 +3,22 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * Дракон
+ * Dragon
  */
 
 public class Dragon implements Serializable {
     private static int nextId = 1;
-    private Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
-    private String name; //Поле не может быть null, Строка не может быть пустой
-    private Coordinates coordinates; //Поле не может быть null
-    private LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
-    private int age; //Значение поля должно быть больше 0
-    private Long weight; //Значение поля должно быть больше 0, Поле может быть null
+    private Long id; //The field cannot be null, the value of the field must be greater than 0,
+    // The value of this field must be unique,
+    // the value of this field must be generated automatically
+    private String name; //The field cannot be null, the string cannot be empty
+    private Coordinates coordinates; //The field cannot be null
+    private LocalDateTime creationDate; //The field cannot be null,
+    // The value of this field should be generated automatically
+    private int age; //The field value must be greater than 0
+    private Long weight; //The field value must be greater than 0, The field can be null
     private boolean speaking;
-    private Color color; //Поле может быть null
+    private Color color; //The field can be null
     private DragonHead head;
 
     public Dragon() {
@@ -28,14 +31,6 @@ public class Dragon implements Serializable {
         this.speaking = false;
         this.color = null;
         this.head = null;
-    }
-
-    public static int getNextId() {
-        return nextId;
-    }
-
-    public static void setNextId(int nextId) {
-        Dragon.nextId = nextId;
     }
 
     public Long getId() {
@@ -58,28 +53,12 @@ public class Dragon implements Serializable {
         return coordinates;
     }
 
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
-    }
-
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
     public int getAge() {
         return age;
     }
 
     public void setAge(int age) {
         this.age = age;
-    }
-
-    public Long getWeight() {
-        return weight;
     }
 
     public void setWeight(Long weight) {
@@ -94,16 +73,8 @@ public class Dragon implements Serializable {
         this.speaking = speaking;
     }
 
-    public Color getColor() {
-        return color;
-    }
-
     public void setColor(Color color) {
         this.color = color;
-    }
-
-    public DragonHead getHead() {
-        return head;
     }
 
     public void setHead(DragonHead head) {
@@ -111,8 +82,8 @@ public class Dragon implements Serializable {
     }
 
     /**
-     * Вернуть информации у дракона в форме String
-     * @return Информации у дракона
+     * Print all information of the dragon
+     * @return dragon information
      */
     @Override
     public String toString() {

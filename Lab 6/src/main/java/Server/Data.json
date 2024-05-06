@@ -16,6 +16,22 @@
     }
   },
   {
+    "id": 937,
+    "name": "hello",
+    "coordinates": {
+      "x": 32,
+      "y": 32
+    },
+    "creationDate": "2024-05-04T14:36:46.4251899",
+    "age": 32,
+    "weight": 32,
+    "speaking": true,
+    "color": "GREEN",
+    "head": {
+      "eyesCount": 32
+    }
+  },
+  {
     "id": 956,
     "name": "StoneDragon",
     "coordinates": {
@@ -32,22 +48,6 @@
     }
   },
   {
-    "id": 983,
-    "name": "test",
-    "coordinates": {
-      "x": 42,
-      "y": 32
-    },
-    "creationDate": "2024-04-02T17:29:46.640766",
-    "age": 33,
-    "weight": null,
-    "speaking": true,
-    "color": "WHITE",
-    "head": {
-      "eyesCount": 32
-    }
-  },
-  {
     "id": 335,
     "name": "FireDragon",
     "coordinates": {
@@ -61,6 +61,22 @@
     "color": null,
     "head": {
       "eyesCount": 2
+    }
+  },
+  {
+    "id": 983,
+    "name": "test",
+    "coordinates": {
+      "x": 42,
+      "y": 32
+    },
+    "creationDate": "2024-04-02T17:29:46.640766",
+    "age": 33,
+    "weight": null,
+    "speaking": true,
+    "color": "WHITE",
+    "head": {
+      "eyesCount": 32
     }
   },
   {
@@ -92,37 +108,5 @@
     "speaking": false,
     "color": "GREEN",
     "head": null
-  },
-  {
-    "id": 937,
-    "name": "hello",
-    "coordinates": {
-      "x": 32,
-      "y": 32
-    },
-    "creationDate": "2024-05-04T14:36:46.4251899",
-    "age": 32,
-    "weight": 32,
-    "speaking": true,
-    "color": "GREEN",
-    "head": {
-      "eyesCount": 32
-    }
-  },
-  {
-    "id": 601,
-    "name": "tao da lam xong",
-    "coordinates": {
-      "x": 33,
-      "y": 3
-    },
-    "creationDate": "2024-05-05T16:22:51.0466039",
-    "age": 3,
-    "weight": 53,
-    "speaking": true,
-    "color": "WHITE",
-    "head": {
-      "eyesCount": 4343
-    }
   }
 ]

@@ -1,10 +1,11 @@
 package Server.Commands;
+import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.DragonCollection;
 
 /**
- * Показать информации у всех драконов в данной коллекции
+ * Show all dragon in the collection
  */
 public class ShowCommand extends Commands {
     private DragonCollection dragonCollection;
@@ -16,9 +17,10 @@ public class ShowCommand extends Commands {
     @Override
     public Response execute(Request request) {
         try {
+            if (request.getArgumentCommand() != null) throw new CommandSyntaxIsWrongException();
             return new Response(dragonCollection.getCollection().toString());
-        } catch (Exception e) {
-            return new Response(e.toString());
+        } catch (CommandSyntaxIsWrongException e) {
+            return new Response("Syntax command is not correct. Usage: \"" + getName() + "\"");
         }
     }
 }

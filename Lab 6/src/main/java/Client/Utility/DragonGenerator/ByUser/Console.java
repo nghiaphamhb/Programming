@@ -9,15 +9,17 @@ import Client.Utility.DragonGenerator.Validator;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 /**
  * Get dragon information from the user
  */
 public class Console implements Input {
     private Validator validator;
+    private final Logger logger = Logger.getLogger("Console_Logger");
 
     public Console() {
-        this.validator = new Validator();
+        this.validator = new Validator(logger);
     }
 
     public Scanner scanner (){
@@ -26,7 +28,6 @@ public class Console implements Input {
 
     @Override
     public void inputId(){
-        Display.println("Making a dragon ...");
         Long id = null;
         do {
             Random random = new Random();
@@ -172,7 +173,6 @@ public class Console implements Input {
         inputSpeaking();
         inputColor();
         inputDragonHead();
-        Display.println("Dragon was made successfully!");
         return validator.passedDragon();
     }
 

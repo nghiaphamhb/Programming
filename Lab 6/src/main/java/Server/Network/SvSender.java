@@ -3,7 +3,6 @@ package Server.Network;
 import com.google.common.primitives.Bytes;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
@@ -11,6 +10,9 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Server's sender
+ */
 public class SvSender {
     private final int PACKET_SIZE;
     private final DatagramChannel dc;
@@ -24,6 +26,10 @@ public class SvSender {
         this.clientAddr = clientAdrr;
     }
 
+    /**
+     * Send data to client
+     * @param data data, which need to send
+     */
     public void sendData(byte[] data) {
         int DATA_SIZE = PACKET_SIZE - 1;
         byte[][] ret = new byte[(int)Math.ceil(data.length / (double)DATA_SIZE)][DATA_SIZE];

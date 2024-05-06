@@ -11,6 +11,9 @@ import java.net.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Main class
+ */
 public class SvApp {
     public static final int PORT = 1234;
     public static Logger logger = Logger.getLogger("ServerLogger");
@@ -19,7 +22,7 @@ public class SvApp {
         try {
             String filePath = "src/main/java/Server/Data.json";
 //            if (args.length == 0) {
-//                System.out.println("Введите имя загружаемого файла как аргумент командной строки");
+//                System.out.println("Enter the name of the downloaded file as a command line argument");
 //                System.exit(1);
 //            }
 
@@ -31,8 +34,6 @@ public class SvApp {
             SvRunner appRunner = new SvRunner(commandManager, dragonCollection, server, logger);
 
             appRunner.run();
-        } catch (SocketException e) {
-            logger.log(Level.SEVERE, "A socket error has occurred", e);
         } catch (UnknownHostException e) {
             logger.log(Level.SEVERE, "Unknown host", e);
         } catch (IOException e) {

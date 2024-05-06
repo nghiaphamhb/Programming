@@ -10,6 +10,9 @@ import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Main class
+ */
 public class ClientApp {
     private static final int PORT = 1234; //server port
     public static final Logger logger = Logger.getLogger("Client_Logger");
@@ -17,7 +20,6 @@ public class ClientApp {
 
     public static void main( String[] args){
         try {
-
             Client client = new Client(InetAddress.getLocalHost(), PORT, logger);
             CliRunner app = new CliRunner(client, logger);
 

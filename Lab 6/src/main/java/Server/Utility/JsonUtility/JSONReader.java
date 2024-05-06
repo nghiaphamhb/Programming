@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Читать коллекцию в файле
+ * Read collection from file json
  */
 public class JSONReader {
 
@@ -36,8 +36,8 @@ public class JSONReader {
     }
 
     /**
-     * Получить коллекцию из файла
-     * @return полученная из файла коллекция
+     * Get collection from json file
+     * @return collection
      */
     public Set<Dragon> readFromFile() {
         if (fileName != null && !fileName.isEmpty()) {

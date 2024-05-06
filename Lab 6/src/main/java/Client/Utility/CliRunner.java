@@ -1,22 +1,20 @@
 package Client.Utility;
 
 import Client.Network.Client;
-//import Client.Commands.*;
 import Client.Utility.DragonGenerator.ByFile.FileInput;
 import Client.Utility.DragonGenerator.ByFile.ScriptReader;
 import Client.Utility.DragonGenerator.ByUser.Console;
 import Client.Utility.DragonGenerator.Input;
-import Common.Exception.CommandIsNotFoundException;
+import Common.Exception.CommandNotFoundException;
 import Common.Exception.ScriptRecursionException;
 import Common.Network.Response;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Запускает программу
+ * Class of program's operation
  */
 public class CliRunner implements Runnable{
     private final Client client;
@@ -56,24 +54,29 @@ public class CliRunner implements Runnable{
                     Display.println(response);
                 }
 
-            } catch (CommandIsNotFoundException e) {
+            } catch (CommandNotFoundException e) {
                 Display.printError("This command is not exist. Enter 'help' for helping");
             }
         } while (commandStatus != ProgramStatus.EXIT);
+        client.disconnectToServer();
+        logger.log(Level.INFO, "Program was ended.");
     }
 
-
+    /**
+     * Update program's status after get a command from input
+     * @param command command
+     * @return program's status
+     */
     private ProgramStatus updateProgramStatus (String[] command)  {
         try {
             switch (command[0]){
                 case "exit":
                     if (command[1].isEmpty()) return ProgramStatus.EXIT;
-                    else return ProgramStatus.ERROR;
                 case "execute_script":
                     return runScript(command[1]);
             }
             return ProgramStatus.RUN;
-        } catch (CommandIsNotFoundException e) {
+        } catch (CommandNotFoundException e) {
             if (!command[0].isEmpty()){
                 Display.printError("Command " + command[0] + " is not exist. Enter 'help' for helping");
             } else {
@@ -83,8 +86,12 @@ public class CliRunner implements Runnable{
         return ProgramStatus.ERROR;
     }
 
-
-    private String[] argumentToCommand(String argument){   //đổi tên thành string to array
+    /**
+     * Process a string to array with length 2
+     * @param argument a string
+     * @return array
+     */
+    private String[] argumentToCommand(String argument){
         String[] command = {};
         try{
             command = (argument.trim() + " ").split(" ", 2);
@@ -96,7 +103,11 @@ public class CliRunner implements Runnable{
         return command;
     }
 
-
+    /**
+     * Run the script
+     * @param filePath file's path
+     * @return program's status after running script
+     */
     private ProgramStatus runScript (String filePath)  {
         List<String> scriptLines;
         String[] command;
@@ -112,7 +123,6 @@ public class CliRunner implements Runnable{
             ScriptReader.setInputStream(filePath);
             scriptLines = ScriptReader.getScriptLines();
 
-
             Response firstResponse = cliHandler.handle(new String[]{"execute_script", filePath});
             Display.println(firstResponse);
 
@@ -127,7 +137,7 @@ public class CliRunner implements Runnable{
                 if (Arrays.asList( "add", "add_if_max", "add_if_min" ).contains( command[0] ) && command[1].isEmpty() ) {
                     String[] info = scriptLines.subList(i+1,  i+9).toArray( new String[8] );
                     updateInput(new FileInput(info));
-                    i += 8; // lam ro vi sao la 8? dat 1 bien dai dien cho so 8
+                    i += 8; // because the amount of information needed to create a dragon is 8
                 }
 
                 if ( command[0].equals("execute_script") ) {
@@ -136,12 +146,8 @@ public class CliRunner implements Runnable{
                     }
                 }
 
-
-
                 Response response = cliHandler.handle(command);
                 Display.println(response);
-
-
 
                 commandStatus = updateProgramStatus(command);
             }
@@ -156,13 +162,13 @@ public class CliRunner implements Runnable{
         return ProgramStatus.ERROR;
     }
 
-
+    /**
+     * Change the input
+     * @param input user/ script
+     */
     private void updateInput(Input input) {
         this.input = input;
         this.cliHandler.changeInput(input);
-
-//        this.commands.clear();
-//        this.commands = registerCommand();
     }
 
 }

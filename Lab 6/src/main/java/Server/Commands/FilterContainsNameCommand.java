@@ -1,10 +1,10 @@
 package Server.Commands;
 
 import Common.Data.Dragon;
+import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.DragonCollection;
-import org.apache.commons.lang.NullArgumentException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +20,9 @@ public class FilterContainsNameCommand extends Commands {
     }
 
     /**
-     * Собирать список драконов, имя которых указано
-     * @param name указанное имя
-     * @return список драконов
+     * Make a list of dragons, whose name is indicated
+     * @param name dragon name
+     * @return list of dragon
      */
     private List<Dragon> filterByName( String name ) {
         List<Dragon> dragonList = new ArrayList<>();
@@ -39,18 +39,18 @@ public class FilterContainsNameCommand extends Commands {
             String nameValidatedDragon = (String) request.getArgumentCommand();
             List<Dragon> dragonHasName = filterByName(nameValidatedDragon);
 
-            if (nameValidatedDragon.isEmpty()) throw new Exception();
+            if (nameValidatedDragon.isEmpty()) throw new CommandSyntaxIsWrongException();
 
             if (dragonHasName.isEmpty()) {
                 return new Response("The dragon with his name \'" + nameValidatedDragon + "\' is not existed");
             } else {
-                StringBuilder message = new StringBuilder("The collection has " + dragonHasName.size() + " dragons with name \'" + nameValidatedDragon + "\n");
+                StringBuilder message = new StringBuilder("The collection has " + dragonHasName.size() + " dragons with name \'" + nameValidatedDragon + "\':\n");
                 for ( Dragon d : dragonHasName ){
                     message.append(d.toString()).append("\n");
                 }
                 return new Response(message.toString());
             }
-        } catch (Exception exception) {
+        } catch (CommandSyntaxIsWrongException exception) {
             return new Response("Syntax command is not correct. Usage \"" + getName() + " [name]\"");
         }
     }

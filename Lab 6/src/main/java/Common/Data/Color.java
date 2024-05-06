@@ -3,7 +3,7 @@ package Common.Data;
 import java.io.Serializable;
 
 /**
- * Цвет у дракона
+ * Dragon color
  */
 public enum Color implements Serializable {
     GREEN ("GREEN"),

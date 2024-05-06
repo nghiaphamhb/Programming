@@ -1,7 +1,5 @@
 package Client.Network;
 
-import Client.Utility.Display;
-
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
@@ -9,6 +7,9 @@ import java.nio.channels.DatagramChannel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * client's receiver
+ */
 public class CliReceiver {
     private final int PACKET_SIZE;
     private final DatagramChannel dc;
@@ -20,6 +21,10 @@ public class CliReceiver {
         this.logger = logger;
     }
 
+    /**
+     * receive data from server
+     * @return all received data
+     */
     public byte[] receiveData() {
         boolean dataIsReceived = false;
         byte[] result = new byte[0];
@@ -42,6 +47,10 @@ public class CliReceiver {
         return result;
     }
 
+    /**
+     * receive data chunks from server
+     * @return chunk of received data
+     */
     private byte[] receivedData(int bufferSize)  {
         ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
         SocketAddress serverAddress = null;
@@ -49,7 +58,7 @@ public class CliReceiver {
             try {
             serverAddress = dc.receive(buffer);  //exception
             } catch (IOException e) {
-                logger.log(Level.WARNING, "Client that bai trong viec nhan du lieu");
+                logger.log(Level.WARNING, "Client failed  to receive data");
             }
         }
         buffer.flip();

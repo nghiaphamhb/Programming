@@ -8,6 +8,7 @@ import Client.Utility.DragonGenerator.Validator;
 
 import java.util.InputMismatchException;
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * Get dragon information through a script
@@ -15,15 +16,15 @@ import java.util.Random;
 public class FileInput implements Input {
     private String[] lines;
     private Validator validator;
+    private final Logger logger = Logger.getLogger("FileInput_Logger");
 
     public FileInput(String[] lines) {
         this.lines = lines;
-        this.validator = new Validator();
+        this.validator = new Validator(logger);
     }
 
     @Override
     public void inputId(){
-        Display.println("Making a dragon ...");
         Long id = null;
         do {
             Random random = new Random();
@@ -47,7 +48,9 @@ public class FileInput implements Input {
         } while ( !validator.checkName(name) );
     }
 
-
+    /**
+     * Make abscissa
+     */
     public void inputAbs(){
         Integer abs = null;
         Display.println("+ The Dragon's Abscissa:");
@@ -62,7 +65,9 @@ public class FileInput implements Input {
         } while ( !validator.checkAbs(abs) );
     }
 
-
+    /**
+     * Make ordinate
+     */
     public void inputOrd(){
         Long ord = null;
         Display.println("+ The Dragon's Ordinate:");
@@ -84,6 +89,7 @@ public class FileInput implements Input {
         inputOrd();
     }
 
+    @Override
     public void inputAge() {
         Integer age = null;
         Display.println( "Enter the age of the dragon (years):" );
@@ -98,6 +104,7 @@ public class FileInput implements Input {
         } while ( !validator.checkAge(age));
     }
 
+    @Override
     public void inputWeight() {
         Long weight = null;
         Display.println("Enter the dragon's weight (kg):");
@@ -174,7 +181,6 @@ public class FileInput implements Input {
         inputSpeaking();
         inputColor();
         inputDragonHead();
-        Display.println("Dragon was made successfully!");
         return validator.passedDragon();
     }
 }

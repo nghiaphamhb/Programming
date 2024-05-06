@@ -1,54 +1,54 @@
 package Client.Utility;
 
 /**
- * Отображение на экране терминала,
+ * Display on the terminal screen
  */
 public class Display {
     private static final String PS1 = "$ ";
     private static final String PS2 = "> ";
 
     /**
-     * Печатать объекта
-     * @param obj объект
+     * Print the object
+     * @param obj object
      */
     public static void print( Object obj ) {
         System.out.print( obj );
     }
 
     /**
-     * Печатать объекта вниз по строке
-     * @param obj объект
+     * Print the object down the line
+     * @param obj object
      */
     public static void println(Object obj) {
         System.out.println( obj );
     }
 
     /**
-     * Печатать ошибку
-     * @param obj ошибка
+     * Print an error
+     * @param obj error
      */
     public static void printError( Object obj ) {
         System.out.println( "Error: " + obj );
     }
 
     /**
-     * Печатать таблицу, в которой 2 столбцы
-     * @param elementLeft 1- объект (название)
-     * @param elementRight 2- объект (описание)
+     * Print a table with 2 columns
+     * @param elementLeft Left 1- object (name)
+     * @param elementRight Right 2- object (description)
      */
     public static void printTable( Object elementLeft, Object elementRight ) {
         System.out.printf( " %-35s %-1s %n", elementLeft, elementRight );
     }
 
     /**
-     * Печатать знак $
+     * Print the sign $
      */
     public static void ps1() {
         print(PS1);
     }
 
     /**
-     * Печатать знак >
+     * Print the sign >
      */
     public static void ps2() {
         print(PS2);

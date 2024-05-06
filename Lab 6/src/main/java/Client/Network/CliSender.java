@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Client's sender
+ */
 public class CliSender {
     private final int DATA_SIZE;
     private final Logger logger;
@@ -21,6 +24,10 @@ public class CliSender {
         this.serverAddr = addr;
     }
 
+    /**
+     * send data to server
+     * @param data data
+     */
     public void sendData(byte[] data) {
         int number_chunk = (int)Math.ceil((double) data.length /DATA_SIZE);
         byte[][] chunk = new byte[number_chunk][DATA_SIZE];

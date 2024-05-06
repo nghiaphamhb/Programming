@@ -13,8 +13,8 @@ public class DragonHead implements Serializable {
     }
 
     /**
-     *
-     * @return у головы дракона сколько глаз
+     * Print information of dragon head
+     * @return number of eyes
      */
     @Override
     public String toString() {

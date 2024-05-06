@@ -1,6 +1,7 @@
 package Server.Commands;
 
 import Common.Data.Dragon;
+import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.DragonCollection;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Команда для показания списки драконов со своей способности говорить в порядке убывания
+ * The command to read lists of dragons with their ability to speak in descending order
  */
 public class PrintFieldDescendingSpeakingCommand extends Commands {
     private DragonCollection dragonCollection;
@@ -19,20 +20,12 @@ public class PrintFieldDescendingSpeakingCommand extends Commands {
         this.dragonCollection = dragonCollection;
     }
 
-    /**
-     * Показать имя и способность у дракона
-     * @param listDragon список драконов
-     */
-    private void print_Name_Speaking ( List<Dragon> listDragon) {
-        for ( Dragon dragon : listDragon ) {
-            Display.println( dragon.getName() + " -> " + dragon.getSpeaking() );
-        }
-    }
 
     @Override
     public Response execute(Request request) {
         try{
-            StringBuilder messagge = new StringBuilder("List of dragons descending by speaking field values:");
+            if (request.getArgumentCommand() != null) throw new CommandSyntaxIsWrongException();
+            StringBuilder message = new StringBuilder("<List of dragons descending by speaking field values>");
             List<Dragon> dragonCanSpeak = new ArrayList<>();
             List<Dragon> dragonCannotSpeak = new ArrayList<>();
 
@@ -43,12 +36,12 @@ public class PrintFieldDescendingSpeakingCommand extends Commands {
             dragonCanSpeak.addAll(dragonCannotSpeak);
 
             for ( Dragon dragon : dragonCanSpeak ) {
-                messagge.append("\n%s --> %s".formatted(dragon.getName(), dragon.getSpeaking()));
+                message.append("\n%s --> %s".formatted(dragon.getName(), dragon.getSpeaking()));
             }
 
-            return new Response(messagge.toString());
-        } catch (Exception e) {
-            return new Response(e.toString());
+            return new Response(message.toString());
+        } catch (CommandSyntaxIsWrongException e) {
+            return new Response("Syntax command is not correct. Usage: \"" + getName() + "\"");
         }
     }
 

@@ -1,7 +1,5 @@
 package Client.Utility.DragonGenerator.ByFile;
 
-import Client.Utility.Display;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Инструмент для чтения скрипта
+ * A script reading tool
  */
 public class ScriptReader {
     private static Logger logger;
@@ -20,8 +18,8 @@ public class ScriptReader {
     }
 
     /**
-     * Подключить к скрипту
-     * @param filePath адрес у скрипта
+     * Connect to the script
+     * @param filePath address of the script
      */
     public static void setInputStream(String filePath) {
         try{
@@ -37,8 +35,8 @@ public class ScriptReader {
     }
 
     /**
-     * Читать содержание в скрипте
-     * @return содержание
+     * Read the content in the script
+     * @return content
      */
     public static StringBuilder getContent() {
         StringBuilder content = new StringBuilder();
@@ -56,16 +54,16 @@ public class ScriptReader {
     }
 
     /**
-     * Обработать полученное содержание (разделить его на строки)
-     * @return строки из содержания
+     * Process the received content (divide it into lines)
+     * @return lines from the content
      */
     public static String[] getLines() {
         return getContent().toString().split("\\r?\\n");
     }
 
     /**
-     * Удалить пустую строку
-     * @return сбор строк без пустой
+     * Delete an empty line
+     * @return collecting lines without empty
      */
     public static List<String> getScriptLines() {
         List<String> scriptLines = new ArrayList<>();

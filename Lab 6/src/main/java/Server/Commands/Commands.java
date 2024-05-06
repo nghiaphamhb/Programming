@@ -3,7 +3,7 @@ package Server.Commands;
 import java.util.Objects;
 
 /**
- * Общая конструкция команд
+ * The general design of the commands
  */
 public abstract class Commands implements Command_Interface {
     private final String name;

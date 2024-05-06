@@ -7,11 +7,12 @@ import org.apache.commons.lang.SerializationUtils;
 import java.io.IOException;
 import java.net.*;
 import java.nio.channels.DatagramChannel;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Client
+ */
 public class Client {
     private final int PACKET_SIZE = 1024;
     private final Logger logger;
@@ -27,12 +28,16 @@ public class Client {
     public Client(InetAddress hostAddress, int port, Logger log) throws IOException {
         this.logger = log;
         this.serverAddr = new InetSocketAddress(hostAddress, port);
-        this.dc = DatagramChannel.open().bind(null).connect(serverAddr);
+        connectToServer();
         this.cliSender = new CliSender(PACKET_SIZE, dc, logger, serverAddr);
         this.cliReceiver = new CliReceiver(PACKET_SIZE, dc, logger);
     }
 
-
+    /**
+     * send and receive request (command)
+     * @param request command to server
+     * @return response from server
+     */
     public Response sendAndReceiveCommand(Request request) {
         byte[] data = SerializationUtils.serialize(request);
         byte[] responseBytes = sendAndReceiveData(data);
@@ -41,29 +46,32 @@ public class Client {
 
         logger.log(Level.INFO, "Response from server: ");
         try {
-            Thread.sleep(500); // Ngủ 1 giây (1000 miligiây)
+            Thread.sleep(500);
         } catch (InterruptedException e) {
-            // Xử lý ngoại lệ nếu có
-            Thread.currentThread().interrupt(); // Đánh dấu lại interrupt status
+            Thread.currentThread().interrupt();
         }
         Display.println(response.getMessage());
         return response;
     }
 
-
-
+    /**
+     * send and receive byte data to and from server
+     * @param data sent byte data
+     * @return received byte data
+     */
     public byte[] sendAndReceiveData(byte[] data)  {
         cliSender.sendData(data);
         return cliReceiver.receiveData();
     }
 
-    //just to check if datagramChannel ís connected
-    public void connectToServer(SocketAddress serverAddr){
-        Display.println("Connecting to the server...");
+    /**
+     * Check and notice if DatagramChannel is connected
+     */
+    public void connectToServer(){
+        logger.log(Level.INFO, "DatagramChannel is connecting to the server...");
         do {
             try{
-                dc = dc.connect(serverAddr);
-                dc.configureBlocking(false);
+                dc = DatagramChannel.open().bind(null).connect(serverAddr);
 
                 if (dc.isConnected()){
                     logger.log(Level.INFO, "DataChannel connected to " + serverAddr);
@@ -71,8 +79,7 @@ public class Client {
                 }
 
                 reconnectionAttempts -= 1;
-                if (reconnectionAttempts >= 1) Display.println("Connection failed. Reconnecting to the server...");
-
+                if (reconnectionAttempts >= 1) logger.log(Level.WARNING, "Connection failed. Reconnecting to the server...");
             } catch (IOException e) {
                 logger.log(Level.SEVERE, "An error occurred while connecting to the server!", e);
             }
@@ -80,7 +87,17 @@ public class Client {
         if (reconnectionAttempts == 0 ) logger.log(Level.SEVERE, "The connection attempt has expired!");
     }
 
-
+    /**
+     * Disconnect to server
+     */
+    public void disconnectToServer() {
+        logger.log(Level.INFO, "DatagramChannel disconnected to Server");
+        try {
+            dc.disconnect();
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Could not disconnect to Server");
+        }
+    }
 
 
 

@@ -1,14 +1,14 @@
 package Server.Network;
 
-import Client.Network.CliReceiver;
-import Client.Network.CliSender;
-
 import java.io.IOException;
 import java.net.*;
 import java.nio.channels.DatagramChannel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Server
+ */
 public class Server {
     private final int PACKET_SIZE = 1024;
     private final Logger logger;
@@ -29,8 +29,10 @@ public class Server {
     }
 
 
-
-
+    /**
+     * Server connects to client
+     * @return client address
+     */
     public SocketAddress connectToClient(){
         try {
             dc.connect(clientAddr);
@@ -43,6 +45,9 @@ public class Server {
 
     }
 
+    /**
+     * Server disconnects from client
+     */
     public void disconnectFromClient() {
         try {
             dc.disconnect();
@@ -51,6 +56,9 @@ public class Server {
         }
     }
 
+    /**
+     * Server clears data socket
+     */
     public void clearSocket(){
         try {
             dc.close();
@@ -59,16 +67,28 @@ public class Server {
         }
     }
 
+    /**
+     * Server receives data from client
+     * @return received data
+     */
     public byte[] receiveData() {
         byte[] data = svReceiver.receiveData();
         this.clientAddr = svReceiver.getClientAddr();
         return data;
     }
 
+    /**
+     * Server sends data to client
+     * @param data data which need to send
+     */
     public void sendData(byte[] data){
         svSender.sendData(data);
     }
 
+    /**
+     * Server connects to client
+     * @return if server is connected
+     */
     public boolean serverIsConnecting(){
         return dc.isConnected();
     }
