@@ -20,13 +20,13 @@ public class SvApp {
 
     public static void main(String[] args){
         try {
-            String filePath = "src/main/java/Server/Data.json";
-//            if (args.length == 0) {
-//                System.out.println("Enter the name of the downloaded file as a command line argument");
-//                System.exit(1);
-//            }
+//            String filePath = "src/main/java/Server/Data.json";
+            if (args.length == 0) {
+                System.out.println("Enter the name of the downloaded file as a command line argument");
+                System.exit(1);
+            }
 
-            FileManager fileManager = new FileManager(filePath, logger);
+            FileManager fileManager = new FileManager(args[0], logger);
             DragonCollection dragonCollection= new DragonCollection(fileManager);
             CommandManager commandManager = new CommandManager();
 

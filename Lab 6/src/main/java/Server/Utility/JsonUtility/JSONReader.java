@@ -62,12 +62,16 @@ public class JSONReader {
 
             } catch (FileNotFoundException exception) {
                 logger.log(Level.SEVERE, "Could not find that file");
+                return null;
             } catch (NoSuchElementException exception) {
                 logger.log(Level.SEVERE, "This file is empty");
+                return null;
             } catch (JsonParseException exception) {
                 logger.log(Level.SEVERE, "The required collection was not found in the boot file!");
+                return null;
             } catch (IOException exception) {
                 logger.log(Level.SEVERE, "Error while reading this file");
+                return null;
             }
         } else {
             logger.log(Level.SEVERE, "Could not find command's argument in this file");

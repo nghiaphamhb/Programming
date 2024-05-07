@@ -24,7 +24,7 @@ public class ScriptReader {
     public static void setInputStream(String filePath) {
         try{
             if (!new File(filePath).exists()) {
-                filePath = "src/main/java/Client/" + filePath;
+                filePath = "src/main/java/" + filePath;
             }
 
             FileInputStream fileInputStream = new FileInputStream(filePath);

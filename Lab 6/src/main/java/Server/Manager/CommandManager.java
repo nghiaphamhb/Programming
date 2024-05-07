@@ -47,7 +47,7 @@ public class CommandManager {
         if ( commandHistory.size() == 13 ) {
             commandHistory.poll();
         }
-        commandHistory.add(command);
+        if (!command.equals("NoSuchCommand")) commandHistory.add(command);
     }
 
     /**

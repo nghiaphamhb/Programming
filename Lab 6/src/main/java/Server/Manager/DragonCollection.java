@@ -18,6 +18,7 @@ public class DragonCollection {
 
     public DragonCollection(FileManager fileManager) {
         collection  = fileManager.readFromFile();
+        if (collection == null) System.exit(1);
         createTime = LocalDateTime.now();
         saveTime = null;
         this.fileManager = fileManager;
