@@ -72,6 +72,7 @@ public class Client {
         do {
             try{
                 dc = DatagramChannel.open().bind(null).connect(serverAddr);
+                dc.configureBlocking(false);
 
                 if (dc.isConnected()){
                     logger.log(Level.INFO, "DataChannel connected to " + serverAddr);
