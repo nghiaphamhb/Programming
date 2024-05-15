@@ -21,13 +21,10 @@ public class HistoryCommand extends Commands {
     public Response execute(Request request) {
         try {
             if (request.getArgumentCommand() != null) throw new CommandSyntaxIsWrongException();
-            StringBuilder message = new StringBuilder("<List of used commands>\n");
-            ArrayDeque<String> history = commandManager.getCommandHistory();
-            history.forEach(usedCommand -> {
-                message.append(usedCommand).append("\n");
-            });
 
-            return new Response(message.toString());
+            String message = "<List of 13 last used commands>\n" +
+                    commandManager.getCommandHistory().toString();
+            return new Response(message);
         } catch (CommandSyntaxIsWrongException exception) {
             return new Response("Syntax command is not correct. Usage: \"" + getName() + "\"");
         }

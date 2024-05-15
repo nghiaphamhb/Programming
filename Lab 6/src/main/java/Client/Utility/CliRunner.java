@@ -51,6 +51,7 @@ public class CliRunner implements Runnable{
 
                 if (commandStatus != ProgramStatus.ERROR) {
                     Response response = cliHandler.handle(command);
+                    if (response == null) continue;
                     Display.println(response);
                 }
 

@@ -31,6 +31,7 @@ public class CliReceiver {
 
         while(!dataIsReceived) {
             byte[] data = receivedData(PACKET_SIZE);  //exception
+            if (data == null) return null;
             logger.log(Level.INFO, "Receiving response from server..." );
 
 
@@ -58,7 +59,8 @@ public class CliReceiver {
             try {
             serverAddress = dc.receive(buffer);  //exception
             } catch (IOException e) {
-                logger.log(Level.WARNING, "Client failed  to receive data");
+                logger.log(Level.WARNING, "Client failed to receive data");
+                return null;
             }
         }
         buffer.flip();

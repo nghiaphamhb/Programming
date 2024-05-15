@@ -41,6 +41,7 @@ public class Client {
     public Response sendAndReceiveCommand(Request request) {
         byte[] data = SerializationUtils.serialize(request);
         byte[] responseBytes = sendAndReceiveData(data);
+        if (responseBytes == null) return null;
 
         Response response = (Response) SerializationUtils.deserialize(responseBytes); // deserialize return Ojbect type
 

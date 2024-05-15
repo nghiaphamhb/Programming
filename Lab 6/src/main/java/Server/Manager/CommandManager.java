@@ -9,10 +9,11 @@ import java.util.*;
 public class CommandManager {
     private final Set<Commands> commands;
     private final ArrayDeque<String> commandHistory;
+    private final int memoryCapicity = 13;
 
     public CommandManager() {
         commands = new HashSet<>();
-        commandHistory = new ArrayDeque<>(13);  // only 13 used command in the history
+        commandHistory = new ArrayDeque<>(memoryCapicity);  // only 13 used command in the history
     }
 
     /**

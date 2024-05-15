@@ -8,7 +8,10 @@ import Server.Manager.DragonCollection;
 import Client.Utility.Display;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The command to read lists of dragons with their ability to speak in descending order
@@ -25,24 +28,16 @@ public class PrintFieldDescendingSpeakingCommand extends Commands {
     public Response execute(Request request) {
         try{
             if (request.getArgumentCommand() != null) throw new CommandSyntaxIsWrongException();
-            StringBuilder message = new StringBuilder("<List of dragons descending by speaking field values>");
-            List<Dragon> dragonCanSpeak = new ArrayList<>();
-            List<Dragon> dragonCannotSpeak = new ArrayList<>();
+            String message = "<List of dragons descending by speaking field values> \n" +
+                dragonCollection.getCollection().stream()
+                .sorted(Comparator.comparing(Dragon::getSpeaking).reversed())
+                                .map(dragon -> "Can \"" + dragon.getName() + "\" speak? => " + ( dragon.getSpeaking()  ? "Yes" : "No"))
+                        .collect(Collectors.joining("\n"));
 
-            for (Dragon dragon : dragonCollection.getCollection()) {
-                if (dragon.getSpeaking()) dragonCanSpeak.add(dragon);
-                else dragonCannotSpeak.add(dragon);
-            }
-            dragonCanSpeak.addAll(dragonCannotSpeak);
-
-            for ( Dragon dragon : dragonCanSpeak ) {
-                message.append("\n%s --> %s".formatted(dragon.getName(), dragon.getSpeaking()));
-            }
-
-            return new Response(message.toString());
+        return new Response(message);
         } catch (CommandSyntaxIsWrongException e) {
             return new Response("Syntax command is not correct. Usage: \"" + getName() + "\"");
         }
     }
-
 }
+
