@@ -2,20 +2,14 @@ package Server.Utility;
 
 import Common.Network.Request;
 import Common.Network.Response;
-import Client.Utility.Display;
-import Server.Manager.DragonCollection;
-import Server.Commands.*;
-import Common.Exception.*;
-import Client.Utility.DragonGenerator.ByUser.Console;
-import Client.Utility.DragonGenerator.Input;
 import Server.Manager.CommandManager;
+import Server.Manager.DragonCollection;
+import Server.Manager.StandardCommandManager;
 import Server.Network.Server;
 import org.apache.commons.lang.SerializationException;
 import org.apache.commons.lang.SerializationUtils;
 
-import java.io.IOException;
 import java.net.SocketAddress;
-import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,13 +26,12 @@ public class SvRunner implements Runnable{
     private SocketAddress clientAddr = null;
 
 
-    public SvRunner(CommandManager commandManager, DragonCollection dragonCollection, Server sv, Logger log) {
-        this.commandManager = commandManager;
+    public SvRunner(DragonCollection dragonCollection, Server sv, Logger log) {
         this.dragonCollection = dragonCollection;
+        this.commandManager = new CommandManager(dragonCollection);
         this.logger = log;
         this.svHandler = new SvHandler(commandManager, logger);
         this.server = sv;
-        registerCommands();
     }
 
     /**
@@ -90,6 +83,7 @@ public class SvRunner implements Runnable{
      * Stop the program
      */
     public void stop() {
+        dragonCollection.saveCollection();
         server.disconnectFromClient();
         logger.log(Level.INFO, "Server disconnected from client\nThe program was ended.");
         serverIsRunning = false;
@@ -97,27 +91,5 @@ public class SvRunner implements Runnable{
     }
 
 
-    /**
-     * Initialize all commands
-     */
-    private void registerCommands (){
-        this.commandManager.register( new AddCommand(dragonCollection) );
-        this.commandManager.register( new AddIfMaxCommand(dragonCollection) );
-        this.commandManager.register( new AddIfMinCommand(dragonCollection) );
-        this.commandManager.register( new ClearCommand(dragonCollection) );
-        this.commandManager.register( new ExecuteScriptCommand() );
-        this.commandManager.register( new ExitCommand() );
-        this.commandManager.register( new FilterContainsNameCommand(dragonCollection) );
-        this.commandManager.register( new HelpCommand(commandManager) );
-        this.commandManager.register( new HistoryCommand(commandManager) );
-        this.commandManager.register( new InfoCommand(dragonCollection) );
-        this.commandManager.register( new PrintDescendingCommand(dragonCollection) );
-        this.commandManager.register( new PrintFieldDescendingSpeakingCommand(dragonCollection) );
-        this.commandManager.register( new RemoveByIdCommand(dragonCollection) );
-        this.commandManager.register( new SaveCommand(dragonCollection) );
-        this.commandManager.register( new ShowCommand(dragonCollection) );
-        this.commandManager.register( new UpdateIdCommand(dragonCollection) );
-        this.commandManager.register(new NoSuchCommand());
-    }
 
 }

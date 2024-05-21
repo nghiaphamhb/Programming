@@ -1,65 +1,35 @@
 package Server.Manager;
+
 import Server.Commands.*;
-import java.util.*;
 
-/**
- * Command Collection management: command collection + history (list of commands used)
- */
+public class CommandManager extends StandardCommandManager {
+    private DragonCollection dragonCollection;
 
-public class CommandManager {
-    private final Set<Commands> commands;
-    private final ArrayDeque<String> commandHistory;
-    private final int memoryCapicity = 13;
-
-    public CommandManager() {
-        commands = new HashSet<>();
-        commandHistory = new ArrayDeque<>(memoryCapicity);  // only 13 used command in the history
+    public CommandManager(DragonCollection dragonCollection) {
+        super(13);
+        this.dragonCollection = dragonCollection;
+        register();
     }
 
     /**
-     * Initialize a new command into set of commands
-     * @param command new command
+     * Initialize all commands
      */
-    public void register( Commands command ) {
-        commands.add(command);
-    }
-
-    /**
-     * Get collection of commands
-     * @return collection of commands
-     */
-    public Set<Commands> getCommands() {
-        return commands;
-    }
-
-    /**
-     * Get history of used command
-     * @return history of used command
-     */
-    public ArrayDeque<String> getCommandHistory() {
-        return commandHistory;
-    }
-
-    /**
-     * Record the command used in the history
-     * @param command used command
-     */
-    public void addToHistory( String command ) {
-        if ( commandHistory.size() == 13 ) {
-            commandHistory.poll();
-        }
-        if (!command.equals("NoSuchCommand")) commandHistory.add(command);
-    }
-
-    /**
-     * Get a command by his name
-     * @param name name of command
-     * @return command
-     */
-    public Commands getByName(String name){
-        for (Commands c : commands) {
-            if ( c.getName().equals(name)) return c;
-        }
-        return null;
+    public void register() {
+        commands.add( new AddCommand(dragonCollection) );
+        commands.add( new AddIfMaxCommand(dragonCollection) );
+        commands.add( new AddIfMinCommand(dragonCollection) );
+        commands.add( new ClearCommand(dragonCollection) );
+        commands.add( new ExecuteScriptCommand() );
+        commands.add( new ExitCommand() );
+        commands.add( new FilterContainsNameCommand(dragonCollection) );
+        commands.add( new HelpCommand(this) );
+        commands.add( new HistoryCommand(this) );
+        commands.add( new InfoCommand(dragonCollection) );
+        commands.add( new PrintDescendingCommand(dragonCollection) );
+        commands.add( new PrintFieldDescendingSpeakingCommand(dragonCollection) );
+        commands.add( new RemoveByIdCommand(dragonCollection) );
+        commands.add( new ShowCommand(dragonCollection) );
+        commands.add( new UpdateIdCommand(dragonCollection) );
+        commands.add(new NoSuchCommand());
     }
 }

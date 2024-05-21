@@ -2,7 +2,7 @@ package Server.Utility;
 
 import Common.Network.Request;
 import Common.Network.Response;
-import Server.Manager.CommandManager;
+import Server.Manager.StandardCommandManager;
 import Server.Commands.*;
 import java.util.logging.Logger;
 
@@ -10,11 +10,11 @@ import java.util.logging.Logger;
  * The class is used to process requests and create responses
  */
 public class SvHandler {
-    private final CommandManager commandManager;
+    private final StandardCommandManager commandManager;
     private final Logger logger;
 
 
-    public SvHandler(CommandManager commandManager, Logger logger) {
+    public SvHandler(StandardCommandManager commandManager, Logger logger) {
         this.commandManager = commandManager;
         this.logger = logger;
     }

@@ -3,7 +3,7 @@ package Server.Commands;
 import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
-import Server.Manager.CommandManager;
+import Server.Manager.StandardCommandManager;
 
 import java.util.stream.Collectors;
 
@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
  * Command to show the syntax of full commands
  */
 public class HelpCommand extends Commands {
-    private final CommandManager commandManager;
+    private final StandardCommandManager commandManager;
 
-    public HelpCommand(CommandManager commandManager) {
+    public HelpCommand(StandardCommandManager commandManager) {
         super("help", "display help on available commands");
         this.commandManager = commandManager;
     }

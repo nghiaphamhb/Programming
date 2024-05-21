@@ -28,10 +28,9 @@ public class SvApp {
 
             FileManager fileManager = new FileManager(args[0], logger);
             DragonCollection dragonCollection= new DragonCollection(fileManager);
-            CommandManager commandManager = new CommandManager();
 
             Server server = new Server(InetAddress.getLocalHost(), PORT, logger);  //exception
-            SvRunner appRunner = new SvRunner(commandManager, dragonCollection, server, logger);
+            SvRunner appRunner = new SvRunner(dragonCollection, server, logger);
 
             appRunner.run();
         } catch (UnknownHostException e) {

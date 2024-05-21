@@ -21,35 +21,28 @@ public class ScriptReader {
      * Connect to the script
      * @param filePath address of the script
      */
-    public static void setInputStream(String filePath) {
-        try{
+    public static void setInputStream(String filePath) throws FileNotFoundException {
             if (!new File(filePath).exists()) {
                 filePath = "src/main/java/" + filePath;
             }
 
             FileInputStream fileInputStream = new FileInputStream(filePath);
             inputStream = new BufferedInputStream( fileInputStream );
-        } catch (FileNotFoundException e) {
-            logger.log(Level.WARNING,"File " + filePath + " does not exist." );
-        }
     }
 
     /**
      * Read the content in the script
      * @return content
      */
-    public static StringBuilder getContent() {
+    public static StringBuilder getContent() throws IOException {
         StringBuilder content = new StringBuilder();
-        try {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
+        byte[] buffer = new byte[1024];
+        int bytesRead;
 
-            while ( ( bytesRead = inputStream.read(buffer) ) != -1) {
-                content.append(new String(buffer, 0, bytesRead));
-            }
-        } catch ( IOException e ) {
-            logger.log(Level.WARNING,"The contents of the file are empty!" );
+        while ( ( bytesRead = inputStream.read(buffer) ) != -1) {
+            content.append(new String(buffer, 0, bytesRead));
         }
+
         return content;
     }
 
@@ -57,7 +50,7 @@ public class ScriptReader {
      * Process the received content (divide it into lines)
      * @return lines from the content
      */
-    public static String[] getLines() {
+    public static String[] getLines() throws IOException {
         return getContent().toString().split("\\r?\\n");
     }
 

@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * The general design of the commands
  */
-public abstract class Commands implements Command_Interface {
+public abstract class Commands implements CommandInterface {
     private final String name;
     private final String description;
 

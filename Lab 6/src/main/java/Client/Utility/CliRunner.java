@@ -9,6 +9,7 @@ import Common.Exception.CommandNotFoundException;
 import Common.Exception.ScriptRecursionException;
 import Common.Network.Response;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -105,28 +106,41 @@ public class CliRunner implements Runnable{
     }
 
     /**
-     * Run the script
+     * Run the script if the script is valid
      * @param filePath file's path
      * @return program's status after running script
      */
     private ProgramStatus runScript (String filePath)  {
-        List<String> scriptLines;
-        String[] command;
-        ProgramStatus commandStatus = null;
-
         if (filePath.isEmpty()) return ProgramStatus.RUN;
         try {
-            //register file's path to history
-            scriptList.add(filePath);
-
-            //Connect to file and get lines from script file
             ScriptReader.setLogger(logger);
-            ScriptReader.setInputStream(filePath);
-            scriptLines = ScriptReader.getScriptLines();
 
+            //Try to connect to file
+            ScriptReader.setInputStream(filePath); //if did not find filePath, will throw an exception
             Response firstResponse = cliHandler.handle(new String[]{"execute_script", filePath});
             Display.println(firstResponse);
 
+            //register file's path to history
+            scriptList.add(filePath);
+
+            // execute lines in the script
+            executeScriptLines(ScriptReader.getScriptLines());
+        } catch (FileNotFoundException e) {
+            isScriptFound = false;
+            return ProgramStatus.RUN;
+        }
+        updateInput(new Console());
+        return ProgramStatus.ERROR;
+    }
+
+    /**
+     * Execute lines in the script
+     * @param scriptLines lines in the script
+     */
+    private void executeScriptLines(List<String> scriptLines){
+        String[] command;
+        ProgramStatus commandStatus = null;
+        try{
             //Separate every command lines to 2 parts: keyword + argument
             for (int i = 0; i < scriptLines.size(); i++) {
                 command = argumentToCommand(scriptLines.get(i));
@@ -141,6 +155,7 @@ public class CliRunner implements Runnable{
                     i += 8; // because the amount of information needed to create a dragon is 8
                 }
 
+                //check if script recurse
                 if ( command[0].equals("execute_script") ) {
                     for ( String script : scriptList ) {
                         if ( command[1].equals(script) ) throw new ScriptRecursionException();
@@ -154,13 +169,7 @@ public class CliRunner implements Runnable{
             }
         } catch (ScriptRecursionException e) {
             Display.printError("Scripts cannot be called recursively!");
-        } catch (Exception e) {
-            logger.log(Level.WARNING, "Execution of the command failed.");
-            isScriptFound = false;
-            return ProgramStatus.RUN;
         }
-        updateInput(new Console());
-        return ProgramStatus.ERROR;
     }
 
     /**

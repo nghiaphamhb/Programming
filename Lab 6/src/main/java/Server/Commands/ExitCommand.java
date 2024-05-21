@@ -9,7 +9,7 @@ import Common.Network.Response;
  */
 public class ExitCommand extends Commands {
     public ExitCommand() {
-        super("exit", "end the program (without saving to a file)");
+        super("exit", "end the program");
     }
 
 
