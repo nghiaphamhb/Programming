@@ -1,2 +1,2 @@
-JAVA- Программирование в ИТМО (h1)  
+**JAVA- Программирование в ИТМО**  
 ![Just code to fail](https://i.imgur.com/tOtK2dx.gif)
