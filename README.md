@@ -1,2 +1,2 @@
 Программирование в ИТМО =) 
-![Just code to fail](https://imgur.com/tOtK2dx)
+![Just code to fail](https://i.imgur.com/tOtK2dx.gif)
