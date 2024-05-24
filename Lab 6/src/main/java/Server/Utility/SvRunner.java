@@ -76,6 +76,8 @@ public class SvRunner implements Runnable{
 
             //if this is exit command, so disconnect to client and program will be ended
             if (requestFromClient.getNameCommand().equals("exit")) stop();
+
+            server.disconnectFromClient();
         }
     }
 
