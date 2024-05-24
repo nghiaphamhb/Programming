@@ -1,5 +1,0 @@
-First, we need a folder of source codes
-javac Main.java   // create all class in the folder
-echo "Main-Class: Main" > Manifest.txt 
-jar cfm Main.jar Manifest.txt *.class 	// create the JAR file (Main.jar- name of JAR file we want to create, Manifest.txt and *.class are components of creation)
-java -jar Main.jar   //run the JAR file
