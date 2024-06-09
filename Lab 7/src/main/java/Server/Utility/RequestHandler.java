@@ -3,7 +3,7 @@ package Server.Utility;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Commands.*;
-import Server.Manager.CommandManager;
+import Server.Manager.Memory.CommandManager;
 
 import java.util.concurrent.Callable;
 

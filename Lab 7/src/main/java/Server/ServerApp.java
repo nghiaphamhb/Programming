@@ -1,8 +1,8 @@
 package Server;
 
-import Server.Manager.CollectionManager;
-import Server.Manager.DatabaseCollectionManager;
-import Server.Manager.DatabaseUserManager;
+import Server.Manager.Memory.CollectionManager;
+import Server.Manager.Database.DatabaseCollectionManager;
+import Server.Manager.Database.DatabaseUserManager;
 import Server.Utility.DatabaseHandler;
 import Server.Utility.ServerAppRunner;
 

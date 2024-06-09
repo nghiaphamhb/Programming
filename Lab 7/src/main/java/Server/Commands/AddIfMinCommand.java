@@ -6,8 +6,8 @@ import Common.Exception.FailureToCreateObjectException;
 import Common.Network.Request;
 import Common.Network.Response;
 import Common.Data.Dragon.Dragon;
-import Server.Manager.CollectionManager;
-import Server.Manager.DatabaseCollectionManager;
+import Server.Manager.Memory.CollectionManager;
+import Server.Manager.Database.DatabaseCollectionManager;
 
 /**
  * Command to add a new dragon if his age is maximum in the collection

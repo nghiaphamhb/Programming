@@ -3,7 +3,7 @@ package Server.Commands;
 import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
-import Server.Manager.CommandManager;
+import Server.Manager.Memory.CommandManager;
 
 /**
  * Command to display the history of used commands (maximum only show the last 13 commands)

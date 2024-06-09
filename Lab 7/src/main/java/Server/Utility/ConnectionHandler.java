@@ -3,7 +3,7 @@ package Server.Utility;
 import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
-import Server.Manager.CommandManager;
+import Server.Manager.Memory.CommandManager;
 import Server.Network.*;
 import Server.ServerApp;
 import org.apache.commons.lang.SerializationUtils;

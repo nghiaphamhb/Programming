@@ -55,6 +55,7 @@ public class ClientAppRunner implements Runnable{
                 requestToServer = authHandler.handle();
                 if (requestToServer == null) continue;
                 responseFromServer = client.sendAndReceiveCommand(requestToServer);
+                if (responseFromServer.getMessage() == null) throw new Exception();
                 Display.println(responseFromServer);
             } catch (Exception e) {
                 Display.printError("Mistake while trying to authenticate user.");

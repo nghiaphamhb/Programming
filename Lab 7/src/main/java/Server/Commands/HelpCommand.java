@@ -3,7 +3,7 @@ package Server.Commands;
 import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
-import Server.Manager.CommandManager;
+import Server.Manager.Memory.CommandManager;
 
 import java.util.stream.Collectors;
 

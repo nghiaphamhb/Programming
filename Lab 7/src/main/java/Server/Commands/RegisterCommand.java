@@ -5,7 +5,7 @@ import Common.Exception.UserAlreadyExistsException;
 import Common.Network.Request;
 import Common.Network.Response;
 import Common.Network.ProgramCode;
-import Server.Manager.DatabaseUserManager;
+import Server.Manager.Database.DatabaseUserManager;
 import Server.Utility.PasswordHasher;
 
 /**

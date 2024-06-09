@@ -8,8 +8,8 @@ import Common.Exception.IdNotFoundException;
 import Common.Exception.PermissionDeniedException;
 import Common.Network.Request;
 import Common.Network.Response;
-import Server.Manager.CollectionManager;
-import Server.Manager.DatabaseCollectionManager;
+import Server.Manager.Memory.CollectionManager;
+import Server.Manager.Database.DatabaseCollectionManager;
 
 /**
  * Delete the dragon that has the specified ID

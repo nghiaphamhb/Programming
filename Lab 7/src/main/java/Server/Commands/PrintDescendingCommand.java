@@ -4,7 +4,7 @@ import Common.Data.Dragon.Dragon;
 import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
-import Server.Manager.CollectionManager;
+import Server.Manager.Memory.CollectionManager;
 
 import java.util.Comparator;
 import java.util.stream.Collectors;

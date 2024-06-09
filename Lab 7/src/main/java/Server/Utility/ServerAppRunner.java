@@ -1,12 +1,12 @@
 package Server.Utility;
 
 
-import Server.Manager.CommandManager;
-import Server.Manager.CollectionManager;
+import Server.Manager.Memory.CommandManager;
+import Server.Manager.Memory.CollectionManager;
 import Server.ServerApp;
 import Server.Network.Server;
-import Server.Manager.DatabaseCollectionManager;
-import Server.Manager.DatabaseUserManager;
+import Server.Manager.Database.DatabaseCollectionManager;
+import Server.Manager.Database.DatabaseUserManager;
 
 import java.io.IOException;
 import java.net.InetAddress;

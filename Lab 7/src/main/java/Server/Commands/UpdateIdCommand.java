@@ -1,14 +1,13 @@
 package Server.Commands;
 
-import Common.Data.Dragon.Coordinates;
 import Common.Data.Dragon.Dragon;
 import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Exception.IdNotFoundException;
 import Common.Exception.PermissionDeniedException;
 import Common.Network.Request;
 import Common.Network.Response;
-import Server.Manager.CollectionManager;
-import Server.Manager.DatabaseCollectionManager;
+import Server.Manager.Memory.CollectionManager;
+import Server.Manager.Database.DatabaseCollectionManager;
 
 /**
  * The command to update information from the dragon that has the specified ID
