@@ -13,13 +13,13 @@ import java.util.Arrays;
  */
 public class ClientSender {
     private final int DATA_SIZE;
-    private final DatagramChannel dc;
-    private final SocketAddress serverAddr;
+    private final DatagramChannel datagramChannel;
+    private final SocketAddress serverAddress;
 
-    public ClientSender(int PACKET_SIZE, DatagramChannel dc, SocketAddress addr) {
+    public ClientSender(int PACKET_SIZE, DatagramChannel datagramChannel, SocketAddress serverAddress) {
         this.DATA_SIZE = PACKET_SIZE - 1;
-        this.dc = dc;
-        this.serverAddr = addr;
+        this.datagramChannel = datagramChannel;
+        this.serverAddress = serverAddress;
     }
 
     /**
@@ -46,7 +46,7 @@ public class ClientSender {
                 byte[] lastChunk = buffer.array();
 
                 try {
-                    dc.send(ByteBuffer.wrap(lastChunk), serverAddr);
+                    datagramChannel.send(ByteBuffer.wrap(lastChunk), serverAddress);
                 } catch (IOException e){
                     Display.printError("Failure to receive response from Server.");
                 }
@@ -58,12 +58,11 @@ public class ClientSender {
                 byte[] sentChunk = buffer.array();
 
                 try {
-                    dc.send(ByteBuffer.wrap(sentChunk), serverAddr);
+                    datagramChannel.send(ByteBuffer.wrap(sentChunk), serverAddress);
                 } catch (IOException e){
                     Display.printError("Failure to receive response from Server.");
                 }
             }
-            Display.println("Complete send data to " + serverAddr);
         }
     }
 }

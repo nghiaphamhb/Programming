@@ -1,18 +1,19 @@
 package Server.Manager;
 
-import Client.Utility.Display;
 import Common.Data.User;
 import Server.ServerApp;
-import Server.Utility.Database.COLUMNS;
-import Server.Utility.Database.DatabaseHandler;
-import Server.Utility.Database.TABLES;
+import Server.Utility.Enum.COLUMNS;
+import Server.Utility.DatabaseHandler;
+import Server.Utility.Enum.TABLES;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 
-//quan li cac user trong database
+/**
+ * A manager of user database.
+ */
 public class DatabaseUserManager {
     // USER_TABLE
     private final String SELECT_USER_BY_ID = "SELECT * FROM " + TABLES.USER +
@@ -32,6 +33,10 @@ public class DatabaseUserManager {
         this.databaseHandler = databaseHandler;
     }
 
+    /**
+     * @param userId User id.
+     * @return User by id.
+     */
     public User getUserById(long userId) {
         User user = null;
         PreparedStatement preparedSelectUserByIdStatement = null;
@@ -54,6 +59,12 @@ public class DatabaseUserManager {
         return user;
     }
 
+    /**
+     * Check user by username and password.
+     *
+     * @param user User.
+     * @return Result set.
+     */
     public boolean checkUserByUsernameAndPassword(User user){
         PreparedStatement preparedSelectUserByUsernameAndPasswprdStatement = null;
         try{
@@ -71,7 +82,13 @@ public class DatabaseUserManager {
         return false;
     }
 
-    public long getUserIdByUser(User user){
+    /**
+     * Get user id by username.
+     *
+     * @param user User.
+     * @return User id.
+     */
+    public long getUserIdByUsername(User user){
         Long userId = null;
         PreparedStatement preparedSelectUserByUsernameStatement = null;
         try{
@@ -90,10 +107,16 @@ public class DatabaseUserManager {
         return userId;
     }
 
+    /**
+     * Insert user.
+     * @param user User.
+     * @return Status of insert.
+     */
+
     public boolean insertUser(User user) {
         PreparedStatement preparedInsertUserStatement = null;
         try {
-            if (getUserIdByUser(user) != -1L) return false;
+            if (getUserIdByUsername(user) != -1L) return false;
             preparedInsertUserStatement =
                     databaseHandler.getPreparedStatement(INSERT_USER, false);
             preparedInsertUserStatement.setString(1, user.getUserName());

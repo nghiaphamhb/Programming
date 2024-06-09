@@ -100,12 +100,11 @@ public class InputHandler {
      * Program sleeps while waiting response from server
      */
     public void sleep() {
-//        logger.log(Level.INFO, "The command is accepted. Initialize the Dragon generator... ");
         Display.println("The command is accepted. Initialize the Dragon generator... ");
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
-//            logger.log(Level.SEVERE, "Error exist while initializing the id");
+            Display.printError( "Error exist while initializing the id");
         }
     }
 }

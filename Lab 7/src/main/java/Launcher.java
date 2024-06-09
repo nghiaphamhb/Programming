@@ -2,6 +2,9 @@ import Client.ClientApp;
 import Common.Exception.CommandSyntaxIsWrongException;
 import Server.ServerApp;
 
+/**
+ * Main class
+ */
 public class Launcher {
     public static void main(String[] args) {
         try {

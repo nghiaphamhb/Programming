@@ -7,16 +7,18 @@ import Common.Data.Dragon.Dragon;
 import Common.Data.Dragon.DragonHead;
 import Common.Data.User;
 import Server.ServerApp;
-import Server.Utility.Database.COLUMNS;
-import Server.Utility.Database.DML;
-import Server.Utility.Database.DatabaseHandler;
+import Server.Utility.Enum.COLUMNS;
+import Server.Utility.Enum.DML;
+import Server.Utility.DatabaseHandler;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.logging.Level;
 
-//Interact(management) with collections in the database
+/**
+ * Class to manager collection's data in the DB
+ */
 public class DatabaseCollectionManager {
     private Server.Manager.DatabaseUserManager DatabaseUserManager;
     private DatabaseHandler databaseHandler;
@@ -81,7 +83,7 @@ public class DatabaseCollectionManager {
             if (newDragon.getColor() != null) dragonTablePreparedStatement.setString(7, newDragon.getColor().toString());
 
             dragonTablePreparedStatement.setLong(8, dragonHeadId);
-            dragonTablePreparedStatement.setLong(9, DatabaseUserManager.getUserIdByUser(user));
+            dragonTablePreparedStatement.setLong(9, DatabaseUserManager.getUserIdByUsername(user));
 
             if (dragonTablePreparedStatement.executeUpdate() == 0) throw new SQLException();
             ServerApp.logger.log(Level.INFO, "Executed INSERT_DRAGON.");
@@ -101,6 +103,11 @@ public class DatabaseCollectionManager {
         return false;
     }
 
+    /**
+     * Update dragon by id
+     * @param dragonId dragon id
+     * @param updatedDragon updated dragon
+     */
     public void updateDragonById(long dragonId, Dragon updatedDragon){
         PreparedStatement pstUpdateName = null;
         PreparedStatement pstUpdateCoordinates = null;
@@ -190,6 +197,10 @@ public class DatabaseCollectionManager {
         }
     }
 
+    /**
+     * Delete dragon by id
+     * @param dragonId
+     */
     public void deleteDragonById(long dragonId){
         PreparedStatement pstDeleteDragonById = null;
         try{
@@ -204,6 +215,10 @@ public class DatabaseCollectionManager {
         }
     }
 
+    /**
+     * Get collection
+     * @return collection
+     */
     public HashSet<Dragon> getCollection(){
         HashSet<Dragon> dragonsCollection = new HashSet<>();
         PreparedStatement preparedStatement = null;
@@ -213,10 +228,8 @@ public class DatabaseCollectionManager {
             while (resultSet.next()) {
                 dragonsCollection.add(createDragon(resultSet));
             }
-//        } catch (SQLException e) {
-//            ServerApp.logger.log(Level.WARNING, "Download failed collection due to empty database.");
-        } catch (Exception e) {
-            ServerApp.logger.log(Level.WARNING, e.toString());
+        } catch (SQLException e) {
+            ServerApp.logger.log(Level.WARNING, "Download failed collection due to empty database.");
         } finally {
             databaseHandler.closePreparedStatement(preparedStatement);
         }
@@ -233,7 +246,6 @@ public class DatabaseCollectionManager {
         }
     }
 
-//    public boolean check
 
     //----------------Auxiliary functions for the main functions------------------------------(Private)-----------------
     /** @param resultSet Result set parameters of Dragon.
@@ -258,6 +270,12 @@ public class DatabaseCollectionManager {
 
         return new Dragon(id, name, coordinates, creationDate, age, weight, speaking, color, dragonHead, user);
     }
+
+    /**
+     * Get coordinates id by dragon id
+     * @param dragonId
+     * @return
+     */
     private Long getCoordinatesIdByDragonId(long dragonId){
         Long coordinates_id = null;
         PreparedStatement preparedStatement = null;
@@ -277,6 +295,11 @@ public class DatabaseCollectionManager {
         return coordinates_id;
     }
 
+    /**
+     * Get coordinates by dragon id
+     * @param dragonId
+     * @return
+     */
     private Coordinates getCoordinatesByDragonId(long dragonId){
         Coordinates coordinates = null;
         PreparedStatement preparedStatement = null;
@@ -300,6 +323,11 @@ public class DatabaseCollectionManager {
         return coordinates;
     }
 
+    /**
+     * Get dragon head id by dragon id
+     * @param dragonId
+     * @return
+     */
     private Long getDragonHeadIdByDragonId(long dragonId){
         Long dragon_head_id = null;
         PreparedStatement preparedStatement = null;
@@ -319,6 +347,11 @@ public class DatabaseCollectionManager {
         return dragon_head_id;
     }
 
+    /**
+     * Get dragon head by dragon id
+     * @param dragonId
+     * @return
+     */
     private DragonHead getDragonHeadByDragonId(long dragonId){
         DragonHead dragonHead = null;
         PreparedStatement preparedStatement = null;

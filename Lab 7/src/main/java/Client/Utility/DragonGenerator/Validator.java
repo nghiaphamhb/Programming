@@ -4,7 +4,6 @@ import Common.Data.Dragon.Color;
 import Common.Data.Dragon.Dragon;
 import Common.Data.Dragon.DragonHead;
 import Client.Utility.Display;
-import Server.Manager.CollectionManager;
 
 
 /**
@@ -17,16 +16,6 @@ public class Validator {
         dragon = new Dragon();
     }
 
-    /**
-     * Check the dragon's ID
-     * @param id the dragon's ID
-     * @return verification result
-     */
-//    public boolean checkId( Long id ) {
-//        if ( id <= 0 || CollectionManager.checkExistById(id) || id == null ) return false;
-//        dragon.setId(id);
-//        return true;
-//    }
 
     /**
      * Check the name of the dragon

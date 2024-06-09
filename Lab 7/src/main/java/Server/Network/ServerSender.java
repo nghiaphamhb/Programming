@@ -50,8 +50,6 @@ public class ServerSender {
                     dc.send(ByteBuffer.wrap(tempChunk), clientAddr);
                     ServerApp.logger.log(Level.INFO, "Sending chunks...");
                 }
-
-
         }
 
         ServerApp.logger.log(Level.INFO,"Response sending to client complected.");

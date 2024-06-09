@@ -1,6 +1,7 @@
 package Client.Utility;
 
 import Client.Network.Client;
+import Client.Utility.Authentication.AuthHandler;
 import Client.Utility.DragonGenerator.ByUser.Console;
 import Client.Utility.DragonGenerator.Input;
 import Common.Data.User;
@@ -32,6 +33,9 @@ public class ClientAppRunner implements Runnable{
 
     }
 
+    /**
+     * Run
+     */
     @Override
     public void run(){
         client.connectToServer();
@@ -40,6 +44,9 @@ public class ClientAppRunner implements Runnable{
         client.disconnectToServer();
     }
 
+    /**
+     * Process authentication
+     */
     private void processAuthentication(){
         Request requestToServer = null;
         Response responseFromServer = null;
@@ -47,7 +54,6 @@ public class ClientAppRunner implements Runnable{
             try{
                 requestToServer = authHandler.handle();
                 if (requestToServer == null) continue;
-                Display.println(requestToServer);
                 responseFromServer = client.sendAndReceiveCommand(requestToServer);
                 Display.println(responseFromServer);
             } catch (Exception e) {
@@ -57,6 +63,9 @@ public class ClientAppRunner implements Runnable{
         user = requestToServer.getUser();
     }
 
+    /**
+     * Process request to server
+     */
     private void processRequestToServer(){
         scriptHandler = new ScriptHandler(inputHandler, input, user);
         isScriptFound = scriptHandler.isScriptFound;

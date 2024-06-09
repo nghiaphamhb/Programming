@@ -12,11 +12,11 @@ import java.nio.channels.DatagramChannel;
  */
 public class ClientReceiver {
     private final int PACKET_SIZE;
-    private final DatagramChannel dc;
+    private final DatagramChannel datagramChannel;
 
-    public ClientReceiver(int PACKET_SIZE, DatagramChannel dc) {
+    public ClientReceiver(int PACKET_SIZE, DatagramChannel datagramChannel) {
         this.PACKET_SIZE = PACKET_SIZE;
-        this.dc = dc;
+        this.datagramChannel = datagramChannel;
     }
 
     /**
@@ -30,7 +30,6 @@ public class ClientReceiver {
         while(!dataIsReceived) {
             byte[] data = receivedData(PACKET_SIZE);  //exception
             if (data == null) return null;
-            Display.println("Im waiting ");
             if (data[data.length - 1] == 1) {
                 dataIsReceived = true;
             }
@@ -39,7 +38,6 @@ public class ClientReceiver {
             buffer.put(data);
             result = buffer.array();
         }
-        Display.println("Complete get data");
         return result;
     }
 
@@ -52,7 +50,7 @@ public class ClientReceiver {
         SocketAddress serverAddress = null;
         while (serverAddress == null) {
             try {
-            serverAddress = dc.receive(buffer);  //exception
+            serverAddress = datagramChannel.receive(buffer);  //exception
             } catch (IOException e) {
                 Display.printError("Server is not accessible.");
                 return null;

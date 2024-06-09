@@ -1,6 +1,5 @@
 package Server.Network;
 
-import Client.Utility.Display;
 import com.google.common.primitives.Bytes;
 
 import java.io.IOException;
@@ -36,21 +35,20 @@ public class ServerReceiver {
         while(!received) {
             try {
                 var buf = ByteBuffer.allocate(PACKET_SIZE);
-                buf.clear();
                 clientAddr = dc.receive(buf);
                 if (clientAddr == null) throw new IOException();
                 byte[] data = buf.array();
 
                 ServerApp.logger.log(Level.INFO, "Server successfully connected to the client " + clientAddr);
-                ServerApp.logger.info("Getting request from client" + clientAddr);
+                ServerApp.logger.info("Getting request from client " + clientAddr);
 
                 if (data[data.length - 1] == 1) {
                     received = true;
-                    ServerApp.logger.info("Request getting from client was done");
+                    ServerApp.logger.info("Request getting from client was done.");
                 }
                 result = Bytes.concat(result, Arrays.copyOf(data, data.length - 1));
             } catch (IOException e) {
-                continue;
+//                continue;
             }
 
         }

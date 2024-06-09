@@ -6,7 +6,11 @@ import Common.Network.Request;
 import Common.Network.Response;
 import Common.Network.ProgramCode;
 import Server.Manager.DatabaseUserManager;
+import Server.Utility.PasswordHasher;
 
+/**
+ * Command to log in
+ */
 public class LoginCommand extends AbstractCommand {
     private DatabaseUserManager databaseUserManager;
 
@@ -21,7 +25,8 @@ public class LoginCommand extends AbstractCommand {
         ProgramCode code = null;
         try{
             User user = request.getUser();
-            if (databaseUserManager.checkUserByUsernameAndPassword(user)){
+            User hashedUser = new User(user.getUserName(), PasswordHasher.hashPassword(user.getPassword()));
+            if (databaseUserManager.checkUserByUsernameAndPassword(hashedUser)){
                 message = "User \'" + user.getUserName() + "\' is accepted.";
                 code = ProgramCode.OK;
             } else throw new UserIsNotFoundException();

@@ -1,15 +1,13 @@
 package Server;
 
-import Server.Manager.CommandManager;
 import Server.Manager.CollectionManager;
-import Server.Network.Server;
 import Server.Manager.DatabaseCollectionManager;
 import Server.Manager.DatabaseUserManager;
-import Server.Utility.Database.DatabaseHandler;
+import Server.Utility.DatabaseHandler;
 import Server.Utility.ServerAppRunner;
 
 import java.io.IOException;
-import java.net.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -29,12 +27,11 @@ public class ServerApp {
             DatabaseUserManager databaseUserManager = new DatabaseUserManager(databaseHandler);
             DatabaseCollectionManager databaseCollectionManager = new DatabaseCollectionManager(databaseUserManager, databaseHandler);
             CollectionManager collectionManager = new CollectionManager(databaseCollectionManager);
-            CommandManager commandManager = new CommandManager(collectionManager, databaseUserManager, databaseCollectionManager);
 
-            ServerAppRunner app = new ServerAppRunner(10, collectionManager, port, databaseUserManager, databaseCollectionManager);
+            ServerAppRunner app = new ServerAppRunner(collectionManager, port, databaseUserManager, databaseCollectionManager);
             app.run();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ServerApp.logger.log(Level.WARNING, e.toString());
         }
 
     }

@@ -9,18 +9,18 @@ import java.net.*;
 import java.nio.channels.DatagramChannel;
 
 /**
- * Client
+ * Client class to connect, send, get data with server
  */
 public class Client {
-    private final int PACKET_SIZE = 2048;
+    private final int PACKET_SIZE = 1024*2;
 
-    private final SocketAddress serverAddr;
-    private DatagramChannel dc;
+    private final SocketAddress serverAddress;
+    private DatagramChannel datagramChannel;
     private ClientSender clientSender;
     private ClientReceiver clientReceiver;
 
     public Client(InetAddress hostAddress, int serverPort) throws IOException {
-        this.serverAddr = new InetSocketAddress(hostAddress, serverPort);
+        this.serverAddress = new InetSocketAddress(hostAddress, serverPort);
 
     }
 
@@ -31,12 +31,12 @@ public class Client {
         Display.println("DatagramChannel is connecting to the server...");
         while(true){
             try{
-                dc = DatagramChannel.open().bind(null).connect(serverAddr);
-                dc.configureBlocking(false);
-                if (dc.isConnected()){
-                    Display.println("DataChannel connected to " + serverAddr);
-                    clientSender = new ClientSender(PACKET_SIZE, dc, serverAddr);
-                    clientReceiver = new ClientReceiver(PACKET_SIZE, dc);
+                datagramChannel = DatagramChannel.open().bind(null).connect(serverAddress);
+                datagramChannel.configureBlocking(false);
+                if (datagramChannel.isConnected()){
+                    Display.println("DataChannel connected to " + serverAddress);
+                    clientSender = new ClientSender(PACKET_SIZE, datagramChannel, serverAddress);
+                    clientReceiver = new ClientReceiver(PACKET_SIZE, datagramChannel);
                     break;
                 }
             } catch (IOException e) {
@@ -51,7 +51,7 @@ public class Client {
     public void disconnectToServer() {
         Display.println("DatagramChannel disconnected to Server");
         try {
-            dc.disconnect();
+            datagramChannel.disconnect();
         } catch (IOException e) {
             Display.printError("Could not disconnect to Server");
         }

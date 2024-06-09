@@ -18,7 +18,6 @@ public class CollectionManager {
     private ConcurrentHashMap<Long, Dragon> synchronizedCollection;
     private static LocalDateTime lastInitTime;
     private LocalDateTime saveTime;
-//    private static final Set<Long> idList = new HashSet<>();   //to control the uniqueness of thís attribute
     private DatabaseCollectionManager databaseCollectionManager;
 
     public CollectionManager(DatabaseCollectionManager databaseCollectionManager) {
@@ -27,6 +26,10 @@ public class CollectionManager {
         convertCollectionStructure();
         saveTime = null;
     }
+
+    /**
+     * Load collection's data from DB
+     */
     private void loadCollection(){
         try{
             collection  = databaseCollectionManager.getCollection();
@@ -38,6 +41,9 @@ public class CollectionManager {
         }
     }
 
+    /**
+     * Convert collection to sync
+     */
     private void convertCollectionStructure(){
         synchronizedCollection = new ConcurrentHashMap<>();
         for (Dragon dragon : collection) {
@@ -45,17 +51,6 @@ public class CollectionManager {
         };
     }
 
-    /**
-     * Check the presence of the dragon by ID
-     * @param id the ID of the dragon that you want to know if there is in the collection
-     * @return dragon presence
-     */
-//    public static boolean checkExistById (Long id){
-//        for ( Long i : idList ){
-//            if (Objects.equals(i, id)) return true;
-//        }
-//        return false;
-//    }
 
     /**
      * Return the dragon by ID
@@ -152,7 +147,6 @@ public class CollectionManager {
      */
     public void removeFromCollection(Dragon dragon){
         synchronizedCollection.remove(dragon.getId());
-//        idList.remove( dragon.getId() );
     }
 
     /**
@@ -160,7 +154,6 @@ public class CollectionManager {
      * */
     public void clearCollection(){
         synchronizedCollection.clear();
-//        idList.clear();
     }
 
     /**

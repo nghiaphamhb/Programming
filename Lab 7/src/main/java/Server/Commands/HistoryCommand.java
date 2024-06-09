@@ -3,14 +3,14 @@ package Server.Commands;
 import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
-import Server.Manager.StandardCommandManager;
+import Server.Manager.CommandManager;
 
 /**
  * Command to display the history of used commands (maximum only show the last 13 commands)
  */
 public class HistoryCommand extends AbstractCommand {
-    private final StandardCommandManager commandManager;
-    public HistoryCommand(StandardCommandManager commandManager) {
+    private final CommandManager commandManager;
+    public HistoryCommand(CommandManager commandManager) {
         super("history", "print the last 13 commands (without their arguments)");
         this.commandManager = commandManager;
     }

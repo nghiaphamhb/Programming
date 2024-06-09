@@ -4,7 +4,15 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Hashes password.
+ */
 public class PasswordHasher {
+    /**
+     * Hashes password;.
+     * @param password Password itself.
+     * @return Hashed password.
+     */
     public static String hashPassword(String password){
         try {
             byte[] bytes = password.getBytes();

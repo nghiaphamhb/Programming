@@ -7,7 +7,6 @@ import Client.Utility.Display;
 import Client.Utility.DragonGenerator.Validator;
 
 import java.util.InputMismatchException;
-import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -24,16 +23,6 @@ public class Console implements Input {
         return new Scanner(System.in);
     }
 
-//    @Override
-//    public void inputId(){
-//        Long id = null;
-//        do {
-//            Random random = new Random();
-//            long maxValue = 1000;
-//            long minValue = 0;
-//            id = minValue + (long) ( random.nextDouble() * ( maxValue - minValue ) );
-//        } while ( !validator.checkId(id) );
-//    }
 
     @Override
     public void inputName(){
@@ -163,7 +152,6 @@ public class Console implements Input {
 
     @Override
     public Dragon buildDragon() {
-//        inputId();
         inputName();
         inputCoordinate();
         inputAge();

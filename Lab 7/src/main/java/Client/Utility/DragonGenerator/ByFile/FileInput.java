@@ -7,7 +7,6 @@ import Client.Utility.Display;
 import Client.Utility.DragonGenerator.Validator;
 
 import java.util.InputMismatchException;
-import java.util.Random;
 
 /**
  * Get dragon information through a script
@@ -21,16 +20,6 @@ public class FileInput implements Input {
         this.validator = new Validator();
     }
 
-//    @Override
-//    public void inputId(){
-//        Long id = null;
-//        do {
-//            Random random = new Random();
-//            long maxValue = 1000;
-//            long minValue = 0;
-//            id = minValue + (long) ( random.nextDouble() * ( maxValue - minValue ) );
-//        } while ( !validator.checkId(id) );
-//    }
     @Override
     public void inputName(){
         String name = null;
@@ -171,7 +160,6 @@ public class FileInput implements Input {
 
     @Override
     public Dragon buildDragon() {
-//        inputId();
         inputName();
         inputCoordinate();
         inputAge();

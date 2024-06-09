@@ -1,7 +1,5 @@
 package Server.Network;
 
-import Client.Utility.Display;
-
 import java.io.IOException;
 import java.net.*;
 import java.nio.channels.DatagramChannel;
@@ -29,12 +27,10 @@ public class Server {
         try {
             dc.setOption(StandardSocketOptions.SO_REUSEADDR, true).bind(serverAddr);
         } catch (BindException e){
-            Display.printError(e);
+            ServerApp.logger.log(Level.WARNING, e.toString());
         }
-        this.dc.configureBlocking(false);
         this.serverReceiver = new ServerReceiver(PACKET_SIZE, dc);
     }
-
 
     public DatagramChannel getDc() {
         return dc;
@@ -84,8 +80,8 @@ public class Server {
      */
     public byte[] receiveData() {
         byte[] data = serverReceiver.receiveData();
-        Display.println("Server received data");
         this.clientAddr = serverReceiver.getClientAddr();
+        this.serverSender = new ServerSender(PACKET_SIZE, dc, clientAddr);
         return data;
     }
 

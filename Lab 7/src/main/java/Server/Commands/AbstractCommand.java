@@ -1,7 +1,5 @@
 package Server.Commands;
 
-import Common.Data.User;
-
 import java.util.Objects;
 
 /**

@@ -7,11 +7,6 @@ import Common.Data.Dragon.Dragon;
  */
 public interface Input {
     /**
-     * The new dragon gets its ID
-     */
-//    void inputId();
-
-    /**
      * A new dragon gets its name
      */
     void inputName();

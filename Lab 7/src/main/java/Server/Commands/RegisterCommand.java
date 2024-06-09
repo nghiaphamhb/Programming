@@ -6,7 +6,11 @@ import Common.Network.Request;
 import Common.Network.Response;
 import Common.Network.ProgramCode;
 import Server.Manager.DatabaseUserManager;
+import Server.Utility.PasswordHasher;
 
+/**
+ * Command to register
+ */
 public class RegisterCommand extends AbstractCommand {
     private DatabaseUserManager databaseUserManager;
 
@@ -20,7 +24,8 @@ public class RegisterCommand extends AbstractCommand {
         String message = "";
         try{
             User user = request.getUser();
-            if (!databaseUserManager.insertUser(user)) throw new UserAlreadyExistsException();
+            User hashedUser = new User(user.getUserName(), PasswordHasher.hashPassword(user.getPassword()));
+            if (!databaseUserManager.insertUser(hashedUser)) throw new UserAlreadyExistsException();
             message = "User \'" + user.getUserName() + "\' with password \'" + "*".repeat(user.getPassword().length())
                     + "\' was registered.";
         } catch (UserAlreadyExistsException e) {

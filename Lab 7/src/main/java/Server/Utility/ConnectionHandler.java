@@ -1,6 +1,5 @@
 package Server.Utility;
 
-import Client.Utility.Display;
 import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
@@ -10,49 +9,48 @@ import Server.ServerApp;
 import org.apache.commons.lang.SerializationUtils;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.*;
 import java.util.logging.Level;
 
-// xu li cac nhiem vu da luong
+/**
+ * Handles user connection.
+ */
 public class ConnectionHandler implements Runnable{
     private Server server;
     private CommandManager commandManager;
     private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(1);
     private ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+    private ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
 
-    public ConnectionHandler(Server server) {
+    public ConnectionHandler(Server server, CommandManager commandManager) {
         this.server = server;
+        this.commandManager = commandManager;
     }
 
+    /**
+     * Run the handler
+     */
     @Override
     public void run() {
         Request requestFromUser = null;
         Response responseToUser = null;
-        Display.printError("Connection Handler is running.");
-//        boolean isStopped = false;
         do {
+            //Get request
             byte[] dataFromUser = server.receiveData();
             requestFromUser = (Request) SerializationUtils.deserialize(dataFromUser);
-            Display.println("Da nhan duoc request: " + requestFromUser);
-            //nhan request
-            Future<Response> responseFuture = fixedThreadPool.submit(new RequestHandler(commandManager, requestFromUser));
-            try {
-                responseToUser = responseFuture.get();
-                Display.println("Da tao duoc response:" + responseToUser);
-            } catch (InterruptedException e) {
-                Display.println(e);
-            } catch (ExecutionException e) {
-                Display.println(e);
-            }
-            ServerApp.logger.info("Запрос '" + requestFromUser.getNameCommand() + "' обработан.");
+            ServerApp.logger.log(Level.INFO, "Request received: " + requestFromUser);
 
-            //xu li du lieu
+            //Process request and make response
+            try {
+                Future<Response> responseFuture = fixedThreadPool.submit(new RequestHandler(commandManager, requestFromUser));
+                responseToUser = responseFuture.get();
+            } catch (InterruptedException | ExecutionException e) {
+                ServerApp.logger.log(Level.WARNING, e.toString());
+            }
+            ServerApp.logger.info("Request '" + requestFromUser.getNameCommand() + "' processed.");
+
+            //Send response to user
             Response finalResponseToUser = responseToUser;
-            //gui phan hoi toi user
             byte[] dataToUser = SerializationUtils.serialize(finalResponseToUser);
             ServerApp.logger.log(Level.INFO, "Response from server: " + finalResponseToUser);
             try {
@@ -65,10 +63,8 @@ public class ConnectionHandler implements Runnable{
                     }
                     return false;
                 }).get() ) break;
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
+            } catch (InterruptedException | ExecutionException e) {
+                ServerApp.logger.log(Level.WARNING, e.toString());
             }
 
         } while (responseToUser.getResponseCode() != ProgramCode.SERVER_EXIT &&
