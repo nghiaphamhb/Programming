@@ -3,6 +3,7 @@ package Server.Utility;
 import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
+import Server.Manager.Database.DatabaseUserManager;
 import Server.Manager.Memory.CommandManager;
 import Server.Network.*;
 import Server.ServerApp;
@@ -18,13 +19,14 @@ import java.util.logging.Level;
 public class ConnectionHandler implements Runnable{
     private Server server;
     private CommandManager commandManager;
+    private DatabaseUserManager databaseUserManager;
     private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(1);
     private ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
-    private ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
 
-    public ConnectionHandler(Server server, CommandManager commandManager) {
+    public ConnectionHandler(Server server, CommandManager commandManager, DatabaseUserManager databaseUserManager) {
         this.server = server;
         this.commandManager = commandManager;
+        this.databaseUserManager = databaseUserManager;
     }
 
     /**
@@ -42,7 +44,7 @@ public class ConnectionHandler implements Runnable{
 
             //Process request and make response
             try {
-                Future<Response> responseFuture = fixedThreadPool.submit(new RequestHandler(commandManager, requestFromUser));
+                Future<Response> responseFuture = fixedThreadPool.submit(new RequestHandler(commandManager, requestFromUser,databaseUserManager));
                 responseToUser = responseFuture.get();
             } catch (InterruptedException | ExecutionException e) {
                 ServerApp.logger.log(Level.WARNING, e.toString());

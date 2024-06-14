@@ -1,6 +1,6 @@
 package Common.Data;
 
-import Common.Data.Role.*;
+import Server.Utility.Role.*;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -11,18 +11,15 @@ import java.util.Objects;
 public class User implements Serializable {
     private String userName;
     private String password;
-    private Roles role;
 
     public User(String userName, String password) {
         this.userName = userName;
         this.password = password;
-        this.role = null;
     }
 
-    public User(String userName, String password, Roles role) {
+    public User(String userName, String password, AbstractRole role) {
         this.userName = userName;
         this.password = password;
-        this.role = role;
     }
 
     public String getUserName() {
@@ -32,11 +29,6 @@ public class User implements Serializable {
     public String getPassword() {
         return password;
     }
-
-    public Roles getRole() {
-        return role;
-    }
-
 
 
     @Override

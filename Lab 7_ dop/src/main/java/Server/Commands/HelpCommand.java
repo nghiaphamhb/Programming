@@ -4,6 +4,7 @@ import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Memory.CommandManager;
+import Server.Utility.Role.AbstractRole;
 
 import java.util.stream.Collectors;
 
@@ -19,7 +20,7 @@ public class HelpCommand extends AbstractCommand {
     }
 
     @Override
-    public Response execute (Request request){
+    public Response execute (Request request, AbstractRole role){
         try {
             if (request.getParameter() != null) throw new CommandSyntaxIsWrongException();
             String message = commandManager.getCommands().stream().

@@ -21,7 +21,6 @@ public class ClientAppRunner implements Runnable{
     private final AuthHandler authHandler;
     private ScriptHandler scriptHandler;
     private Input input;
-    private boolean isScriptFound;
     private User user;
 
 
@@ -69,25 +68,19 @@ public class ClientAppRunner implements Runnable{
      */
     private void processRequestToServer(){
         scriptHandler = new ScriptHandler(inputHandler, input, user);
-        isScriptFound = scriptHandler.isScriptFound;
         ProgramCode commandStatus = null;
         do {
-            isScriptFound = true;
+            ScriptHandler.runScript = true;
             try{
                 Display.ps1();
                 String[] command = argumentToCommand((new Scanner(System.in)).nextLine());
 
+                if (!scriptHandler.findScript(command[1])) command[1] = "cannot find";
+                Response response = inputHandler.handle(command, user);
+                if (response.getResponseCode() == ProgramCode.ERROR) ScriptHandler.runScript = false;
                 commandStatus = updateProgramStatus(command);
-
-                if (!isScriptFound) command[1] = "-1";
-
-                if (commandStatus != ProgramCode.ERROR) {
-                    Response response = inputHandler.handle(command, user);
-                    if (response == null) continue;
-                    Display.println("** Response from server: ");
-                    Display.println(response);
-                }
-
+                Display.println("** Response from server: ");
+                Display.println(response);
             } catch (CommandNotFoundException e) {
                 Display.printError("This command is not exist. Enter 'help' for helping");
             }
@@ -106,7 +99,8 @@ public class ClientAppRunner implements Runnable{
                     if (command[1].isEmpty()) return ProgramCode.CLIENT_EXIT;
                 case "execute_script":
                     String filePath = command[1];
-                    return scriptHandler.runScript(filePath);
+                    if (ScriptHandler.runScript) return scriptHandler.runScript(filePath);
+                    return ProgramCode.ERROR;
             }
             return ProgramCode.OK;
         } catch (CommandNotFoundException e) {

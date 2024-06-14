@@ -1,6 +1,5 @@
 package Server.Commands;
 
-import Common.Data.Role.ROLE;
 import Common.Data.User;
 import Common.Exception.UserIsNotFoundException;
 import Common.Network.Request;
@@ -8,6 +7,7 @@ import Common.Network.Response;
 import Common.Network.ProgramCode;
 import Server.Manager.Database.DatabaseUserManager;
 import Server.Utility.PasswordHasher;
+import Server.Utility.Role.AbstractRole;
 
 /**
  * Command to log in
@@ -21,7 +21,7 @@ public class LoginCommand extends AbstractCommand {
     }
 
     @Override
-    public Response execute(Request request) {
+    public Response execute(Request request, AbstractRole role) {
         String message = "";
         ProgramCode code = null;
         try{
@@ -29,7 +29,7 @@ public class LoginCommand extends AbstractCommand {
             User hashedUser = new User(user.getUserName(), PasswordHasher.hashPassword(user.getPassword()));
             if (databaseUserManager.checkUserByUsernameAndPassword(hashedUser)){
                 message = "User \'" + user.getUserName() + "\' with role <" +
-                        databaseUserManager.getRoleByUsername(user.getUserName()).getNameRole() +  "> is accepted.";
+                        role.getNameRole() +  "> is accepted.";
                 code = ProgramCode.OK;
             } else throw new UserIsNotFoundException();
         } catch (UserIsNotFoundException e) {

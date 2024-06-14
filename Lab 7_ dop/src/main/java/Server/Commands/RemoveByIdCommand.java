@@ -6,10 +6,12 @@ import Common.Exception.CollectionIsEmptyException;
 import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Exception.IdNotFoundException;
 import Common.Exception.PermissionDeniedException;
+import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Memory.CollectionManager;
 import Server.Manager.Database.DatabaseCollectionManager;
+import Server.Utility.Role.AbstractRole;
 
 /**
  * Delete the dragon that has the specified ID
@@ -25,9 +27,10 @@ public class RemoveByIdCommand extends AbstractCommand {
 
 
     @Override
-    public Response execute(Request request) {
+    public Response execute(Request request, AbstractRole role) {
         String message = "";
         try{
+            if (!role.canDelete()) throw new PermissionDeniedException();
             Long id = (Long) request.getParameter();
             User user = request.getUser();
             if (id == 0) throw new CommandSyntaxIsWrongException();
@@ -47,8 +50,8 @@ public class RemoveByIdCommand extends AbstractCommand {
             message = "The collection is empty.";
         } catch (IdNotFoundException e){
             message = "This id is not existed";
-        } catch (PermissionDeniedException e){
-            message = "Not enough permissions to remove this element from the collection.";
+        } catch (PermissionDeniedException e) {
+            message = "Not enough permissions to do this action";
         }
         return new Response(message);
     }

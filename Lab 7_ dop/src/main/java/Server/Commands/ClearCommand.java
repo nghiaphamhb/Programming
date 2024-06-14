@@ -3,12 +3,14 @@ package Server.Commands;
 import Common.Data.Dragon.Dragon;
 import Common.Data.User;
 import Common.Exception.CommandSyntaxIsWrongException;
+import Common.Exception.FailureToClearAllObjectException;
 import Common.Exception.PermissionDeniedException;
 import Common.Network.Request;
 import Common.Network.Response;
 import Common.Network.ProgramCode;
 import Server.Manager.Memory.CollectionManager;
 import Server.Manager.Database.DatabaseCollectionManager;
+import Server.Utility.Role.AbstractRole;
 
 /**
  * The command for cleaning this collection
@@ -24,10 +26,11 @@ public class ClearCommand extends AbstractCommand {
     }
 
     @Override
-    public Response execute(Request request) {
+    public Response execute(Request request, AbstractRole role) {
         String message = "";
         ProgramCode code = null;
         try {
+            if (!role.canDelete()) throw new PermissionDeniedException();
             if (request.getParameter() != null) throw new CommandSyntaxIsWrongException();
             User user = request.getUser();
             for (Dragon dragon : collectionManager.getCollection()){
@@ -36,15 +39,16 @@ public class ClearCommand extends AbstractCommand {
                     collectionManager.removeFromCollection(dragon);
                 }
             }
-            if (collectionManager.getCollectionSize() != 0) throw new PermissionDeniedException();
-//            databaseCollectionManager.clearCollection();
-//            collectionManager.clearCollection();
+            if (collectionManager.getCollectionSize() != 0) throw new FailureToClearAllObjectException();
             return new Response("Collection cleared!");
         } catch (CommandSyntaxIsWrongException exception) {
             message = "Syntax command is not correct. Usage: \"" + getName() + "\"";
             code = ProgramCode.ERROR;
-        } catch (PermissionDeniedException e){
+        } catch (FailureToClearAllObjectException e){
             message = "Not enough permissions to clear all elements in the collection. \n Successfully deleted owned elements.";
+            code = ProgramCode.ERROR;
+        } catch (PermissionDeniedException e){
+            message = "Not enough permissions to do this action";
             code = ProgramCode.ERROR;
         }
         return new Response(message, code);

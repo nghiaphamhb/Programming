@@ -3,7 +3,9 @@ package Server.Utility;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Commands.*;
+import Server.Manager.Database.DatabaseUserManager;
 import Server.Manager.Memory.CommandManager;
+import Server.Utility.Role.AbstractRole;
 
 import java.util.concurrent.Callable;
 
@@ -13,11 +15,13 @@ import java.util.concurrent.Callable;
 public class RequestHandler implements Callable<Response> {
     private final CommandManager commandManager;
     private final Request requestFromUser;
+    private final DatabaseUserManager databaseUserManager;
 
 
-    public RequestHandler(CommandManager commandManager, Request requestFromUser) {
+    public RequestHandler(CommandManager commandManager, Request requestFromUser, DatabaseUserManager databaseUserManager) {
         this.commandManager = commandManager;
         this.requestFromUser = requestFromUser;
+        this.databaseUserManager = databaseUserManager;
     }
 
     /**
@@ -29,7 +33,8 @@ public class RequestHandler implements Callable<Response> {
         AbstractCommand command = commandManager.getByName(requestFromUser.getNameCommand());
         if (command == null) return new Response("That command is not existed.");
         commandManager.addToHistory(requestFromUser.getNameCommand(), requestFromUser.getUser());
-        return command.execute(requestFromUser);
+        AbstractRole userRole = databaseUserManager.getRoleByUsername(requestFromUser.getUser().getUserName());
+        return command.execute(requestFromUser, userRole);
     }
 
 

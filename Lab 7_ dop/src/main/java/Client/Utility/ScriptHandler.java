@@ -20,7 +20,7 @@ public class ScriptHandler {
     private final InputHandler inputHandler;
     private final List<String> scriptList;
     private Input input;
-    public boolean isScriptFound = true;
+    public static boolean runScript = true;
     private final User user;
 
     public ScriptHandler(InputHandler inputHandler, Input input, User user) {
@@ -30,32 +30,31 @@ public class ScriptHandler {
         this.user = user;
     }
 
+    public boolean findScript(String filePath){
+        runScript = true;
+        try{
+            if (filePath.isEmpty()) throw new FileNotFoundException();
+            ScriptReader.setInputStream(filePath); //i throw an exception FileIsNotFound
+        } catch (FileNotFoundException e) {
+            runScript = false;
+        }
+        return runScript;
+    }
     /**
      * Run the script if the script is valid
      * @param filePath file's path
      * @return program's status after running script
      */
     public ProgramCode runScript (String filePath)  {
-        if (filePath.isEmpty()){
-            Display.printError("The file path is not found.");
-            return ProgramCode.ERROR;
-        }
-        try {
-            //Try to connect to file
-            ScriptReader.setInputStream(filePath); //i throw an exception FileIsNotFound
-            Response firstResponse = inputHandler.handle(new String[]{"execute_script", filePath}, user);
-            Display.println(firstResponse);
+        if (!findScript(filePath)) return ProgramCode.ERROR;
+        Response firstResponse = inputHandler.handle(new String[]{"execute_script", filePath}, user);
+        Display.println(firstResponse);
 
-            //register file's path to history
-            scriptList.add(filePath);
+        //register file's path to history
+        scriptList.add(filePath);
 
-            // execute lines in the script
-            executeScriptLines(ScriptReader.getScriptLines());
-        } catch (FileNotFoundException e) {
-            isScriptFound = false;
-            Display.printError("The script is not found.");
-            return ProgramCode.ERROR;
-        }
+        // execute lines in the script
+        executeScriptLines(ScriptReader.getScriptLines());
         updateInput(new Console());
         return ProgramCode.OK;
     }

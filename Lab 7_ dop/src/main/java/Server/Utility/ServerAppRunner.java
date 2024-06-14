@@ -44,7 +44,7 @@ public class ServerAppRunner implements Runnable{
     public void run() {
         ServerApp.logger.log(Level.INFO, "Server is waiting to connect...");
         while (serverIsRunning) {
-            fixedThreadPool.submit(new ConnectionHandler(server, commandManager));
+            fixedThreadPool.submit(new ConnectionHandler(server, commandManager, databaseUserManager));
             server.disconnectFromClient();
         }
         try {

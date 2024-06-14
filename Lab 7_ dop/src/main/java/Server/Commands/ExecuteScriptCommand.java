@@ -1,8 +1,11 @@
 package Server.Commands;
 
 import Common.Exception.CommandSyntaxIsWrongException;
+import Common.Exception.PermissionDeniedException;
+import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
+import Server.Utility.Role.AbstractRole;
 
 import java.io.FileNotFoundException;
 
@@ -15,16 +18,19 @@ public class ExecuteScriptCommand extends AbstractCommand {
     }
 
     @Override
-    public Response execute(Request request) {
+    public Response execute(Request request, AbstractRole role) {
         try {
+            if (!role.canExecute()) throw new PermissionDeniedException();
             String nameScript = (String) request.getParameter();
             if (nameScript.isEmpty()) throw new CommandSyntaxIsWrongException();
-            if (nameScript.equals("-1")) throw new FileNotFoundException();
+            if (nameScript.equals("cannot find")) throw new FileNotFoundException();
             return new Response("Processed script " + nameScript + ".");
         } catch (CommandSyntaxIsWrongException exception) {
-            return new Response("Command syntax is not correct. Usage: \"" + getName() + " [fileName]\"");
+            return new Response("Command syntax is not correct. Usage: \"" + getName() + " [fileName]\"", ProgramCode.ERROR);
         } catch (FileNotFoundException e) {
-            return new Response("That script is not exist.");
+            return new Response("That script is not exist.", ProgramCode.ERROR);
+        } catch (PermissionDeniedException e) {
+            return new Response("Not enough permissions to do this action", ProgramCode.ERROR);
         }
     }
 }

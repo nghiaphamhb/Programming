@@ -1,6 +1,6 @@
 package Server.Manager.Database;
 
-import Common.Data.Role.*;
+import Server.Utility.Role.*;
 import Common.Data.User;
 import Server.ServerApp;
 import Server.Utility.Enum.COLUMNS;
@@ -65,8 +65,8 @@ public class DatabaseUserManager {
         return user;
     }
 
-    public Roles getRoleByUsername(String username){
-        Roles role = null;
+    public AbstractRole getRoleByUsername(String username){
+        AbstractRole role = null;
         PreparedStatement preparedStatement = null;
         try{
             preparedStatement = databaseHandler.getPreparedStatement(SELECT_ROLE_BY_USERNAME, false);
@@ -84,19 +84,19 @@ public class DatabaseUserManager {
         return role;
     }
 
-    private Roles getRoleByNameRole(String nameRole) {
+    private AbstractRole getRoleByNameRole(String nameRole) {
         switch (nameRole){
-            case ROLE.ADMIN:
+            case "admin":
                 return new Admin();
-            case ROLE.ANALYST:
+            case "analyst":
                 return new Analyst();
-            case ROLE.CLEANER:
+            case "cleaner":
                 return new Cleaner();
-            case ROLE.CREATOR:
+            case "creator":
                 return new Creator();
-            case ROLE.LEADER:
+            case "leader":
                 return new Leader();
-            case ROLE.TESTER:
+            case "tester":
                 return new Tester();
             default:
                 throw new IllegalArgumentException("Unknown role: " + nameRole);
@@ -165,7 +165,7 @@ public class DatabaseUserManager {
                     databaseHandler.getPreparedStatement(INSERT_USER, false);
             preparedInsertUserStatement.setString(1, user.getUserName());
             preparedInsertUserStatement.setString(2, user.getPassword());
-            preparedInsertUserStatement.setString(3, user.getRole().getNameRole());
+            preparedInsertUserStatement.setString(3, new Analyst().getNameRole());
             preparedInsertUserStatement.setString(4, "----r");
             if (preparedInsertUserStatement.executeUpdate() == 0) throw new SQLException();
             ServerApp.logger.log(Level.INFO, "Executed INSERT_USER");
