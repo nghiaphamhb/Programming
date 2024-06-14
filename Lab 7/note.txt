@@ -1,0 +1,16 @@
+Các thao tác:
+1) Cài đặt kết nối với database trong lớp ServerApp:
+Khi chạy trên JDE Intellij IDEA:
++ databaseHost = "localhost";
++ databaseAddress = "jdbc:postgresql://" + databaseHost + ":8080/studs";
+Khi chạy trên helios: 
++ databaseHost = "pg";
++ databaseAddress = "jdbc:postgresql://" + databaseHost + ":5432/studs";
+2) Chạy chương trình:
++ Kết nối với database qua cú pháp:
+ssh -L 8080:localhost:5432 -p 2222 s374806@helios.cs.ifmo.ru
+<Nhập mật khẩu>
+psql -h pg -d studs
++ Mở thư mục chứa file jar, kích hoạt server hoặc client:
+java -jar Lab_7.jar ClientApp
+java -jar Lab_7.jar ServerApp 
