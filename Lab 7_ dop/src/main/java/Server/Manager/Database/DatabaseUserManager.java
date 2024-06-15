@@ -167,8 +167,9 @@ public class DatabaseUserManager {
         PreparedStatement preparedStatement;
         try{
             Role newRole = databaseRoleManager.getRoleByNameRole(nameNewRole);
+            Long idNewRole = databaseRoleManager.getRoleIdByRole(newRole);
             preparedStatement = databaseHandler.getPreparedStatement(QUERY.UPDATE_ROLE_BY_USERNAME, false);
-            preparedStatement.setLong(1, newRole.getId());
+            preparedStatement.setLong(1, idNewRole);
             preparedStatement.setString(2, userName);
             int affectedRows = preparedStatement.executeUpdate();
             return (affectedRows > 0);

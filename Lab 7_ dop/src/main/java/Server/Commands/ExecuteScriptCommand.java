@@ -19,18 +19,25 @@ public class ExecuteScriptCommand extends AbstractCommand {
 
     @Override
     public Response execute(Request request, Role role) {
+        String message = null;
+        ProgramCode code = null;
         try {
             if (!role.canExecute()) throw new PermissionDeniedException();
             String nameScript = (String) request.getParameter();
             if (nameScript.isEmpty()) throw new CommandSyntaxIsWrongException();
             if (nameScript.equals("cannot find")) throw new FileNotFoundException();
-            return new Response("Processed script " + nameScript + ".");
+            message = "Processed script " + nameScript + ".";
+            code = ProgramCode.OK;
         } catch (CommandSyntaxIsWrongException exception) {
-            return new Response("Command syntax is not correct. Usage: \"" + getName() + " [fileName]\"", ProgramCode.ERROR);
+            message = "Command syntax is not correct. Usage: \"" + getName() + " [fileName]\"";
+            code = ProgramCode.ERROR;
         } catch (FileNotFoundException e) {
-            return new Response("That script is not exist.", ProgramCode.ERROR);
+            message = "That script is not exist.";
+            code = ProgramCode.ERROR;
         } catch (PermissionDeniedException e) {
-            return new Response("Not enough permissions to do this action", ProgramCode.ERROR);
+            message = "Not enough permissions to do this action";
+            code = ProgramCode.ERROR;
         }
+        return new Response(message, code);
     }
 }

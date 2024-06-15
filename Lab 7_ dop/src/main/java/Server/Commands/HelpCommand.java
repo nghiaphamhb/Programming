@@ -1,6 +1,7 @@
 package Server.Commands;
 
 import Common.Exception.CommandSyntaxIsWrongException;
+import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Memory.CommandManager;
@@ -21,15 +22,19 @@ public class HelpCommand extends AbstractCommand {
 
     @Override
     public Response execute (Request request, Role role){
+        String message = null;
+        ProgramCode code = null;
         try {
             if (request.getParameter() != null) throw new CommandSyntaxIsWrongException();
-            String message = commandManager.getCommands().stream().
+            message = commandManager.getCommands().stream().
                     filter(command -> !command.getDescription().equals("~hidden"))
                     .map(command -> String.format(" %-35s%-1s%n", command.getName(), command.getDescription() ))
                     .collect(Collectors.joining());
-            return new Response(message);
+            code = ProgramCode.OK;
         } catch (CommandSyntaxIsWrongException e) {
-            return new Response("Syntax command is not correct. Usage: \"" + getName() + "\"");
+            message = "Syntax command is not correct. Usage: \"" + getName() + "\"";
+            code = ProgramCode.ERROR;
         }
+        return new Response(message, code);
     }
 }

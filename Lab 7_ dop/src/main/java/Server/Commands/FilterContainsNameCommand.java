@@ -24,27 +24,32 @@ public class FilterContainsNameCommand extends AbstractCommand {
 
     @Override
     public Response execute (Request request, Role role) {
+        String message = null;
+        ProgramCode code = null;
         try {
             if (!role.canRead()) throw new PermissionDeniedException();
             String nameValidatedDragon = (String) request.getParameter();
             if (nameValidatedDragon.isEmpty()) throw new CommandSyntaxIsWrongException();
 
-           String  filteredDragon = collectionManager.getCollection().stream()
+           String filteredDragon = collectionManager.getCollection().stream()
                     .filter(dragon -> dragon.getName().equals(nameValidatedDragon))
                     .map(Dragon::toString)
                     .collect(Collectors.joining("\n"));
 
-            if(filteredDragon.isEmpty()) return new Response("The dragon with his name \'" + nameValidatedDragon + "\' is not existed");
-            String message = "<The list of dragons with name \'" + nameValidatedDragon + "\'>\n"
+           if(filteredDragon.isEmpty()) return new Response("The dragon with his name \'" + nameValidatedDragon + "\' is not existed",
+                    ProgramCode.ERROR);
+
+           message = "<The list of dragons with name \'" + nameValidatedDragon + "\'>\n"
                     + filteredDragon;
-
-            return new Response(message);
-
+           code = ProgramCode.OK;
         } catch (CommandSyntaxIsWrongException exception) {
-            return new Response("Syntax command is not correct. Usage \"" + getName() + " [name]\"");
+            message = "Syntax command is not correct. Usage \"" + getName() + " [name]\"";
+            code = ProgramCode.ERROR;
         } catch (PermissionDeniedException e) {
-            return new Response("Not enough permissions to do this action", ProgramCode.ERROR);
+            message = "Not enough permissions to do this action";
+            code = ProgramCode.ERROR;
         }
+        return new Response(message, code);
     }
 
 }

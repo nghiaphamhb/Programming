@@ -28,6 +28,8 @@ public class AddCommand extends AbstractCommand {
 
     @Override
     public Response execute(Request request, Role role) {
+        String message = null;
+        ProgramCode code = null;
         try {
             if (!role.canCreate()) throw new PermissionDeniedException();
             Dragon validatedDragon = (Dragon) request.getParameter();
@@ -35,13 +37,18 @@ public class AddCommand extends AbstractCommand {
             if (validatedDragon == null) throw new CommandSyntaxIsWrongException();
             if (!databaseCollectionManager.insertDragon(validatedDragon, user)) throw new FailureToActWithObjectException();
             collectionManager.addToCollection(validatedDragon, user);
-            return new Response("The dragon has been successfully added!");
+            message = "The dragon has been successfully added!";
+            code = ProgramCode.OK;
         } catch (CommandSyntaxIsWrongException exception) {
-            return new Response("Syntax command is not correct. Usage: \"" + getName() + "\"", ProgramCode.ERROR);
+            message = "Syntax command is not correct. Usage: \"" + getName() + "\"";
+            code = ProgramCode.ERROR;
         } catch (FailureToActWithObjectException e){
-            return new Response("Failure to insert dragon into collection.", ProgramCode.ERROR);
+            message = "Failure to insert dragon into collection.";
+            code = ProgramCode.ERROR;
         } catch (PermissionDeniedException e) {
-            return new Response("Not enough permissions to do this action", ProgramCode.ERROR);
+            message = "Not enough permissions to do this action";
+            code = ProgramCode.ERROR;
         }
+        return new Response(message, code);
     }
 }

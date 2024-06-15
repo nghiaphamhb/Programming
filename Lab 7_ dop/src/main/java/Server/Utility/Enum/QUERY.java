@@ -5,6 +5,8 @@ package Server.Utility.Enum;
  */
 public interface QUERY {
     //------ROLES-TABLE----------------------------------------------------------------------------------------------------
+    String SELECT_ALL_ROLES = "SELECT * FROM " + TABLES.ROLES;
+
     String SELECT_ROLE_BY_USERNAME =  "SELECT " + TABLES.ROLES + "." + COLUMNS.ROLE +
             " FROM " + TABLES.USERS +
             " JOIN " + TABLES.ROLES +

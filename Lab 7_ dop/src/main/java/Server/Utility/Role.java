@@ -2,15 +2,15 @@ package Server.Utility;
 
 public class Role {
     private final String nameRole;
-    private final long id;
+//    private final long id;
     private boolean create;
     private boolean update;
     private boolean delete;
     private boolean execute;
     private boolean read;
 
-    public Role(long id, String nameRole, boolean create, boolean update, boolean delete, boolean execute, boolean read) {
-        this.id = id;
+    public Role(String nameRole, boolean create, boolean update, boolean delete, boolean execute, boolean read) {
+//        this.id = id;
         this.nameRole = nameRole;
         this.create = create;
         this.update = update;
@@ -23,9 +23,9 @@ public class Role {
         return nameRole;
     }
 
-    public long getId() {
-        return id;
-    }
+//    public long getId() {
+//        return id;
+//    }
 
     public boolean canCreate() {
         return create;

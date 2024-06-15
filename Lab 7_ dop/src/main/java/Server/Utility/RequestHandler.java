@@ -1,5 +1,6 @@
 package Server.Utility;
 
+import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Commands.*;
@@ -33,7 +34,7 @@ public class RequestHandler implements Callable<Response> {
     @Override
     public Response call() {
         AbstractCommand command = commandManager.getByName(requestFromUser.getNameCommand());
-        if (command == null) return new Response("That command is not existed.");
+        if (command == null) return new Response("That command is not existed.", ProgramCode.ERROR);
         commandManager.addToHistory(requestFromUser.getNameCommand(), requestFromUser.getUser());
         Role userRole = databaseRoleManager.getRoleByUsername(requestFromUser.getUser().getUserName());
         return command.execute(requestFromUser, userRole);

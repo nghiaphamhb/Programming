@@ -30,7 +30,7 @@ public class ConnectionHandler implements Runnable{
         this.server = server;
         this.commandManager = commandManager;
         this.databaseUserManager = databaseUserManager;
-        this.databaseRoleManager =databaseRoleManager;
+        this.databaseRoleManager = databaseRoleManager;
     }
 
     /**

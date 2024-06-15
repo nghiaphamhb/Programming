@@ -20,17 +20,22 @@ public class HistoryCommand extends AbstractCommand {
 
     @Override
     public Response execute(Request request, Role role) {
+        String message = null;
+        ProgramCode code = null;
         try {
             if (!role.canRead()) throw new PermissionDeniedException();
             if (request.getParameter() != null) throw new CommandSyntaxIsWrongException();
 
-            String message = "<List of 13 last used commands>\n" +
+            message = "<List of 13 last used commands>\n" +
                     commandManager.getCommandHistory().toString();
-            return new Response(message);
+            code = ProgramCode.OK;
         } catch (CommandSyntaxIsWrongException exception) {
-            return new Response("Syntax command is not correct. Usage: \"" + getName() + "\"");
+            message = "Syntax command is not correct. Usage: \"" + getName() + "\"";
+            code = ProgramCode.ERROR;
         } catch (PermissionDeniedException e) {
-            return new Response("Not enough permissions to do this action", ProgramCode.ERROR);
+            message = "Not enough permissions to do this action";
+            code = ProgramCode.ERROR;
         }
+        return new Response(message, code);
     }
 }

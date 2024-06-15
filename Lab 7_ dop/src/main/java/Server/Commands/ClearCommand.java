@@ -40,7 +40,8 @@ public class ClearCommand extends AbstractCommand {
                 }
             }
             if (collectionManager.getCollectionSize() != 0) throw new FailureToClearAllObjectException();
-            return new Response("Collection cleared!");
+            message = "Collection cleared!";
+            code = ProgramCode.OK;
         } catch (CommandSyntaxIsWrongException exception) {
             message = "Syntax command is not correct. Usage: \"" + getName() + "\"";
             code = ProgramCode.ERROR;

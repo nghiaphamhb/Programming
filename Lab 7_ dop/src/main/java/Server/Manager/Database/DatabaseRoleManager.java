@@ -1,5 +1,6 @@
 package Server.Manager.Database;
 
+import Common.Data.Dragon.Dragon;
 import Server.ServerApp;
 import Server.Utility.DatabaseHandler;
 import Server.Utility.Enum.COLUMNS;
@@ -15,44 +16,71 @@ import java.util.Map;
 import java.util.logging.Level;
 
 public class DatabaseRoleManager {
-    private Map<Integer, Role> roles = new HashMap<>();
+    private final Map<Long, Role> roles;
 
     private DatabaseHandler databaseHandler;
 
     public DatabaseRoleManager(DatabaseHandler databaseHandler) {
-        Role role1 = new Role(1, ROLES.ADMIN, true, true, true, true, true);
-        Role role2 = new Role(2, ROLES.CREATOR, true, false, false, false, false);
-        Role role3 = new Role(3, ROLES.DEVELOPER, false, true, false, false, false);
-        Role role4 = new Role(4, ROLES.CLEANER, false, false, true, false, false);
-        Role role5 = new Role(5, ROLES.TESTER, false, false, false, true, false);
-        Role role6 = new Role(6, ROLES.ANALYST, false, false, false, false, true);
-        int index = 1;
-        roles.put(index++, role1);
-        roles.put(index++, role2);
-        roles.put(index++, role3);
-        roles.put(index++, role4);
-        roles.put(index++, role5);
-        roles.put(index, role6);
         this.databaseHandler = databaseHandler;
+        roles = getRoles();
+    }
+
+    public void setAccess(String strAccess, Role role){
+        String[] elementStrAccess = strAccess.split("");
+
+        if (containsCharacter(elementStrAccess, "c")) role.setCreate(true);
+        if (containsCharacter(elementStrAccess, "u")) role.setUpdate(true);
+        if (containsCharacter(elementStrAccess, "d")) role.setDelete(true);
+        if (containsCharacter(elementStrAccess, "e")) role.setExecute(true);
+        if (containsCharacter(elementStrAccess, "r")) role.setRead(true);
+    }
+
+    private boolean containsCharacter(String[] array, String character) {
+        for (String s : array) {
+            if (s.equals(character)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Map<Long, Role> getRoles(){
+        Map<Long, Role> roles = new HashMap<>();
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = databaseHandler.getPreparedStatement(QUERY.SELECT_ALL_ROLES, false);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Role role = new Role(resultSet.getString(COLUMNS.ROLE), false, false, false, false,
+                        false);
+                setAccess(resultSet.getString(COLUMNS.ACCESS), role);
+                roles.put(resultSet.getLong(COLUMNS.ID), role);
+            }
+            ServerApp.logger.log(Level.INFO, "Completed download roles..");
+        } catch (SQLException e) {
+            ServerApp.logger.log(Level.WARNING, "Download failed roles.");
+        } finally {
+            databaseHandler.closePreparedStatement(preparedStatement);
+        }
+        return roles;
+    }
+
+    public Long getRoleIdByRole(Role role){
+        for (Map.Entry<Long, Role> entry : roles.entrySet()) {
+                if (entry.getValue().equals(role)) {
+                    return entry.getKey();
+                }
+            }
+            return null;
     }
 
     public Role getRoleByNameRole(String nameRole) {
-        switch (nameRole){
-            case ROLES.ADMIN:
-                return roles.get(1);
-            case ROLES.CREATOR:
-                return roles.get(2);
-            case ROLES.DEVELOPER:
-                return roles.get(3);
-            case ROLES.CLEANER:
-                return roles.get(4);
-            case ROLES.TESTER:
-                return roles.get(5);
-            case ROLES.ANALYST:
-                return roles.get(6);
-            default:
-                throw new IllegalArgumentException("Unknown role: " + nameRole);
+        for (Map.Entry<Long, Role> entry : roles.entrySet()) {
+            if (entry.getValue().getNameRole().equals(nameRole)) {
+                return entry.getValue();
+            }
         }
+        return null;
     }
 
     public Role getRoleByUsername(String username){

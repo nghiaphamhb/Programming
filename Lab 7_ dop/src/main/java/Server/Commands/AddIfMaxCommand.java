@@ -27,7 +27,9 @@ public class AddIfMaxCommand extends AbstractCommand {
 
     @Override
     public Response execute (Request request, Role role) {
-        if (collectionManager.getCollectionSize() == 0) return new Response("The collection is empty");
+        if (collectionManager.getCollectionSize() == 0) return new Response("The collection is empty", ProgramCode.ERROR);
+        String message = null;
+        ProgramCode code = null;
         try {
             if (!role.canCreate()) throw new PermissionDeniedException();
             Dragon validatedDragon = (Dragon) request.getParameter();
@@ -36,16 +38,23 @@ public class AddIfMaxCommand extends AbstractCommand {
             if ( validatedDragon.getAge() > getMaxAge() ) {
                 if (!databaseCollectionManager.insertDragon(validatedDragon, user)) throw new FailureToActWithObjectException();
                 collectionManager.addToCollection(validatedDragon, user);
-                return new Response("The dragon has been successfully added! ");
+                message = "The dragon has been successfully added! ";
+                code = ProgramCode.OK;
+            } else {
+                message = "Could not add that dragon!";
+                code = ProgramCode.ERROR;
             }
-            return new Response("Could not add that dragon!");
         } catch (CommandSyntaxIsWrongException e ) {
-            return new Response("Syntax command is not correct. Usage: \"" + getName() + "\"");
+            message = "Syntax command is not correct. Usage: \"" + getName() + "\"";
+            code = ProgramCode.ERROR;
         } catch (FailureToActWithObjectException e){
-            return new Response("Failure to insert dragon into collection.", ProgramCode.ERROR);
+            message = "Failure to insert dragon into collection.";
+            code = ProgramCode.ERROR;
         } catch (PermissionDeniedException e) {
-            return new Response("Not enough permissions to do this action", ProgramCode.ERROR);
+            message = "Not enough permissions to do this action";
+            code = ProgramCode.ERROR;
         }
+        return new Response(message, code);
     }
 
     /**

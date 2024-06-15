@@ -4,6 +4,7 @@ import Common.Data.Dragon.Dragon;
 import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Exception.IdNotFoundException;
 import Common.Exception.PermissionDeniedException;
+import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Memory.CollectionManager;
@@ -26,7 +27,8 @@ public class UpdateIdCommand extends AbstractCommand {
 
     @Override
     public Response execute(Request request, Role role) {
-        String message = "";
+        String message = null;
+        ProgramCode code = null;
         Long id = (Long) request.getParameter();
         try {
             if (!role.canUpdate()) throw new PermissionDeniedException();
@@ -41,16 +43,21 @@ public class UpdateIdCommand extends AbstractCommand {
             collectionManager.getCollection().add(newDragon);
 
             databaseCollectionManager.updateDragonById(id, newDragon);
-            return new Response("That dragon was successfully updated");
+            message = "That dragon was successfully updated";
+            code = ProgramCode.OK;
         } catch (CommandSyntaxIsWrongException e) {
-            return new Response("Command syntax is not correct. Usage: \"" + getName() + " <id>\"");
+            message = "Command syntax is not correct. Usage: \"" + getName() + " <id>\"";
+            code = ProgramCode.ERROR;
         } catch (NumberFormatException e) {
-            return new Response("The id must be long");
+            message = "The id must be long";
+            code = ProgramCode.ERROR;
         } catch (IdNotFoundException e){
             message = "Number id [" + id + "] does not exist. Update unsuccessful dragons.";
+            code = ProgramCode.ERROR;
         } catch (PermissionDeniedException e){
             message = "Not enough permissions to do this action.";
+            code = ProgramCode.ERROR;
         }
-        return new Response(message);
+        return new Response(message, code);
     }
 }

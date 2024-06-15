@@ -25,21 +25,25 @@ public class PrintFieldDescendingSpeakingCommand extends AbstractCommand {
 
     @Override
     public Response execute(Request request, Role role) {
+        String message = null;
+        ProgramCode code = null;
         try{
             if (!role.canRead()) throw new PermissionDeniedException();
             if (request.getParameter() != null) throw new CommandSyntaxIsWrongException();
-            String message = "<List of dragons descending by speaking field values> \n" +
+            message = "<List of dragons descending by speaking field values> \n" +
                 collectionManager.getCollection().stream()
                 .sorted(Comparator.comparing(Dragon::getSpeaking).reversed())
                                 .map(dragon -> "Can \"" + dragon.getName() + "\" speak? => " + ( dragon.getSpeaking()  ? "Yes" : "No"))
                         .collect(Collectors.joining("\n"));
-
-        return new Response(message);
+            code = ProgramCode.OK;
         } catch (CommandSyntaxIsWrongException e) {
-            return new Response("Syntax command is not correct. Usage: \"" + getName() + "\"");
+            message = "Syntax command is not correct. Usage: \"" + getName() + "\"";
+            code = ProgramCode.ERROR;
         } catch (PermissionDeniedException e) {
-            return new Response("Not enough permissions to do this action", ProgramCode.ERROR);
+            message = "Not enough permissions to do this action";
+            code = ProgramCode.ERROR;
         }
+        return new Response(message, code);
     }
 }
 
