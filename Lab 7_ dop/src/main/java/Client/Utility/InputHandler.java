@@ -31,6 +31,7 @@ public class InputHandler {
     public Response handle(String[] command, User user) {
         Request request = null;
         switch (command[0]) {
+            //commands with dragon argument
             case "add":
             case "add_if_max":
             case "add_if_min":
@@ -42,6 +43,8 @@ public class InputHandler {
                 };
                 request = new Request(command[0], newDragon, user);
                 break;
+
+                //commands without arguments
             case "clear":
             case "exit":
             case "help":
@@ -53,15 +56,8 @@ public class InputHandler {
             case "show_users":
                 request = new Request(command[0], user);
                 break;
-            case "change_role":
-                Display.println("The user needs to be updated:");
-                Display.ps2();
-                String userName = new Scanner(System.in).nextLine();
-                Display.println("The user's role needs to be updated:");
-                Display.ps2();
-                String nameRole = new Scanner(System.in).nextLine();
-                request = new Request(command[0], userName, nameRole, user);
-                break;
+
+                //commands with string(long) argument
             case "execute_script":
             case "filter_contains_name":
                 request = new Request(command[0], command[1], user);
@@ -77,6 +73,8 @@ public class InputHandler {
                 };
                 request = new Request(command[0], idToRemove, user);
                 break;
+
+                //commands with 2 arguments (id && dragon)
             case "update_id":
                 Dragon updatedDragon = null;
                 long idToUpdate = 0;
@@ -92,7 +90,10 @@ public class InputHandler {
                 };
                 request = new Request(command[0], idToUpdate, updatedDragon, user);
                 break;
+
+                //commands with 2 arguments (strings)
             case "grant_permission":
+            case "change_role":
                 if (!command[1].isEmpty()) {
                     String[] parts = splitString(command[1]);
                     request = new Request(command[0], parts[0], parts[1], user);

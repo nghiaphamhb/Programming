@@ -15,6 +15,9 @@ import Server.Manager.Database.DatabaseRoleManager;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 
+/**
+ * Command for only admin to grant permission to users
+ */
 public class GrantPermissionCommand extends AbstractCommand{
     private DatabaseUserManager databaseUserManager;
     private DatabaseRoleManager databaseRoleManager;
@@ -25,6 +28,12 @@ public class GrantPermissionCommand extends AbstractCommand{
         this.databaseRoleManager = databaseRoleManager;
     }
 
+    /**
+     * Update role access
+     * @param strNewAccess string of new access
+     * @param roleToChange role
+     * @return true if successful
+     */
     private boolean updateAccess(String strNewAccess, Role roleToChange){
         if (strNewAccess.length() <= 1) return false;
         String[] elementStrNewAccess = strNewAccess.split("");
@@ -41,6 +50,12 @@ public class GrantPermissionCommand extends AbstractCommand{
         return true;
     }
 
+    /**
+     * Check if in the array exists character
+     * @param array array
+     * @param character character
+     * @return true if it exists
+     */
     private boolean containsCharacter(String[] array, String character) {
         for (String s : array) {
             if (s.equals(character)) {

@@ -1,8 +1,10 @@
 package Server.Utility;
 
+/**
+ * Role of users
+ */
 public class Role {
     private final String nameRole;
-//    private final long id;
     private boolean create;
     private boolean update;
     private boolean delete;
@@ -10,7 +12,6 @@ public class Role {
     private boolean read;
 
     public Role(String nameRole, boolean create, boolean update, boolean delete, boolean execute, boolean read) {
-//        this.id = id;
         this.nameRole = nameRole;
         this.create = create;
         this.update = update;
@@ -22,10 +23,6 @@ public class Role {
     public String getNameRole() {
         return nameRole;
     }
-
-//    public long getId() {
-//        return id;
-//    }
 
     public boolean canCreate() {
         return create;
@@ -67,6 +64,10 @@ public class Role {
         this.read = read;
     }
 
+    /**
+     * Get access of role
+     * @return string of access
+     */
     @Override
     public String toString() {
         String access = (canCreate() ? "c" : "-") +

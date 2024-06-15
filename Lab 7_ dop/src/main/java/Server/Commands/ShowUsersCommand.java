@@ -11,6 +11,9 @@ import Server.Utility.Enum.ROLES;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Command for only admin to show all list of users and their roles
+ */
 public class ShowUsersCommand extends AbstractCommand{
     private DatabaseUserManager databaseUserManager;
 

@@ -1,11 +1,9 @@
 package Server.Manager.Database;
 
-import Common.Data.Dragon.Dragon;
 import Server.ServerApp;
 import Server.Utility.DatabaseHandler;
 import Server.Utility.Enum.COLUMNS;
 import Server.Utility.Enum.QUERY;
-import Server.Utility.Enum.ROLES;
 import Server.Utility.Role;
 
 import java.sql.PreparedStatement;
@@ -15,9 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
+/**
+ * Class management role data in the database
+ */
 public class DatabaseRoleManager {
     private final Map<Long, Role> roles;
-
     private DatabaseHandler databaseHandler;
 
     public DatabaseRoleManager(DatabaseHandler databaseHandler) {
@@ -25,7 +25,12 @@ public class DatabaseRoleManager {
         roles = getRoles();
     }
 
-    public void setAccess(String strAccess, Role role){
+    /**
+     * Set up access of role
+     * @param strAccess string of access
+     * @param role role
+     */
+    private void setAccess(String strAccess, Role role){
         String[] elementStrAccess = strAccess.split("");
 
         if (containsCharacter(elementStrAccess, "c")) role.setCreate(true);
@@ -35,6 +40,12 @@ public class DatabaseRoleManager {
         if (containsCharacter(elementStrAccess, "r")) role.setRead(true);
     }
 
+    /**
+     * Check if in the array contains character
+     * @param array array
+     * @param character character
+     * @return boolean
+     */
     private boolean containsCharacter(String[] array, String character) {
         for (String s : array) {
             if (s.equals(character)) {
@@ -44,6 +55,10 @@ public class DatabaseRoleManager {
         return false;
     }
 
+    /**
+     * Get role datas from Database
+     * @return role map
+     */
     public Map<Long, Role> getRoles(){
         Map<Long, Role> roles = new HashMap<>();
         PreparedStatement preparedStatement = null;
@@ -65,6 +80,11 @@ public class DatabaseRoleManager {
         return roles;
     }
 
+    /**
+     * Get role id by role
+     * @param role role
+     * @return role id
+     */
     public Long getRoleIdByRole(Role role){
         for (Map.Entry<Long, Role> entry : roles.entrySet()) {
                 if (entry.getValue().equals(role)) {
@@ -74,6 +94,11 @@ public class DatabaseRoleManager {
             return null;
     }
 
+    /**
+     * Get role by role name
+     * @param nameRole role name
+     * @return role
+     */
     public Role getRoleByNameRole(String nameRole) {
         for (Map.Entry<Long, Role> entry : roles.entrySet()) {
             if (entry.getValue().getNameRole().equals(nameRole)) {
@@ -83,6 +108,11 @@ public class DatabaseRoleManager {
         return null;
     }
 
+    /**
+     * Get role by username
+     * @param username user name
+     * @return his role
+     */
     public Role getRoleByUsername(String username){
         String nameRole = null;
         Role role = null;
@@ -104,6 +134,12 @@ public class DatabaseRoleManager {
         return role;
     }
 
+    /**
+     * Update role access
+     * @param nameRole role name
+     * @param newAccess new role access
+     * @return true if done
+     */
     public boolean updateAccessRole(String nameRole, String newAccess){
         PreparedStatement preparedStatement;
         try{

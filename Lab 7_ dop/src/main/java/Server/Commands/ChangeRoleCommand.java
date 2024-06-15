@@ -11,6 +11,9 @@ import Server.Manager.Database.DatabaseUserManager;
 import Server.Utility.Role;
 import Server.Utility.Enum.ROLES;
 
+/**
+ * Command for only admin to change role of user
+ */
 public class ChangeRoleCommand extends AbstractCommand{
     private DatabaseUserManager databaseUserManager;
     public ChangeRoleCommand(DatabaseUserManager databaseUserManager) {
@@ -26,6 +29,7 @@ public class ChangeRoleCommand extends AbstractCommand{
             if (!role.getNameRole().equals(ROLES.ADMIN)) throw new PermissionDeniedException();
             String usernameToChange = (String) request.getParameter();
             String nameNewRole = (String) request.getBonusParameter();
+            if (usernameToChange.isEmpty() || nameNewRole.isEmpty()) throw new CommandSyntaxIsWrongException();
 
             if (!databaseUserManager.checkUserByUsername(usernameToChange)) throw new UserIsNotFoundException();
             if (!nameNewRole.equals(ROLES.ADMIN)&&!nameNewRole.equals(ROLES.CLEANER)&&
@@ -47,12 +51,12 @@ public class ChangeRoleCommand extends AbstractCommand{
             message = "The user is not exists.";
             code = ProgramCode.ERROR;
         } catch (CommandSyntaxIsWrongException e){
-            message = "This role is not exists. Roles include: " + ROLES.ADMIN + ", " +
+            message = "This role is not exists. Roles include: { " + ROLES.ADMIN + ", " +
                     ROLES.CLEANER + ", " +
                     ROLES.ANALYST + ", " +
                     ROLES.CREATOR + ", " +
                     ROLES.DEVELOPER + ", " +
-                    ROLES.TESTER + "";
+                    ROLES.TESTER + " }";
             code = ProgramCode.ERROR;
         }
         return new Response(message, code);
