@@ -45,13 +45,14 @@ public class ChangeRoleCommand extends AbstractCommand{
             message = "Not enough permissions to do this action.";
             code = ProgramCode.ERROR;
         } catch (FailureToActWithObjectException e) {
-            message = "Syntax command is not correct. Usage: \"" + getName() + "\"";
+            message = "Syntax command is not correct. Usage: " + getName() + " [userName] [roleName]";
             code = ProgramCode.ERROR;
         } catch (UserIsNotFoundException e) {
             message = "The user is not exists.";
             code = ProgramCode.ERROR;
         } catch (CommandSyntaxIsWrongException e){
-            message = "This role is not exists. Roles include: { " + ROLES.ADMIN + ", " +
+            message = "Syntax command is not correct. Usage: " + getName() + " [userName] [roleName]\n";
+            message += "This role is not exists. Roles include: { " + ROLES.ADMIN + ", " +
                     ROLES.CLEANER + ", " +
                     ROLES.ANALYST + ", " +
                     ROLES.CREATOR + ", " +

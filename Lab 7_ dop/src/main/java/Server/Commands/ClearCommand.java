@@ -46,8 +46,8 @@ public class ClearCommand extends AbstractCommand {
             message = "Syntax command is not correct. Usage: \"" + getName() + "\"";
             code = ProgramCode.ERROR;
         } catch (FailureToClearAllObjectException e){
-            message = "Not enough permissions to clear all elements in the collection. \n Successfully deleted owned elements.";
-            code = ProgramCode.ERROR;
+            message = "Successfully deleted owned elements.";
+            code = ProgramCode.OK;
         } catch (PermissionDeniedException e){
             message = "Not enough permissions to do this action";
             code = ProgramCode.ERROR;

@@ -84,6 +84,7 @@ public class InputHandler {
                         sleep();
                         Display.println("** Updating the dragon... **");
                         updatedDragon = input.buildDragon();
+                        updatedDragon.setUser(user);
                     } catch (NumberFormatException e) {
                         idToUpdate = -1;
                     }
@@ -96,9 +97,13 @@ public class InputHandler {
             case "change_role":
                 if (!command[1].isEmpty()) {
                     String[] parts = splitString(command[1]);
-                    request = new Request(command[0], parts[0], parts[1], user);
-                    break;
+                    if (parts.length > 1) {
+                        request = new Request(command[0], parts[0], parts[1], user);
+                        break;
+                    }
                 }
+                request = new Request(command[0], "", "", user);
+                break;
 
             default:
                 request = new Request("NoSuchCommand", user);

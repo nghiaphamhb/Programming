@@ -14,6 +14,7 @@ import Server.Utility.DatabaseHandler;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 /**
@@ -227,29 +228,30 @@ public class DatabaseCollectionManager {
      * Get collection
      * @return collection
      */
-    public HashSet<Dragon> getCollection(){
-        HashSet<Dragon> dragonsCollection = new HashSet<>();
+    public ConcurrentHashMap<Long, Dragon> getCollection(){
+        ConcurrentHashMap<Long, Dragon> collection = new ConcurrentHashMap<>();
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = databaseHandler.getPreparedStatement(QUERY.SELECT_ALL_DRAGON, false);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                dragonsCollection.add(createDragon(resultSet));
+                Dragon newDragon = createDragon(resultSet);
+                collection.put(newDragon.getId(), newDragon);
             }
         } catch (SQLException e) {
             ServerApp.logger.log(Level.WARNING, "Download failed collection due to empty database.");
         } finally {
             databaseHandler.closePreparedStatement(preparedStatement);
         }
-        return dragonsCollection;
+        return collection;
     }
 
     /**
      * Clear the collection.
      */
     public void clearCollection(){
-        HashSet<Dragon> dragonsCollection = getCollection();
-        for (Dragon dragon : dragonsCollection){
+        ConcurrentHashMap<Long, Dragon> dragonsCollection = getCollection();
+        for (Dragon dragon : dragonsCollection.values()){
             deleteDragonById(dragon.getId());
         }
     }

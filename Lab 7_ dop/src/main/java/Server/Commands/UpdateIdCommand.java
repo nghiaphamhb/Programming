@@ -1,6 +1,7 @@
 package Server.Commands;
 
 import Common.Data.Dragon.Dragon;
+import Common.Data.User;
 import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Exception.IdNotFoundException;
 import Common.Exception.PermissionDeniedException;
@@ -35,12 +36,15 @@ public class UpdateIdCommand extends AbstractCommand {
             if (id == 0) throw new CommandSyntaxIsWrongException();
             if (id == -1) throw new NumberFormatException();
             Dragon oldDragon = collectionManager.getById(id);
+
             if (oldDragon == null) throw new IdNotFoundException();
-            if (!oldDragon.getUser().equals(request.getUser())) throw new PermissionDeniedException();
-            collectionManager.getCollection().remove(oldDragon);
+            if (!oldDragon.getUser().toString().equals(request.getUser().toString()))
+                throw new PermissionDeniedException();
+
+            collectionManager.removeFromCollection(oldDragon);
             Dragon newDragon = (Dragon) request.getBonusParameter();
             newDragon.setId(id);
-            collectionManager.getCollection().add(newDragon);
+            collectionManager.addToCollection(newDragon, request.getUser());
 
             databaseCollectionManager.updateDragonById(id, newDragon);
             message = "That dragon was successfully updated";

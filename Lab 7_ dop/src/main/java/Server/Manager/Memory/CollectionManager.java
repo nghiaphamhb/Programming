@@ -15,8 +15,7 @@ import java.util.logging.Level;
  */
 
 public class CollectionManager {
-    private HashSet<Dragon> collection;
-    private ConcurrentHashMap<Long, Dragon> synchronizedCollection;
+    private ConcurrentHashMap<Long, Dragon> collection;
     private static LocalDateTime lastInitTime;
     private LocalDateTime saveTime;
     private DatabaseCollectionManager databaseCollectionManager;
@@ -24,7 +23,6 @@ public class CollectionManager {
     public CollectionManager(DatabaseCollectionManager databaseCollectionManager) {
         this.databaseCollectionManager = databaseCollectionManager;
         loadCollection();
-        convertCollectionStructure();
         saveTime = null;
     }
 
@@ -37,21 +35,10 @@ public class CollectionManager {
             lastInitTime = LocalDateTime.now();
             ServerApp.logger.log(Level.INFO, "Collection's data was loaded from database." );
         } catch (Exception e){
-            collection = new HashSet<>();
+            collection = new ConcurrentHashMap<>();
             ServerApp.logger.log(Level.WARNING, e.toString());
         }
     }
-
-    /**
-     * Convert collection to sync
-     */
-    private void convertCollectionStructure(){
-        synchronizedCollection = new ConcurrentHashMap<>();
-        for (Dragon dragon : collection) {
-            synchronizedCollection.put(dragon.getId(), dragon);
-        };
-    }
-
 
     /**
      * Return the dragon by ID
@@ -59,7 +46,7 @@ public class CollectionManager {
      * @return dragon
      */
     public Dragon getById( Long id ){
-        return synchronizedCollection.get(id);
+        return collection.get(id);
     }
 
     /**
@@ -67,7 +54,7 @@ public class CollectionManager {
      * @return collection of dragons
      */
     public Set<Dragon> getCollection (){
-        return new HashSet<Dragon>(synchronizedCollection.values());
+        return new HashSet<Dragon>(collection.values());
     }
 
     /**
@@ -92,7 +79,7 @@ public class CollectionManager {
      * @return the type of dragon
      */
     public String getCollectionType (){
-        return synchronizedCollection.getClass().getName();
+        return collection.getClass().getName();
     }
 
     /**
@@ -100,7 +87,7 @@ public class CollectionManager {
      * @return collection size
      */
     public int getCollectionSize () {
-        return synchronizedCollection.size();
+        return collection.size();
     }
 
     /**
@@ -109,8 +96,8 @@ public class CollectionManager {
      */
     public Dragon getFirstDragon () {
         Dragon firstDragon = null;
-        if (!synchronizedCollection.isEmpty()) {
-            Map.Entry<Long, Dragon> firstEntry = synchronizedCollection.entrySet().iterator().next();
+        if (!collection.isEmpty()) {
+            Map.Entry<Long, Dragon> firstEntry = collection.entrySet().iterator().next();
             firstDragon = firstEntry.getValue();
         }
         return firstDragon;
@@ -122,9 +109,9 @@ public class CollectionManager {
      */
     public Dragon getLastDragon () {
         Dragon lastDragon = null;
-        if (!synchronizedCollection.isEmpty()) {
+        if (!collection.isEmpty()) {
             Map.Entry<Long, Dragon> lastEntry = null;
-            for (Map.Entry<Long, Dragon> entry : synchronizedCollection.entrySet()) {
+            for (Map.Entry<Long, Dragon> entry : collection.entrySet()) {
                 lastEntry = entry;
             }
             lastDragon = lastEntry.getValue();
@@ -138,8 +125,7 @@ public class CollectionManager {
      */
     public void addToCollection(Dragon dragon, User user) {
         dragon.setUser(user);
-        synchronizedCollection.put(dragon.getId(), dragon);
-//        idList.add( dragon.getId() );
+        collection.put(dragon.getId(), dragon);
     }
 
     /**
@@ -147,14 +133,15 @@ public class CollectionManager {
      * @param dragon remote dragon
      */
     public void removeFromCollection(Dragon dragon){
-        synchronizedCollection.remove(dragon.getId());
+        collection.remove(dragon.getId());
     }
 
     /**
      * Clean the collection (remove all dragons in the collection)
      * */
     public void clearCollection(){
-        synchronizedCollection.clear();
+        collection.clear();
+        databaseCollectionManager.clearCollection();
     }
 
     /**
@@ -171,9 +158,9 @@ public class CollectionManager {
      */
     @Override
     public String toString() {
-        if (synchronizedCollection.isEmpty()) return "The collection is empty.";
+        if (collection.isEmpty()) return "The collection is empty.";
         // Chuyển đổi HashSet thành ArrayList
-        List<Dragon> dragonList = new ArrayList<>(synchronizedCollection.values());
+        List<Dragon> dragonList = new ArrayList<>(collection.values());
         // Sắp xếp danh sách các con rồng theo tên
         dragonList.sort(Comparator.comparing(Dragon::getName));
         StringBuilder info = new StringBuilder();

@@ -73,10 +73,12 @@ public class GrantPermissionCommand extends AbstractCommand{
             if (!role.getNameRole().equals(ROLES.ADMIN)) throw new PermissionDeniedException();
 
             String nameRoleToChange = (String) request.getParameter();
+            if (nameRoleToChange.isEmpty()) throw new CommandSyntaxIsWrongException();
             Role roleToChange = databaseRoleManager.getRoleByNameRole(nameRoleToChange);
             if (roleToChange == null) throw new NoSuchElementException();
 
             String strNewAccess = (String) request.getBonusParameter();
+            if (strNewAccess.isEmpty()) throw new CommandSyntaxIsWrongException();
             if (!updateAccess(strNewAccess, roleToChange)) throw new CommandSyntaxIsWrongException();
 
             if (databaseRoleManager.updateAccessRole(nameRoleToChange, roleToChange.toString())){
