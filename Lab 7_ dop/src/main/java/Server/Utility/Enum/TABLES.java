@@ -5,10 +5,11 @@ package Server.Utility.Enum;
  */
 public interface TABLES {
     // Table names
-    public static final String USER = "users";
-    public static final String DRAGON = "dragons";
-    public static final String COORDINATES = "coordinates";
-    public static final String DRAGON_HEAD = "dragon_head";
+    String ROLES = "roles";
+    String USERS = "users";
+    String DRAGON = "dragons";
+    String COORDINATES = "coordinates";
+    String DRAGON_HEAD = "dragon_head";
 
 
 }

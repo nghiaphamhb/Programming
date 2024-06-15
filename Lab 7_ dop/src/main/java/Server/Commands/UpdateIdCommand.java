@@ -4,12 +4,11 @@ import Common.Data.Dragon.Dragon;
 import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Exception.IdNotFoundException;
 import Common.Exception.PermissionDeniedException;
-import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Memory.CollectionManager;
 import Server.Manager.Database.DatabaseCollectionManager;
-import Server.Utility.Role.AbstractRole;
+import Server.Utility.Roles.AbstractRole;
 
 /**
  * The command to update information from the dragon that has the specified ID
@@ -37,7 +36,7 @@ public class UpdateIdCommand extends AbstractCommand {
             if (oldDragon == null) throw new IdNotFoundException();
             if (!oldDragon.getUser().equals(request.getUser())) throw new PermissionDeniedException();
             collectionManager.getCollection().remove(oldDragon);
-            Dragon newDragon = request.getUpdatedDragon();
+            Dragon newDragon = (Dragon) request.getBonusParameter();
             newDragon.setId(id);
             collectionManager.getCollection().add(newDragon);
 
@@ -50,7 +49,7 @@ public class UpdateIdCommand extends AbstractCommand {
         } catch (IdNotFoundException e){
             message = "Number id [" + id + "] does not exist. Update unsuccessful dragons.";
         } catch (PermissionDeniedException e){
-            message = "Not enough permissions to do this action";
+            message = "Not enough permissions to do this action.";
         }
         return new Response(message);
     }

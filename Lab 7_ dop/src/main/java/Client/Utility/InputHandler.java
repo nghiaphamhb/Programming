@@ -7,6 +7,8 @@ import Common.Data.User;
 import Common.Network.Request;
 import Common.Network.Response;
 
+import java.util.Scanner;
+
 /**
  * Class of input's handle
  */
@@ -48,8 +50,17 @@ public class InputHandler {
             case "print_descending":
             case "print_field_descending_speaking":
             case "show":
-                request = new Request(command[0], "-1", user);
-                if (command[1].isEmpty()) request = new Request(command[0], user);
+            case "users_list":
+                request = new Request(command[0], user);
+                break;
+            case "change_role":
+                Display.println("The user needs to be updated:");
+                Display.ps2();
+                String userName = new Scanner(System.in).nextLine();
+                Display.println("The user's role needs to be updated:");
+                Display.ps2();
+                String nameRole = new Scanner(System.in).nextLine();
+                request = new Request(command[0], userName, nameRole, user);
                 break;
             case "execute_script":
             case "filter_contains_name":
@@ -100,7 +111,7 @@ public class InputHandler {
      * Program sleeps while waiting response from server
      */
     public void sleep() {
-        Display.println("The command is accepted. Initialize the Dragon generator... ");
+        Display.println("Initialize the Dragon generator... ");
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {

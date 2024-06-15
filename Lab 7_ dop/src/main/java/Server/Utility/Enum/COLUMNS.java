@@ -5,27 +5,30 @@ package Server.Utility.Enum;
  */
 public interface COLUMNS {
     // DRAGON table column names
-    public static final String ID = "id";
-    public static final String NAME = "name";
-    public static final String COORDINATES_ID = "coordinates_id";
-    public static final String CREATION_DATE = "creation_date";
-    public static final String AGE = "age";
-    public static final String WEIGHT = "weight";
-    public static final String SPEAKING = "speaking";
-    public static final String COLOR = "color";
-    public static final String DRAGON_HEAD_ID = "dragon_head_id";
-    public static final String USER_ID = "user_id";
+    String ID = "id";
+    String NAME = "name";
+    String COORDINATES_ID = "coordinates_id";
+    String CREATION_DATE = "creation_date";
+    String AGE = "age";
+    String WEIGHT = "weight";
+    String SPEAKING = "speaking";
+    String COLOR = "color";
+    String DRAGON_HEAD_ID = "dragon_head_id";
+    String USER_ID = "user_id";
 
     // USER_TABLE column names
-    public static final String USERNAME = "username";
-    public static final String PASSWORD = "password";
+    String USERNAME = "username";
+    String PASSWORD = "password";
+    String ROLE_ID = "role_id";
+
+    // ROLES_TABLE column names
     String ROLE = "role";
     String ACCESS = "access";
 
     // COORDINATES table column names
-    public static final String X = "x";
-    public static final String Y = "y";
+    String X = "x";
+    String Y = "y";
 
     // DRAGON_HEAD table column names
-    public static final String EYES_COUNT = "eyes_count";
+    String EYES_COUNT = "eyes_count";
 }

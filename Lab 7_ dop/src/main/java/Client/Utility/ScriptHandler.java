@@ -5,7 +5,6 @@ import Client.Utility.DragonGenerator.ByFile.ScriptReader;
 import Client.Utility.DragonGenerator.ByUser.Console;
 import Client.Utility.DragonGenerator.Input;
 import Common.Data.User;
-import Common.Exception.CommandNotFoundException;
 import Common.Exception.ScriptRecursionException;
 import Common.Network.ProgramCode;
 import Common.Network.Response;
@@ -40,13 +39,12 @@ public class ScriptHandler {
         }
         return runScript;
     }
+
     /**
      * Run the script if the script is valid
      * @param filePath file's path
-     * @return program's status after running script
      */
-    public ProgramCode runScript (String filePath)  {
-        if (!findScript(filePath)) return ProgramCode.ERROR;
+    public void runScript (String filePath)  {
         Response firstResponse = inputHandler.handle(new String[]{"execute_script", filePath}, user);
         Display.println(firstResponse);
 
@@ -56,7 +54,6 @@ public class ScriptHandler {
         // execute lines in the script
         executeScriptLines(ScriptReader.getScriptLines());
         updateInput(new Console());
-        return ProgramCode.OK;
     }
 
     /**
@@ -90,8 +87,6 @@ public class ScriptHandler {
 
                 Response response = inputHandler.handle(command, user);
                 Display.println(response);
-
-                commandStatus = updateProgramStatus(command);
             }
         } catch (ScriptRecursionException e) {
             Display.printError("Scripts cannot be called recursively!");
@@ -107,30 +102,6 @@ public class ScriptHandler {
         this.inputHandler.changeInput(input);
     }
 
-    /**
-     * Update program's status after get a command from input
-     * @param command command
-     * @return program's status
-     */
-    private ProgramCode updateProgramStatus (String[] command)  {
-        try {
-            switch (command[0]){
-                case "exit":
-                    if (command[1].isEmpty()) return ProgramCode.CLIENT_EXIT;
-                case "execute_script":
-                    String filePath = command[1];
-                    return runScript(filePath);
-            }
-            return ProgramCode.OK;
-        } catch (CommandNotFoundException e) {
-            if (!command[0].isEmpty()){
-                Display.printError("Command " + command[0] + " is not exist. Enter 'help' for helping");
-            } else {
-                Display.print("");
-            }
-        }
-        return ProgramCode.ERROR;
-    }
 
     /**
      * Process a string to array with length 2

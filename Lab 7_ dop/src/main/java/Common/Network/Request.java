@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class Request implements Serializable {
     private final String nameCommand;
     private Object parameter = null;
-    private Dragon updatedDragon = null;  //only update_id command use him
+    private Object bonusParameter = null;
     private User user;
 
     /**
@@ -65,7 +65,14 @@ public class Request implements Serializable {
     public Request(String nameCommand, long idDragon, Dragon updatedDragon, User user) {
         this.nameCommand = nameCommand;
         this.parameter = idDragon;
-        this.updatedDragon = updatedDragon;
+        this.bonusParameter = updatedDragon;
+        this.user = user;
+    }
+
+    public Request(String nameCommand, String userName, String nameNewRole, User user) {
+        this.nameCommand = nameCommand;
+        this.parameter = userName;
+        this.bonusParameter = nameNewRole;
         this.user = user;
     }
 
@@ -78,8 +85,8 @@ public class Request implements Serializable {
         return parameter;
     }
 
-    public Dragon getUpdatedDragon() {
-        return updatedDragon;
+    public Object getBonusParameter() {
+        return bonusParameter;
     }
 
     public User getUser() {
@@ -93,6 +100,6 @@ public class Request implements Serializable {
     @Override
     public String toString() {
         return "Request \"" + nameCommand + "[" + (parameter!=null? parameter.toString(): "empty") + "]["
-                + (updatedDragon!=null? updatedDragon.toString():"empty") + "]\" from " + user;
+                + (bonusParameter!=null? bonusParameter.toString():"empty") + "]\" from " + user;
     }
 }

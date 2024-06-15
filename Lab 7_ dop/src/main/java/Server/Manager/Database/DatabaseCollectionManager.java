@@ -8,7 +8,7 @@ import Common.Data.Dragon.DragonHead;
 import Common.Data.User;
 import Server.ServerApp;
 import Server.Utility.Enum.COLUMNS;
-import Server.Utility.Enum.DML;
+import Server.Utility.Enum.QUERY;
 import Server.Utility.DatabaseHandler;
 
 import java.sql.*;
@@ -42,9 +42,9 @@ public class DatabaseCollectionManager {
             databaseHandler.setSavepoint();
             LocalDateTime creationDate = LocalDateTime.now();
 
-            dragonTablePreparedStatement = databaseHandler.getPreparedStatement(DML.INSERT_DRAGON, true);
-            coordinatesTablePreparedStatement = databaseHandler.getPreparedStatement(DML.INSERT_COORDINATES, true);
-            dragonHeadTablePreparedStatement = databaseHandler.getPreparedStatement(DML.INSERT_DRAGON_HEAD, true);
+            dragonTablePreparedStatement = databaseHandler.getPreparedStatement(QUERY.INSERT_DRAGON, true);
+            coordinatesTablePreparedStatement = databaseHandler.getPreparedStatement(QUERY.INSERT_COORDINATES, true);
+            dragonHeadTablePreparedStatement = databaseHandler.getPreparedStatement(QUERY.INSERT_DRAGON_HEAD, true);
 
             //coordinates table
             coordinatesTablePreparedStatement.setInt(1, newDragon.getCoordinates().getX());
@@ -121,13 +121,13 @@ public class DatabaseCollectionManager {
             databaseHandler.setCommitMode();
             databaseHandler.setSavepoint();
 
-            pstUpdateName = databaseHandler.getPreparedStatement(DML.UPDATE_DRAGON_NAME_BY_DRAGON_ID, false);
-            pstUpdateCoordinates = databaseHandler.getPreparedStatement(DML.UPDATE_COORDINATES_BY_DRAGON_ID, false);
-            pstUpdateAge = databaseHandler.getPreparedStatement(DML.UPDATE_DRAGON_AGE_BY_DRAGON_ID, false);
-            pstUpdateWeight = databaseHandler.getPreparedStatement(DML.UPDATE_DRAGON_WEIGHT_BY_DRAGON_ID, false);
-            pstUpdateSpeaking = databaseHandler.getPreparedStatement(DML.UPDATE_DRAGON_SPEAKING_BY_DRAGON_ID, false);
-            pstUpdateColor = databaseHandler.getPreparedStatement(DML.UPDATE_DRAGON_COLOR_BY_DRAGON_ID, false);
-            pstUpdateDragonHead = databaseHandler.getPreparedStatement(DML.UPDATE_DRAGON_HEAD_BY_DRAGON_ID, false);
+            pstUpdateName = databaseHandler.getPreparedStatement(QUERY.UPDATE_DRAGON_NAME_BY_DRAGON_ID, false);
+            pstUpdateCoordinates = databaseHandler.getPreparedStatement(QUERY.UPDATE_COORDINATES_BY_DRAGON_ID, false);
+            pstUpdateAge = databaseHandler.getPreparedStatement(QUERY.UPDATE_DRAGON_AGE_BY_DRAGON_ID, false);
+            pstUpdateWeight = databaseHandler.getPreparedStatement(QUERY.UPDATE_DRAGON_WEIGHT_BY_DRAGON_ID, false);
+            pstUpdateSpeaking = databaseHandler.getPreparedStatement(QUERY.UPDATE_DRAGON_SPEAKING_BY_DRAGON_ID, false);
+            pstUpdateColor = databaseHandler.getPreparedStatement(QUERY.UPDATE_DRAGON_COLOR_BY_DRAGON_ID, false);
+            pstUpdateDragonHead = databaseHandler.getPreparedStatement(QUERY.UPDATE_DRAGON_HEAD_BY_DRAGON_ID, false);
 
             if(updatedDragon.getName() != null){
                 pstUpdateName.setString(1, updatedDragon.getName());
@@ -204,7 +204,7 @@ public class DatabaseCollectionManager {
     public void deleteDragonById(long dragonId){
         PreparedStatement pstDeleteDragonById = null;
         try{
-            pstDeleteDragonById = databaseHandler.getPreparedStatement(DML.DELETE_DRAGON_BY_DRAGON_ID, false);
+            pstDeleteDragonById = databaseHandler.getPreparedStatement(QUERY.DELETE_DRAGON_BY_DRAGON_ID, false);
             pstDeleteDragonById.setLong(1, dragonId);
             if (pstDeleteDragonById.executeUpdate() == 0) throw new SQLException();
             ServerApp.logger.log(Level.INFO, "Executed DELETE_DRAGON_BY_DRAGON_ID.");
@@ -223,7 +223,7 @@ public class DatabaseCollectionManager {
         HashSet<Dragon> dragonsCollection = new HashSet<>();
         PreparedStatement preparedStatement = null;
         try {
-            preparedStatement = databaseHandler.getPreparedStatement(DML.SELECT_ALL_DRAGON, false);
+            preparedStatement = databaseHandler.getPreparedStatement(QUERY.SELECT_ALL_DRAGON, false);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 dragonsCollection.add(createDragon(resultSet));
@@ -280,7 +280,7 @@ public class DatabaseCollectionManager {
         Long coordinates_id = null;
         PreparedStatement preparedStatement = null;
         try{
-            preparedStatement = databaseHandler.getPreparedStatement(DML.SELECT_COORDINATES_ID_BY_DRAGON_ID, false);
+            preparedStatement = databaseHandler.getPreparedStatement(QUERY.SELECT_COORDINATES_ID_BY_DRAGON_ID, false);
             preparedStatement.setLong(1, dragonId);
             ResultSet resultSet = preparedStatement.executeQuery();
             ServerApp.logger.log(Level.INFO, "Executed query SELECT_COORDINATES_ID_BY_DRAGON_ID");
@@ -304,7 +304,7 @@ public class DatabaseCollectionManager {
         Coordinates coordinates = null;
         PreparedStatement preparedStatement = null;
         try{
-            preparedStatement = databaseHandler.getPreparedStatement(DML.SELECT_COORDINATES_BY_COORDINATES_ID, false);
+            preparedStatement = databaseHandler.getPreparedStatement(QUERY.SELECT_COORDINATES_BY_COORDINATES_ID, false);
             long coordinatesId = getCoordinatesIdByDragonId(dragonId);
             preparedStatement.setLong(1, coordinatesId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -332,7 +332,7 @@ public class DatabaseCollectionManager {
         Long dragon_head_id = null;
         PreparedStatement preparedStatement = null;
         try{
-            preparedStatement = databaseHandler.getPreparedStatement(DML.SELECT_DRAGON_HEAD_ID_BY_DRAGON_ID, false);
+            preparedStatement = databaseHandler.getPreparedStatement(QUERY.SELECT_DRAGON_HEAD_ID_BY_DRAGON_ID, false);
             preparedStatement.setLong(1, dragonId);
             ResultSet resultSet = preparedStatement.executeQuery();
             ServerApp.logger.log(Level.INFO, "Executed query SELECT_DRAGON_HEAD_ID_BY_DRAGON_ID");
@@ -356,7 +356,7 @@ public class DatabaseCollectionManager {
         DragonHead dragonHead = null;
         PreparedStatement preparedStatement = null;
         try{
-            preparedStatement = databaseHandler.getPreparedStatement(DML.SELECT_DRAGON_HEAD_BY_DRAGON_HEAD_ID, false);
+            preparedStatement = databaseHandler.getPreparedStatement(QUERY.SELECT_DRAGON_HEAD_BY_DRAGON_HEAD_ID, false);
             long dragonHeadId = getDragonHeadIdByDragonId(dragonId);
             preparedStatement.setLong(1, dragonHeadId);
             ResultSet resultSet = preparedStatement.executeQuery();

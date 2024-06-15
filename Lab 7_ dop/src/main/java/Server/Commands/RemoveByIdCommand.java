@@ -6,12 +6,11 @@ import Common.Exception.CollectionIsEmptyException;
 import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Exception.IdNotFoundException;
 import Common.Exception.PermissionDeniedException;
-import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Memory.CollectionManager;
 import Server.Manager.Database.DatabaseCollectionManager;
-import Server.Utility.Role.AbstractRole;
+import Server.Utility.Roles.AbstractRole;
 
 /**
  * Delete the dragon that has the specified ID

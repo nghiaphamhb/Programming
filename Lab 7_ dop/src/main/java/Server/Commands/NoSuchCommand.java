@@ -2,7 +2,7 @@ package Server.Commands;
 
 import Common.Network.Request;
 import Common.Network.Response;
-import Server.Utility.Role.AbstractRole;
+import Server.Utility.Roles.AbstractRole;
 
 /**
  * Command is not available

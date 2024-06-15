@@ -68,49 +68,33 @@ public class ClientAppRunner implements Runnable{
      */
     private void processRequestToServer(){
         scriptHandler = new ScriptHandler(inputHandler, input, user);
-        ProgramCode commandStatus = null;
-        do {
-            ScriptHandler.runScript = true;
+        ProgramCode programStatus = null;
+        while(true) {
             try{
+                //Get input from user
                 Display.ps1();
                 String[] command = argumentToCommand((new Scanner(System.in)).nextLine());
 
-                if (!scriptHandler.findScript(command[1])) command[1] = "cannot find";
+                //If command is "execute script", check if this script if exist
+                if (command[0].equals("execute_script") &&
+                        !scriptHandler.findScript(command[1])) command[1] = "cannot find";
+                //send request and get response from server
                 Response response = inputHandler.handle(command, user);
-                if (response.getResponseCode() == ProgramCode.ERROR) ScriptHandler.runScript = false;
-                commandStatus = updateProgramStatus(command);
+                //Get program status
+                programStatus = response.getResponseCode();
+
+                //If it's execute_script command, run script
+                if (programStatus != ProgramCode.ERROR && command[0].equals("execute_script"))
+                    scriptHandler.runScript(command[1]);
+                //If it's exit command
+                if (programStatus == ProgramCode.CLIENT_EXIT) break;
+
                 Display.println("** Response from server: ");
                 Display.println(response);
             } catch (CommandNotFoundException e) {
                 Display.printError("This command is not exist. Enter 'help' for helping");
             }
-        } while (commandStatus != ProgramCode.CLIENT_EXIT);
-    }
-
-    /**
-     * Update program's status after get a command from input
-     * @param command command
-     * @return program's status
-     */
-    private ProgramCode updateProgramStatus (String[] command)  {
-        try {
-            switch (command[0]){
-                case "exit":
-                    if (command[1].isEmpty()) return ProgramCode.CLIENT_EXIT;
-                case "execute_script":
-                    String filePath = command[1];
-                    if (ScriptHandler.runScript) return scriptHandler.runScript(filePath);
-                    return ProgramCode.ERROR;
-            }
-            return ProgramCode.OK;
-        } catch (CommandNotFoundException e) {
-            if (!command[0].isEmpty()){
-                Display.printError("Command " + command[0] + " is not exist. Enter 'help' for helping");
-            } else {
-                Display.print("");
-            }
         }
-        return ProgramCode.ERROR;
     }
 
     /**

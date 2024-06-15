@@ -5,7 +5,7 @@ import Common.Exception.PermissionDeniedException;
 import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
-import Server.Utility.Role.AbstractRole;
+import Server.Utility.Roles.AbstractRole;
 
 import java.io.FileNotFoundException;
 

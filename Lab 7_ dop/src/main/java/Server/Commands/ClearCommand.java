@@ -10,7 +10,7 @@ import Common.Network.Response;
 import Common.Network.ProgramCode;
 import Server.Manager.Memory.CollectionManager;
 import Server.Manager.Database.DatabaseCollectionManager;
-import Server.Utility.Role.AbstractRole;
+import Server.Utility.Roles.AbstractRole;
 
 /**
  * The command for cleaning this collection

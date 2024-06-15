@@ -2,7 +2,7 @@ package Server.Commands;
 
 import Common.Data.User;
 import Common.Exception.CommandSyntaxIsWrongException;
-import Common.Exception.FailureToCreateObjectException;
+import Common.Exception.FailureToActWithObjectException;
 import Common.Exception.PermissionDeniedException;
 import Common.Network.ProgramCode;
 import Common.Network.Request;
@@ -10,7 +10,7 @@ import Common.Network.Response;
 import Common.Data.Dragon.Dragon;
 import Server.Manager.Memory.CollectionManager;
 import Server.Manager.Database.DatabaseCollectionManager;
-import Server.Utility.Role.AbstractRole;
+import Server.Utility.Roles.AbstractRole;
 
 /**
  * Command to add a new dragon if his age is maximum in the collection
@@ -35,7 +35,7 @@ public class AddIfMinCommand extends AbstractCommand {
             User user = request.getUser();
             if (validatedDragon == null) throw new CommandSyntaxIsWrongException();
             if ( validatedDragon.getAge() < getMinAge() ) {
-                if (!databaseCollectionManager.insertDragon(validatedDragon, user)) throw new FailureToCreateObjectException();
+                if (!databaseCollectionManager.insertDragon(validatedDragon, user)) throw new FailureToActWithObjectException();
                 collectionManager.addToCollection(validatedDragon, user);
                 return new Response("The dragon has been successfully added! ");
             }

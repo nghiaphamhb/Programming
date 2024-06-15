@@ -1,6 +1,6 @@
 package Common.Data;
 
-import Server.Utility.Role.*;
+import Server.Utility.Roles.*;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -13,11 +13,6 @@ public class User implements Serializable {
     private String password;
 
     public User(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
-    }
-
-    public User(String userName, String password, AbstractRole role) {
         this.userName = userName;
         this.password = password;
     }

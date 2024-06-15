@@ -1,17 +1,19 @@
-package Server.Utility.Role;
+package Server.Utility.Roles;
 
 import java.io.Serializable;
 
 public abstract class AbstractRole implements Serializable {
-    private String nameRole;
+    private final String nameRole;
+    private final long id;
     private boolean create;
     private boolean update;
     private boolean delete;
     private boolean execute;
     private boolean read;
 
-    public AbstractRole(String nameRole, boolean create, boolean update, boolean delete, boolean execute, boolean read) {
+    public AbstractRole(String nameRole, long id, boolean create, boolean update, boolean delete, boolean execute, boolean read) {
         this.nameRole = nameRole;
+        this.id = id;
         this.create = create;
         this.update = update;
         this.delete = delete;
@@ -21,6 +23,10 @@ public abstract class AbstractRole implements Serializable {
 
     public String getNameRole() {
         return nameRole;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public boolean canCreate() {
@@ -41,5 +47,15 @@ public abstract class AbstractRole implements Serializable {
 
     public boolean canRead() {
         return read;
+    }
+
+    @Override
+    public String toString() {
+        String access = (canCreate() ? "c" : "-") +
+                (canUpdate() ? "u" : "-") +
+                (canDelete() ? "d" : "-") +
+                (canExecute() ? "e" : "-") +
+                (canRead() ? "r" : "-");
+        return access;
     }
 }

@@ -3,14 +3,14 @@ package Server.Commands;
 import Common.Data.Dragon.Dragon;
 import Common.Data.User;
 import Common.Exception.CommandSyntaxIsWrongException;
-import Common.Exception.FailureToCreateObjectException;
+import Common.Exception.FailureToActWithObjectException;
 import Common.Exception.PermissionDeniedException;
 import Common.Network.Request;
 import Common.Network.Response;
 import Common.Network.ProgramCode;
 import Server.Manager.Memory.CollectionManager;
 import Server.Manager.Database.DatabaseCollectionManager;
-import Server.Utility.Role.AbstractRole;
+import Server.Utility.Roles.AbstractRole;
 
 /**
  * The command to add a dragon to the collection
@@ -33,12 +33,12 @@ public class AddCommand extends AbstractCommand {
             Dragon validatedDragon = (Dragon) request.getParameter();
             User user = request.getUser();
             if (validatedDragon == null) throw new CommandSyntaxIsWrongException();
-            if (!databaseCollectionManager.insertDragon(validatedDragon, user)) throw new FailureToCreateObjectException();
+            if (!databaseCollectionManager.insertDragon(validatedDragon, user)) throw new FailureToActWithObjectException();
             collectionManager.addToCollection(validatedDragon, user);
             return new Response("The dragon has been successfully added!");
         } catch (CommandSyntaxIsWrongException exception) {
             return new Response("Syntax command is not correct. Usage: \"" + getName() + "\"", ProgramCode.ERROR);
-        } catch (FailureToCreateObjectException e){
+        } catch (FailureToActWithObjectException e){
             return new Response("Failure to insert dragon into collection.", ProgramCode.ERROR);
         } catch (PermissionDeniedException e) {
             return new Response("Not enough permissions to do this action", ProgramCode.ERROR);
