@@ -37,7 +37,8 @@ public class AddIfMinCommand extends AbstractCommand {
             User user = request.getUser();
             if (validatedDragon == null) throw new CommandSyntaxIsWrongException();
             if ( validatedDragon.getAge() < getMinAge() ) {
-                if (!databaseCollectionManager.insertDragon(validatedDragon, user)) throw new FailureToActWithObjectException();
+                validatedDragon = databaseCollectionManager.insertDragon(validatedDragon, user);
+                if (validatedDragon == null ) throw new FailureToActWithObjectException();
                 collectionManager.addToCollection(validatedDragon, user);
                 message = "The dragon has been successfully added! ";
                 code = ProgramCode.OK;

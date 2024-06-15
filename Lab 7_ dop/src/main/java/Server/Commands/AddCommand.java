@@ -35,7 +35,8 @@ public class AddCommand extends AbstractCommand {
             Dragon validatedDragon = (Dragon) request.getParameter();
             User user = request.getUser();
             if (validatedDragon == null) throw new CommandSyntaxIsWrongException();
-            if (!databaseCollectionManager.insertDragon(validatedDragon, user)) throw new FailureToActWithObjectException();
+            validatedDragon = databaseCollectionManager.insertDragon(validatedDragon, user);
+            if (validatedDragon == null ) throw new FailureToActWithObjectException();
             collectionManager.addToCollection(validatedDragon, user);
             message = "The dragon has been successfully added!";
             code = ProgramCode.OK;

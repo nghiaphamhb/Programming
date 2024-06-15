@@ -33,10 +33,11 @@ public class DatabaseCollectionManager {
      * @param user User.
      * @return Marine.
      */
-    public boolean insertDragon(Dragon newDragon, User user){
+    public Dragon insertDragon(Dragon newDragon, User user){
         PreparedStatement dragonTablePreparedStatement = null;
         PreparedStatement coordinatesTablePreparedStatement = null;
         PreparedStatement dragonHeadTablePreparedStatement = null;
+        Dragon insertedDragon = null;
         try {
             databaseHandler.setCommitMode();
             databaseHandler.setSavepoint();
@@ -86,10 +87,17 @@ public class DatabaseCollectionManager {
             dragonTablePreparedStatement.setLong(9, DatabaseUserManager.getUserIdByUsername(user));
 
             if (dragonTablePreparedStatement.executeUpdate() == 0) throw new SQLException();
+            ResultSet generatedDragonKeys = dragonTablePreparedStatement.getGeneratedKeys();
+            long dragonId;
+            if (generatedDragonKeys.next()) {
+                dragonId = generatedDragonKeys.getLong(1);
+            } else throw new SQLException();
+
             ServerApp.logger.log(Level.INFO, "Executed INSERT_DRAGON.");
+            insertedDragon = newDragon;
+            insertedDragon.setId(dragonId);
 
             databaseHandler.commit();
-            return true;
 
         } catch (SQLException e) {
             ServerApp.logger.log(Level.WARNING, e.toString());
@@ -100,7 +108,7 @@ public class DatabaseCollectionManager {
             databaseHandler.closePreparedStatement(coordinatesTablePreparedStatement);
             databaseHandler.setNormalMode();
         }
-        return false;
+        return insertedDragon;
     }
 
     /**

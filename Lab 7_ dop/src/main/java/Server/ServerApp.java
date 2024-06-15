@@ -18,9 +18,9 @@ public class ServerApp {
     public static Logger logger = Logger.getLogger("ServerLogger");
     private static int port = 1234;
     private static String databaseUsername = "s374806";
-    private static String databaseHost = "localhost";
+    private static String databaseHost = "pg";
     private static String databasePassword = "7FOLYBHhbxLOsdxo";
-    private static String databaseAddress = "jdbc:postgresql://" + databaseHost + ":8080/studs";
+    private static String databaseAddress = "jdbc:postgresql://" + databaseHost + ":5432/studs";
 
     public static void main(String[] args){
         try{
