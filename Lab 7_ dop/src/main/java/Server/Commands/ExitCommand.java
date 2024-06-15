@@ -4,7 +4,7 @@ import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
 import Common.Network.ProgramCode;
-import Server.Utility.Roles.AbstractRole;
+import Server.Utility.Roles.Role;
 
 /**
  * The command to end the program
@@ -16,7 +16,7 @@ public class ExitCommand extends AbstractCommand {
 
 
     @Override
-    public Response execute(Request request, AbstractRole role) {
+    public Response execute(Request request, Role role) {
         try {
             if (request.getParameter() != null) throw new CommandSyntaxIsWrongException();
             return new Response("The program was stopped", ProgramCode.CLIENT_EXIT);

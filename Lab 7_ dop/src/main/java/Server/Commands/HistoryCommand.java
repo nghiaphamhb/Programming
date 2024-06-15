@@ -6,7 +6,7 @@ import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Memory.CommandManager;
-import Server.Utility.Roles.AbstractRole;
+import Server.Utility.Roles.Role;
 
 /**
  * Command to display the history of used commands (maximum only show the last 13 commands)
@@ -19,7 +19,7 @@ public class HistoryCommand extends AbstractCommand {
     }
 
     @Override
-    public Response execute(Request request, AbstractRole role) {
+    public Response execute(Request request, Role role) {
         try {
             if (!role.canRead()) throw new PermissionDeniedException();
             if (request.getParameter() != null) throw new CommandSyntaxIsWrongException();

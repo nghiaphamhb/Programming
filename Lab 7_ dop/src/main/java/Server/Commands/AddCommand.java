@@ -10,7 +10,7 @@ import Common.Network.Response;
 import Common.Network.ProgramCode;
 import Server.Manager.Memory.CollectionManager;
 import Server.Manager.Database.DatabaseCollectionManager;
-import Server.Utility.Roles.AbstractRole;
+import Server.Utility.Roles.Role;
 
 /**
  * The command to add a dragon to the collection
@@ -27,7 +27,7 @@ public class AddCommand extends AbstractCommand {
 
 
     @Override
-    public Response execute(Request request, AbstractRole role) {
+    public Response execute(Request request, Role role) {
         try {
             if (!role.canCreate()) throw new PermissionDeniedException();
             Dragon validatedDragon = (Dragon) request.getParameter();

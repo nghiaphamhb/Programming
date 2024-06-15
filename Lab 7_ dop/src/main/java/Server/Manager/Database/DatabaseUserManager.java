@@ -19,9 +19,11 @@ import java.util.logging.Level;
  */
 public class DatabaseUserManager {
     private DatabaseHandler databaseHandler;
+    private RoleManager roleManager;
 
-    public DatabaseUserManager(DatabaseHandler databaseHandler) {
+    public DatabaseUserManager(DatabaseHandler databaseHandler, RoleManager roleManager) {
         this.databaseHandler = databaseHandler;
+        this.roleManager = roleManager;
     }
 
     /**
@@ -50,9 +52,9 @@ public class DatabaseUserManager {
         return user;
     }
 
-    public AbstractRole getRoleByUsername(String username){
+    public Role getRoleByUsername(String username){
         String nameRole = null;
-        AbstractRole role = null;
+        Role role = null;
         PreparedStatement preparedStatement = null;
         try{
             preparedStatement = databaseHandler.getPreparedStatement(QUERY.SELECT_ROLE_BY_USERNAME, false);
@@ -61,7 +63,7 @@ public class DatabaseUserManager {
             ServerApp.logger.log(Level.INFO, "Executed query SELECT_ROLE_BY_USERNAME");
             if (resultSet.next()) {
                 nameRole = resultSet.getString(COLUMNS.ROLE);
-                role = getRoleByNameRole(nameRole);
+                role = roleManager.getRoleByNameRole(nameRole);
             } else throw new SQLException();
         } catch (SQLException e) {
             ServerApp.logger.log(Level.WARNING, "An error occurred while executing the SELECT_ROLE_BY_USERNAME query!" + QUERY.SELECT_ROLE_BY_USERNAME);
@@ -71,24 +73,7 @@ public class DatabaseUserManager {
         return role;
     }
 
-    public AbstractRole getRoleByNameRole(String nameRole) {
-        switch (nameRole){
-            case ROLES.ADMIN:
-                return new Admin();
-            case ROLES.ANALYST:
-                return new Analyst();
-            case ROLES.CLEANER:
-                return new Cleaner();
-            case ROLES.CREATOR:
-                return new Creator();
-            case ROLES.DEVELOPER:
-                return new Developer();
-            case ROLES.TESTER:
-                return new Tester();
-            default:
-                throw new IllegalArgumentException("Unknown role: " + nameRole);
-        }
-    }
+
 
     public boolean checkUserByUsername(String userName){
         PreparedStatement preparedSelectUserByUsernameAndPasswordStatement = null;
@@ -200,7 +185,7 @@ public class DatabaseUserManager {
     public boolean changeUserRole(String userName, String nameNewRole){
         PreparedStatement preparedStatement;
         try{
-            AbstractRole newRole = getRoleByNameRole(nameNewRole);
+            Role newRole = roleManager.getRoleByNameRole(nameNewRole);
             preparedStatement = databaseHandler.getPreparedStatement(QUERY.UPDATE_ROLE_BY_USERNAME, false);
             preparedStatement.setLong(1, newRole.getId());
             preparedStatement.setString(2, userName);

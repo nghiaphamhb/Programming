@@ -1,8 +1,6 @@
 package Server.Utility.Roles;
 
-import java.io.Serializable;
-
-public abstract class AbstractRole implements Serializable {
+public class Role {
     private final String nameRole;
     private final long id;
     private boolean create;
@@ -11,9 +9,9 @@ public abstract class AbstractRole implements Serializable {
     private boolean execute;
     private boolean read;
 
-    public AbstractRole(String nameRole, long id, boolean create, boolean update, boolean delete, boolean execute, boolean read) {
-        this.nameRole = nameRole;
+    public Role(long id, String nameRole, boolean create, boolean update, boolean delete, boolean execute, boolean read) {
         this.id = id;
+        this.nameRole = nameRole;
         this.create = create;
         this.update = update;
         this.delete = delete;

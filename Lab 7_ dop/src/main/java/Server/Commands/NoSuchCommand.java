@@ -2,7 +2,7 @@ package Server.Commands;
 
 import Common.Network.Request;
 import Common.Network.Response;
-import Server.Utility.Roles.AbstractRole;
+import Server.Utility.Roles.Role;
 
 /**
  * Command is not available
@@ -14,7 +14,7 @@ public class NoSuchCommand extends AbstractCommand {
     }
 
     @Override
-    public Response execute (Request request, AbstractRole role){
+    public Response execute (Request request, Role role){
         String message = "That command is not available. Please enter \"help\" for helping";
         return new Response(message);
     }

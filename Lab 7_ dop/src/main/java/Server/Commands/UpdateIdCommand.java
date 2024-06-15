@@ -8,7 +8,7 @@ import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Memory.CollectionManager;
 import Server.Manager.Database.DatabaseCollectionManager;
-import Server.Utility.Roles.AbstractRole;
+import Server.Utility.Roles.Role;
 
 /**
  * The command to update information from the dragon that has the specified ID
@@ -25,7 +25,7 @@ public class UpdateIdCommand extends AbstractCommand {
     }
 
     @Override
-    public Response execute(Request request, AbstractRole role) {
+    public Response execute(Request request, Role role) {
         String message = "";
         Long id = (Long) request.getParameter();
         try {

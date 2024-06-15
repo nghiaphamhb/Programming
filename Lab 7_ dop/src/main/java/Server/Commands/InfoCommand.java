@@ -6,7 +6,7 @@ import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Memory.CollectionManager;
-import Server.Utility.Roles.AbstractRole;
+import Server.Utility.Roles.Role;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +21,7 @@ public class InfoCommand extends AbstractCommand {
     }
 
     @Override
-    public Response execute(Request request, AbstractRole role){
+    public Response execute(Request request, Role role){
         String message = "";
         ProgramCode code = null;
         try {

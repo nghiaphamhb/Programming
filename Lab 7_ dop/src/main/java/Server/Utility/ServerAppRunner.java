@@ -7,6 +7,7 @@ import Server.ServerApp;
 import Server.Network.Server;
 import Server.Manager.Database.DatabaseCollectionManager;
 import Server.Manager.Database.DatabaseUserManager;
+import Server.Utility.Roles.RoleManager;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -29,11 +30,12 @@ public class ServerAppRunner implements Runnable{
 
 
 
-    public ServerAppRunner(CollectionManager collectionManager, int port, DatabaseUserManager databaseUserManager, DatabaseCollectionManager databaseCollectionManager) throws IOException {
+    public ServerAppRunner(CollectionManager collectionManager, int port, DatabaseUserManager databaseUserManager, DatabaseCollectionManager databaseCollectionManager,
+                           RoleManager roleManager) throws IOException {
         this.collectionManager = collectionManager;
         this.databaseUserManager = databaseUserManager;
         this.databaseCollectionManager = databaseCollectionManager;
-        this.commandManager = new CommandManager(collectionManager, databaseUserManager, databaseCollectionManager);
+        this.commandManager = new CommandManager(collectionManager, databaseUserManager, databaseCollectionManager, roleManager);
         this.server =  new Server(InetAddress.getLocalHost(), port);
     }
 

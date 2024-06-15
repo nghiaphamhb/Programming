@@ -7,7 +7,7 @@ import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Memory.CollectionManager;
-import Server.Utility.Roles.AbstractRole;
+import Server.Utility.Roles.Role;
 
 import java.util.Comparator;
 import java.util.stream.Collectors;
@@ -24,7 +24,7 @@ public class PrintDescendingCommand extends AbstractCommand {
     }
 
     @Override
-    public Response execute(Request request, AbstractRole role) {
+    public Response execute(Request request, Role role) {
         try{
             if (!role.canRead()) throw new PermissionDeniedException();
             if (request.getParameter() != null) throw new CommandSyntaxIsWrongException();

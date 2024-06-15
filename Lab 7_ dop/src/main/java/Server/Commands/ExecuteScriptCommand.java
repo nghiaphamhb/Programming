@@ -5,7 +5,7 @@ import Common.Exception.PermissionDeniedException;
 import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
-import Server.Utility.Roles.AbstractRole;
+import Server.Utility.Roles.Role;
 
 import java.io.FileNotFoundException;
 
@@ -18,7 +18,7 @@ public class ExecuteScriptCommand extends AbstractCommand {
     }
 
     @Override
-    public Response execute(Request request, AbstractRole role) {
+    public Response execute(Request request, Role role) {
         try {
             if (!role.canExecute()) throw new PermissionDeniedException();
             String nameScript = (String) request.getParameter();

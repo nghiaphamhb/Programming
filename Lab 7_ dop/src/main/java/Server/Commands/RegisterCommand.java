@@ -7,7 +7,7 @@ import Common.Network.Response;
 import Common.Network.ProgramCode;
 import Server.Manager.Database.DatabaseUserManager;
 import Server.Utility.PasswordHasher;
-import Server.Utility.Roles.AbstractRole;
+import Server.Utility.Roles.Role;
 
 
 /**
@@ -22,7 +22,7 @@ public class RegisterCommand extends AbstractCommand {
     }
 
     @Override
-    public Response execute(Request request, AbstractRole role) {
+    public Response execute(Request request, Role role) {
         String message = "";
         try{
             User user = request.getUser();

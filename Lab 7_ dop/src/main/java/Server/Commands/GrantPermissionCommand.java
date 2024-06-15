@@ -3,36 +3,41 @@ package Server.Commands;
 import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Exception.FailureToActWithObjectException;
 import Common.Exception.PermissionDeniedException;
-import Common.Exception.UserIsNotFoundException;
 import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Database.DatabaseUserManager;
-import Server.Utility.Roles.AbstractRole;
-import Server.Utility.Roles.CustomRole;
+import Server.ServerApp;
+import Server.Utility.Roles.Role;
 import Server.Utility.Roles.ROLES;
+import Server.Utility.Roles.RoleManager;
 
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
 
 public class GrantPermissionCommand extends AbstractCommand{
     private DatabaseUserManager databaseUserManager;
+    private RoleManager roleManager;
 
-    public GrantPermissionCommand(DatabaseUserManager databaseUserManager) {
+    public GrantPermissionCommand(DatabaseUserManager databaseUserManager, RoleManager roleManager) {
         super("grant_permission", "grant permissions to users (ONLY FOR ADMIN)");
         this.databaseUserManager = databaseUserManager;
+        this.roleManager = roleManager;
     }
 
-    private boolean updateAccess(String strNewAccess, AbstractRole roleToChange){
+    private boolean updateAccess(String strNewAccess, Role roleToChange){
         if (strNewAccess.length() <= 1) return false;
         String[] elementStrNewAccess = strNewAccess.split("");
         if (!elementStrNewAccess[0].equals("+") && !elementStrNewAccess[0].equals("-")) return false;
 
         boolean newMode = elementStrNewAccess[0].equals("+");
         if (containsCharacter(elementStrNewAccess, "c")) roleToChange.setCreate(newMode);
-        if (containsCharacter(elementStrNewAccess, "u")) roleToChange.setCreate(newMode);
-        if (containsCharacter(elementStrNewAccess, "d")) roleToChange.setCreate(newMode);
-        if (containsCharacter(elementStrNewAccess, "e")) roleToChange.setCreate(newMode);
-        if (containsCharacter(elementStrNewAccess, "r")) roleToChange.setCreate(newMode);
+        if (containsCharacter(elementStrNewAccess, "u")) roleToChange.setUpdate(newMode);
+        if (containsCharacter(elementStrNewAccess, "d")) roleToChange.setDelete(newMode);
+        if (containsCharacter(elementStrNewAccess, "e")) roleToChange.setExecute(newMode);
+        if (containsCharacter(elementStrNewAccess, "r")) roleToChange.setRead(newMode);
+        ServerApp.logger.log(Level.INFO, "New access of role \'" + roleToChange.getNameRole() + "\'' is \"" +
+                roleToChange.toString() + "\"");
         return true;
     }
 
@@ -46,21 +51,18 @@ public class GrantPermissionCommand extends AbstractCommand{
     }
 
     @Override
-    public Response execute(Request request, AbstractRole role) {
+    public Response execute(Request request, Role role) {
         String message = null;
         ProgramCode code = null;
-        CustomRole newRole;
         try{
             if (!role.getNameRole().equals(ROLES.ADMIN)) throw new PermissionDeniedException();
 
             String nameRoleToChange = (String) request.getParameter();
-            AbstractRole roleToChange = databaseUserManager.getRoleByNameRole(nameRoleToChange);
+            Role roleToChange = roleManager.getRoleByNameRole(nameRoleToChange);
             if (roleToChange == null) throw new NoSuchElementException();
-            newRole = new CustomRole(roleToChange.getNameRole(), roleToChange.getId(), roleToChange.canCreate(),
-                    roleToChange.canUpdate(), roleToChange.canDelete(), roleToChange.canExecute(), roleToChange.canRead());
 
             String strNewAccess = (String) request.getBonusParameter();
-            if (!updateAccess(strNewAccess, newRole)) throw new CommandSyntaxIsWrongException();
+            if (!updateAccess(strNewAccess, roleToChange)) throw new CommandSyntaxIsWrongException();
 
             if (databaseUserManager.updateAccessRole(nameRoleToChange, roleToChange.toString())){
                 message = "Success changes the access of this role.";

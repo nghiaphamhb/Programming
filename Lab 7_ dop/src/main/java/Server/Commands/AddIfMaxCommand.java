@@ -10,7 +10,7 @@ import Common.Network.Response;
 import Common.Network.ProgramCode;
 import Server.Manager.Memory.CollectionManager;
 import Server.Manager.Database.DatabaseCollectionManager;
-import Server.Utility.Roles.AbstractRole;
+import Server.Utility.Roles.Role;
 
 /**
  * Command to add a new dragon if his age is maximum in the collection
@@ -26,7 +26,7 @@ public class AddIfMaxCommand extends AbstractCommand {
     }
 
     @Override
-    public Response execute (Request request, AbstractRole role) {
+    public Response execute (Request request, Role role) {
         if (collectionManager.getCollectionSize() == 0) return new Response("The collection is empty");
         try {
             if (!role.canCreate()) throw new PermissionDeniedException();

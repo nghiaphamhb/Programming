@@ -5,7 +5,7 @@ import Common.Network.Response;
 import Server.Commands.*;
 import Server.Manager.Database.DatabaseUserManager;
 import Server.Manager.Memory.CommandManager;
-import Server.Utility.Roles.AbstractRole;
+import Server.Utility.Roles.Role;
 
 import java.util.concurrent.Callable;
 
@@ -33,7 +33,7 @@ public class RequestHandler implements Callable<Response> {
         AbstractCommand command = commandManager.getByName(requestFromUser.getNameCommand());
         if (command == null) return new Response("That command is not existed.");
         commandManager.addToHistory(requestFromUser.getNameCommand(), requestFromUser.getUser());
-        AbstractRole userRole = databaseUserManager.getRoleByUsername(requestFromUser.getUser().getUserName());
+        Role userRole = databaseUserManager.getRoleByUsername(requestFromUser.getUser().getUserName());
         return command.execute(requestFromUser, userRole);
     }
 

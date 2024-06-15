@@ -10,7 +10,7 @@ import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Memory.CollectionManager;
 import Server.Manager.Database.DatabaseCollectionManager;
-import Server.Utility.Roles.AbstractRole;
+import Server.Utility.Roles.Role;
 
 /**
  * Delete the dragon that has the specified ID
@@ -26,7 +26,7 @@ public class RemoveByIdCommand extends AbstractCommand {
 
 
     @Override
-    public Response execute(Request request, AbstractRole role) {
+    public Response execute(Request request, Role role) {
         String message = "";
         try{
             if (!role.canDelete()) throw new PermissionDeniedException();

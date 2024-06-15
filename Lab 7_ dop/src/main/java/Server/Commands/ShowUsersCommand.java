@@ -5,7 +5,7 @@ import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Database.DatabaseUserManager;
-import Server.Utility.Roles.AbstractRole;
+import Server.Utility.Roles.Role;
 import Server.Utility.Roles.ROLES;
 
 import java.util.Map;
@@ -20,7 +20,7 @@ public class ShowUsersCommand extends AbstractCommand{
     }
 
     @Override
-    public Response execute(Request request, AbstractRole role) {
+    public Response execute(Request request, Role role) {
         String message = null;
         ProgramCode code = null;
         try{
