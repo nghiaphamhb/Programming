@@ -102,8 +102,9 @@ public class CommandManager {
         commands.put(index++, new NoSuchCommand());
         commands.put(index++, new LoginCommand(databaseUserManager));
         commands.put(index++, new RegisterCommand(databaseUserManager));
-        commands.put(index++, new UsersListCommand(databaseUserManager));
-        commands.put(index, new ChangeRoleCommand(databaseUserManager));
+        commands.put(index++, new ShowUsersCommand(databaseUserManager));
+        commands.put(index++, new ChangeRoleCommand(databaseUserManager));
+        commands.put(index, new GrantPermissionCommand(databaseUserManager));
 
     }
 }

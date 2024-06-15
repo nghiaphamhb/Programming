@@ -33,6 +33,10 @@ public interface QUERY {
             " SET " + COLUMNS.ROLE_ID + " = ?" +
             " WHERE " + COLUMNS.USERNAME + " =?";
 
+    String UPDATE_ACCESS_BY_ROLE = "UPDATE " + TABLES.ROLES +
+            " SET " + COLUMNS.ACCESS + " = ?" +
+            " WHERE " + COLUMNS.ROLE + " = ?";
+
     //------DRAGON-TABLE----------------------------------------------------------------------------------------------------
     String SELECT_ALL_DRAGON = "SELECT * FROM " + TABLES.DRAGON;
 

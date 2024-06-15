@@ -49,6 +49,26 @@ public abstract class AbstractRole implements Serializable {
         return read;
     }
 
+    public void setCreate(boolean create) {
+        this.create = create;
+    }
+
+    public void setUpdate(boolean update) {
+        this.update = update;
+    }
+
+    public void setDelete(boolean delete) {
+        this.delete = delete;
+    }
+
+    public void setExecute(boolean execute) {
+        this.execute = execute;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
     @Override
     public String toString() {
         String access = (canCreate() ? "c" : "-") +

@@ -23,7 +23,7 @@ public class ChangeRoleCommand extends AbstractCommand{
         String message;
         ProgramCode code;
         try{
-            if (!role.getNameRole().equals("admin")) throw new PermissionDeniedException();
+            if (!role.getNameRole().equals(ROLES.ADMIN)) throw new PermissionDeniedException();
             String usernameToChange = (String) request.getParameter();
             String nameNewRole = (String) request.getBonusParameter();
 
@@ -38,7 +38,7 @@ public class ChangeRoleCommand extends AbstractCommand{
                 code = ProgramCode.OK;
             } else throw new FailureToActWithObjectException();
         } catch (PermissionDeniedException e) {
-            message = "Not enough permissions to do this action";
+            message = "Not enough permissions to do this action.";
             code = ProgramCode.ERROR;
         } catch (FailureToActWithObjectException e) {
             message = "Syntax command is not correct. Usage: \"" + getName() + "\"";

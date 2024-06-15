@@ -92,6 +92,13 @@ public class InputHandler {
                 };
                 request = new Request(command[0], idToUpdate, updatedDragon, user);
                 break;
+            case "grant_permission":
+                if (!command[1].isEmpty()) {
+                    String[] parts = splitString(command[1]);
+                    request = new Request(command[0], parts[0], parts[1], user);
+                    break;
+                }
+
             default:
                 request = new Request("NoSuchCommand", user);
                 break;
@@ -117,5 +124,13 @@ public class InputHandler {
         } catch (InterruptedException e) {
             Display.printError( "Error exist while initializing the id");
         }
+    }
+
+    public String[] splitString(String strInput) {
+        String[] parts = strInput.split("\\s+");
+        for (int i = 0; i < parts.length; i++) {
+            parts[i] = parts[i].trim();
+        }
+        return parts;
     }
 }

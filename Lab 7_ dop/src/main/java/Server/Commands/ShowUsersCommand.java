@@ -6,15 +6,16 @@ import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Database.DatabaseUserManager;
 import Server.Utility.Roles.AbstractRole;
+import Server.Utility.Roles.ROLES;
 
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class UsersListCommand extends AbstractCommand{
+public class ShowUsersCommand extends AbstractCommand{
     private DatabaseUserManager databaseUserManager;
 
-    public UsersListCommand(DatabaseUserManager databaseUserManager) {
-        super("users_list", "view the entire list of users (ONLY FOR ADMIN)");
+    public ShowUsersCommand(DatabaseUserManager databaseUserManager) {
+        super("show_users", "view the entire list of users (ONLY FOR ADMIN)");
         this.databaseUserManager = databaseUserManager;
     }
 
@@ -23,7 +24,7 @@ public class UsersListCommand extends AbstractCommand{
         String message = null;
         ProgramCode code = null;
         try{
-            if (!role.getNameRole().equals("admin")) throw new PermissionDeniedException();
+            if (!role.getNameRole().equals(ROLES.ADMIN)) throw new PermissionDeniedException();
             Map<String, String> usersList = databaseUserManager.getUserList();
             message = usersList.entrySet().stream().
                     map(element -> String.format(" %-35s%-1s%n", element.getKey(), element.getValue()))

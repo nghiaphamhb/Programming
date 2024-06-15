@@ -71,7 +71,7 @@ public class DatabaseUserManager {
         return role;
     }
 
-    private AbstractRole getRoleByNameRole(String nameRole) {
+    public AbstractRole getRoleByNameRole(String nameRole) {
         switch (nameRole){
             case ROLES.ADMIN:
                 return new Admin();
@@ -208,6 +208,20 @@ public class DatabaseUserManager {
             return (affectedRows > 0);
         } catch (SQLException e) {
             ServerApp.logger.log(Level.WARNING, "An error occurred while executing the UPDATE_ROLE_AND_ACCESS_BY_USERNAME query!");
+        }
+        return false;
+    }
+
+    public boolean updateAccessRole(String nameRole, String newAccess){
+        PreparedStatement preparedStatement;
+        try{
+            preparedStatement = databaseHandler.getPreparedStatement(QUERY.UPDATE_ACCESS_BY_ROLE, false);
+            preparedStatement.setString(1, newAccess);
+            preparedStatement.setString(2, nameRole);
+            int affectedRows = preparedStatement.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            ServerApp.logger.log(Level.WARNING, "An error occurred while executing the UPDATE_ACCESS_BY_ROLE query!");
         }
         return false;
     }
