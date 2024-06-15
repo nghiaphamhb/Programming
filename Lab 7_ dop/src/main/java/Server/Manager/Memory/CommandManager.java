@@ -4,7 +4,7 @@ import Common.Data.User;
 import Server.Commands.*;
 import Server.Manager.Database.DatabaseCollectionManager;
 import Server.Manager.Database.DatabaseUserManager;
-import Server.Utility.Roles.RoleManager;
+import Server.Manager.Database.DatabaseRoleManager;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,16 +19,16 @@ public class CommandManager {
     private CollectionManager collectionManager;
     private DatabaseUserManager databaseUserManager;
     private DatabaseCollectionManager databaseCollectionManager;
-    private RoleManager roleManager;
+    private DatabaseRoleManager databaseRoleManager;
 
     public CommandManager(CollectionManager collectionManager, DatabaseUserManager databaseUserManager, DatabaseCollectionManager
-            databaseCollectionManager, RoleManager roleManager) {
+            databaseCollectionManager, DatabaseRoleManager databaseRoleManager) {
         commands = new ConcurrentHashMap<>();
         commandHistory = new LinkedList<>();
         this.collectionManager = collectionManager;
         this.databaseUserManager = databaseUserManager;
         this.databaseCollectionManager = databaseCollectionManager;
-        this.roleManager = roleManager;
+        this.databaseRoleManager = databaseRoleManager;
         register();
     }
 
@@ -107,7 +107,7 @@ public class CommandManager {
         commands.put(index++, new RegisterCommand(databaseUserManager));
         commands.put(index++, new ShowUsersCommand(databaseUserManager));
         commands.put(index++, new ChangeRoleCommand(databaseUserManager));
-        commands.put(index, new GrantPermissionCommand(databaseUserManager, roleManager));
+        commands.put(index, new GrantPermissionCommand(databaseUserManager, databaseRoleManager));
 
     }
 }

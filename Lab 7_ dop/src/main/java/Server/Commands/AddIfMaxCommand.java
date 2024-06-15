@@ -10,7 +10,7 @@ import Common.Network.Response;
 import Common.Network.ProgramCode;
 import Server.Manager.Memory.CollectionManager;
 import Server.Manager.Database.DatabaseCollectionManager;
-import Server.Utility.Roles.Role;
+import Server.Utility.Role;
 
 /**
  * Command to add a new dragon if his age is maximum in the collection

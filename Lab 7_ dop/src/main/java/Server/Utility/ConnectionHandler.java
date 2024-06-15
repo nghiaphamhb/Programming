@@ -3,6 +3,7 @@ package Server.Utility;
 import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
+import Server.Manager.Database.DatabaseRoleManager;
 import Server.Manager.Database.DatabaseUserManager;
 import Server.Manager.Memory.CommandManager;
 import Server.Network.*;
@@ -20,13 +21,16 @@ public class ConnectionHandler implements Runnable{
     private Server server;
     private CommandManager commandManager;
     private DatabaseUserManager databaseUserManager;
+    private DatabaseRoleManager databaseRoleManager;
     private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(1);
     private ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
 
-    public ConnectionHandler(Server server, CommandManager commandManager, DatabaseUserManager databaseUserManager) {
+    public ConnectionHandler(Server server, CommandManager commandManager, DatabaseUserManager databaseUserManager,
+                             DatabaseRoleManager databaseRoleManager) {
         this.server = server;
         this.commandManager = commandManager;
         this.databaseUserManager = databaseUserManager;
+        this.databaseRoleManager =databaseRoleManager;
     }
 
     /**
@@ -44,7 +48,7 @@ public class ConnectionHandler implements Runnable{
 
             //Process request and make response
             try {
-                Future<Response> responseFuture = fixedThreadPool.submit(new RequestHandler(commandManager, requestFromUser,databaseUserManager));
+                Future<Response> responseFuture = fixedThreadPool.submit(new RequestHandler(commandManager, requestFromUser,databaseUserManager, databaseRoleManager));
                 responseToUser = responseFuture.get();
             } catch (InterruptedException | ExecutionException e) {
                 ServerApp.logger.log(Level.WARNING, e.toString());

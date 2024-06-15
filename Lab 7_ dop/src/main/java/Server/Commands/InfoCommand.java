@@ -6,7 +6,7 @@ import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Memory.CollectionManager;
-import Server.Utility.Roles.Role;
+import Server.Utility.Role;
 
 import java.time.LocalDateTime;
 

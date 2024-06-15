@@ -4,7 +4,7 @@ import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Memory.CommandManager;
-import Server.Utility.Roles.Role;
+import Server.Utility.Role;
 
 import java.util.stream.Collectors;
 

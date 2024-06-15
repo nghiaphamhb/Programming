@@ -4,7 +4,7 @@ import Common.Exception.CommandSyntaxIsWrongException;
 import Common.Network.Request;
 import Common.Network.Response;
 import Common.Network.ProgramCode;
-import Server.Utility.Roles.Role;
+import Server.Utility.Role;
 
 /**
  * The command to end the program

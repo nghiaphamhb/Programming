@@ -1,4 +1,4 @@
-package Server.Utility.Roles;
+package Server.Utility.Enum;
 
 public interface ROLES {
     String ADMIN = "admin";

@@ -4,8 +4,7 @@ import Server.Manager.Memory.CollectionManager;
 import Server.Manager.Database.DatabaseCollectionManager;
 import Server.Manager.Database.DatabaseUserManager;
 import Server.Utility.DatabaseHandler;
-import Server.Utility.Roles.Role;
-import Server.Utility.Roles.RoleManager;
+import Server.Manager.Database.DatabaseRoleManager;
 import Server.Utility.ServerAppRunner;
 
 import java.io.IOException;
@@ -26,12 +25,12 @@ public class ServerApp {
     public static void main(String[] args){
         try{
             DatabaseHandler databaseHandler = new DatabaseHandler(databaseAddress, databaseUsername, databasePassword);
-            RoleManager roleManager = new RoleManager();
-            DatabaseUserManager databaseUserManager = new DatabaseUserManager(databaseHandler, roleManager);
+            DatabaseRoleManager databaseRoleManager = new DatabaseRoleManager(databaseHandler);
+            DatabaseUserManager databaseUserManager = new DatabaseUserManager(databaseHandler, databaseRoleManager);
             DatabaseCollectionManager databaseCollectionManager = new DatabaseCollectionManager(databaseUserManager, databaseHandler);
             CollectionManager collectionManager = new CollectionManager(databaseCollectionManager);
 
-            ServerAppRunner app = new ServerAppRunner(collectionManager, port, databaseUserManager, databaseCollectionManager, roleManager);
+            ServerAppRunner app = new ServerAppRunner(collectionManager, port, databaseUserManager, databaseCollectionManager, databaseRoleManager);
             app.run();
         } catch (IOException e) {
             ServerApp.logger.log(Level.WARNING, e.toString());

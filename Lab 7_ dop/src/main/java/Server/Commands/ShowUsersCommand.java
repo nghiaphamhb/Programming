@@ -5,8 +5,8 @@ import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Database.DatabaseUserManager;
-import Server.Utility.Roles.Role;
-import Server.Utility.Roles.ROLES;
+import Server.Utility.Role;
+import Server.Utility.Enum.ROLES;
 
 import java.util.Map;
 import java.util.stream.Collectors;

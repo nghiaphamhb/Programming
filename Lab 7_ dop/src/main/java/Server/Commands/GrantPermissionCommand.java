@@ -8,21 +8,21 @@ import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Database.DatabaseUserManager;
 import Server.ServerApp;
-import Server.Utility.Roles.Role;
-import Server.Utility.Roles.ROLES;
-import Server.Utility.Roles.RoleManager;
+import Server.Utility.Role;
+import Server.Utility.Enum.ROLES;
+import Server.Manager.Database.DatabaseRoleManager;
 
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 
 public class GrantPermissionCommand extends AbstractCommand{
     private DatabaseUserManager databaseUserManager;
-    private RoleManager roleManager;
+    private DatabaseRoleManager databaseRoleManager;
 
-    public GrantPermissionCommand(DatabaseUserManager databaseUserManager, RoleManager roleManager) {
+    public GrantPermissionCommand(DatabaseUserManager databaseUserManager, DatabaseRoleManager databaseRoleManager) {
         super("grant_permission", "grant permissions to users (ONLY FOR ADMIN)");
         this.databaseUserManager = databaseUserManager;
-        this.roleManager = roleManager;
+        this.databaseRoleManager = databaseRoleManager;
     }
 
     private boolean updateAccess(String strNewAccess, Role roleToChange){
@@ -58,13 +58,13 @@ public class GrantPermissionCommand extends AbstractCommand{
             if (!role.getNameRole().equals(ROLES.ADMIN)) throw new PermissionDeniedException();
 
             String nameRoleToChange = (String) request.getParameter();
-            Role roleToChange = roleManager.getRoleByNameRole(nameRoleToChange);
+            Role roleToChange = databaseRoleManager.getRoleByNameRole(nameRoleToChange);
             if (roleToChange == null) throw new NoSuchElementException();
 
             String strNewAccess = (String) request.getBonusParameter();
             if (!updateAccess(strNewAccess, roleToChange)) throw new CommandSyntaxIsWrongException();
 
-            if (databaseUserManager.updateAccessRole(nameRoleToChange, roleToChange.toString())){
+            if (databaseRoleManager.updateAccessRole(nameRoleToChange, roleToChange.toString())){
                 message = "Success changes the access of this role.";
                 code = ProgramCode.OK;
             } else throw new FailureToActWithObjectException();

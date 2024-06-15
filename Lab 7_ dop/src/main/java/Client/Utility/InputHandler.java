@@ -50,7 +50,7 @@ public class InputHandler {
             case "print_descending":
             case "print_field_descending_speaking":
             case "show":
-            case "users_list":
+            case "show_users":
                 request = new Request(command[0], user);
                 break;
             case "change_role":

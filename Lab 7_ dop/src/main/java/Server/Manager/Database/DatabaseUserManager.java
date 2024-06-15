@@ -1,7 +1,7 @@
 package Server.Manager.Database;
 
 import Server.Utility.Enum.QUERY;
-import Server.Utility.Roles.*;
+import Server.Utility.Role;
 import Common.Data.User;
 import Server.ServerApp;
 import Server.Utility.Enum.COLUMNS;
@@ -19,11 +19,11 @@ import java.util.logging.Level;
  */
 public class DatabaseUserManager {
     private DatabaseHandler databaseHandler;
-    private RoleManager roleManager;
+    private DatabaseRoleManager databaseRoleManager;
 
-    public DatabaseUserManager(DatabaseHandler databaseHandler, RoleManager roleManager) {
+    public DatabaseUserManager(DatabaseHandler databaseHandler, DatabaseRoleManager databaseRoleManager) {
         this.databaseHandler = databaseHandler;
-        this.roleManager = roleManager;
+        this.databaseRoleManager = databaseRoleManager;
     }
 
     /**
@@ -52,26 +52,7 @@ public class DatabaseUserManager {
         return user;
     }
 
-    public Role getRoleByUsername(String username){
-        String nameRole = null;
-        Role role = null;
-        PreparedStatement preparedStatement = null;
-        try{
-            preparedStatement = databaseHandler.getPreparedStatement(QUERY.SELECT_ROLE_BY_USERNAME, false);
-            preparedStatement.setString(1, username);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            ServerApp.logger.log(Level.INFO, "Executed query SELECT_ROLE_BY_USERNAME");
-            if (resultSet.next()) {
-                nameRole = resultSet.getString(COLUMNS.ROLE);
-                role = roleManager.getRoleByNameRole(nameRole);
-            } else throw new SQLException();
-        } catch (SQLException e) {
-            ServerApp.logger.log(Level.WARNING, "An error occurred while executing the SELECT_ROLE_BY_USERNAME query!" + QUERY.SELECT_ROLE_BY_USERNAME);
-        } finally {
-            databaseHandler.closePreparedStatement(preparedStatement);
-        }
-        return role;
-    }
+
 
 
 
@@ -174,7 +155,7 @@ public class DatabaseUserManager {
             ServerApp.logger.log(Level.INFO, "Executed query SELECT_USER");
             while (resultSet.next()){
                 String userName = resultSet.getString(COLUMNS.USERNAME);
-                usersList.put(userName, getRoleByUsername(userName).getNameRole() );
+                usersList.put(userName, databaseRoleManager.getRoleByUsername(userName).getNameRole() );
             }
         } catch (SQLException e) {
             ServerApp.logger.log(Level.WARNING, "An error occurred while executing the SELECT_USER query!");
@@ -185,7 +166,7 @@ public class DatabaseUserManager {
     public boolean changeUserRole(String userName, String nameNewRole){
         PreparedStatement preparedStatement;
         try{
-            Role newRole = roleManager.getRoleByNameRole(nameNewRole);
+            Role newRole = databaseRoleManager.getRoleByNameRole(nameNewRole);
             preparedStatement = databaseHandler.getPreparedStatement(QUERY.UPDATE_ROLE_BY_USERNAME, false);
             preparedStatement.setLong(1, newRole.getId());
             preparedStatement.setString(2, userName);
@@ -197,17 +178,5 @@ public class DatabaseUserManager {
         return false;
     }
 
-    public boolean updateAccessRole(String nameRole, String newAccess){
-        PreparedStatement preparedStatement;
-        try{
-            preparedStatement = databaseHandler.getPreparedStatement(QUERY.UPDATE_ACCESS_BY_ROLE, false);
-            preparedStatement.setString(1, newAccess);
-            preparedStatement.setString(2, nameRole);
-            int affectedRows = preparedStatement.executeUpdate();
-            return affectedRows > 0;
-        } catch (SQLException e) {
-            ServerApp.logger.log(Level.WARNING, "An error occurred while executing the UPDATE_ACCESS_BY_ROLE query!");
-        }
-        return false;
-    }
+
 }

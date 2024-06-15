@@ -7,7 +7,7 @@ import Server.ServerApp;
 import Server.Network.Server;
 import Server.Manager.Database.DatabaseCollectionManager;
 import Server.Manager.Database.DatabaseUserManager;
-import Server.Utility.Roles.RoleManager;
+import Server.Manager.Database.DatabaseRoleManager;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -22,6 +22,7 @@ import java.util.logging.Level;
 public class ServerAppRunner implements Runnable{
     private final CommandManager commandManager;
     private final DatabaseUserManager databaseUserManager;
+    private final DatabaseRoleManager databaseRoleManager;
     private final DatabaseCollectionManager databaseCollectionManager;
     private final CollectionManager collectionManager;
     private Server server;
@@ -31,11 +32,12 @@ public class ServerAppRunner implements Runnable{
 
 
     public ServerAppRunner(CollectionManager collectionManager, int port, DatabaseUserManager databaseUserManager, DatabaseCollectionManager databaseCollectionManager,
-                           RoleManager roleManager) throws IOException {
+                           DatabaseRoleManager databaseRoleManager) throws IOException {
         this.collectionManager = collectionManager;
         this.databaseUserManager = databaseUserManager;
+        this.databaseRoleManager = databaseRoleManager;
         this.databaseCollectionManager = databaseCollectionManager;
-        this.commandManager = new CommandManager(collectionManager, databaseUserManager, databaseCollectionManager, roleManager);
+        this.commandManager = new CommandManager(collectionManager, databaseUserManager, databaseCollectionManager, databaseRoleManager);
         this.server =  new Server(InetAddress.getLocalHost(), port);
     }
 
@@ -46,7 +48,7 @@ public class ServerAppRunner implements Runnable{
     public void run() {
         ServerApp.logger.log(Level.INFO, "Server is waiting to connect...");
         while (serverIsRunning) {
-            fixedThreadPool.submit(new ConnectionHandler(server, commandManager, databaseUserManager));
+            fixedThreadPool.submit(new ConnectionHandler(server, commandManager, databaseUserManager, databaseRoleManager));
             server.disconnectFromClient();
         }
         try {

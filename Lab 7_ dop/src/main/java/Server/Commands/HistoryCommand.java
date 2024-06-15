@@ -6,7 +6,7 @@ import Common.Network.ProgramCode;
 import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Memory.CommandManager;
-import Server.Utility.Roles.Role;
+import Server.Utility.Role;
 
 /**
  * Command to display the history of used commands (maximum only show the last 13 commands)

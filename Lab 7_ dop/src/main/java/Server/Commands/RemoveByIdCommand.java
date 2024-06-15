@@ -10,7 +10,7 @@ import Common.Network.Request;
 import Common.Network.Response;
 import Server.Manager.Memory.CollectionManager;
 import Server.Manager.Database.DatabaseCollectionManager;
-import Server.Utility.Roles.Role;
+import Server.Utility.Role;
 
 /**
  * Delete the dragon that has the specified ID

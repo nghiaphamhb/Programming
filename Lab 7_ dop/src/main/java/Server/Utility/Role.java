@@ -1,4 +1,4 @@
-package Server.Utility.Roles;
+package Server.Utility;
 
 public class Role {
     private final String nameRole;
